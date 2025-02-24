@@ -2,9 +2,16 @@ import { supabase } from "@/supabaseClient";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "../button"
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
     const isLoggedIn = useRef(false);
+    const navigate = useNavigate();
+
+    const handleLoginClick = () => {
+        navigate('/login');
+    }
+
     useEffect(() => {
         const checkUser = async () => {
             isLoggedIn.current = await supabase.auth.getUser() ? true : false;
@@ -21,7 +28,7 @@ function Navbar() {
                 <div className="flex gap-4 items-center">
                     {isLoggedIn.current ?
                         <Button variant={"secondary"}>My Tickets</Button> :
-                        <Button>Login</Button>}
+                        <Button onClick={handleLoginClick}>Login</Button>}
                     {isLoggedIn.current ? (
                         <Avatar>
                             <AvatarImage src="https://github.com/shadcn.png" />
