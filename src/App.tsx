@@ -1,12 +1,12 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import Navbar from './components/ui/Navbar/Navbar'
-import Login from './pages/auth/Login'
-import HomePage from './pages/home/HomePage'
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./components/ui/Navbar/Navbar";
+import Login from "./pages/auth/login";
+import HomePage from "./pages/home/HomePage";
 
 function App() {
   return (
     <BrowserRouter>
-      <div className='h-full'>
+      <div className="h-full">
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -14,7 +14,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
