@@ -6,7 +6,7 @@ import EventPage from './pages/EventPages/EventPage';
 function App() {
   return (
     <BrowserRouter>
-      <div className='h-full'>
+      <div className="h-full">
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -15,6 +15,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
+  );
   );
 }
 
