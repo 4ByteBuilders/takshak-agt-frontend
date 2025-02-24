@@ -1,6 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+  height: 100vh;
+}
+
+#root{
+  height: 100%;
+}
 
 @layer base {
   :root {
