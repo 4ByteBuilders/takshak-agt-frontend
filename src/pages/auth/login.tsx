@@ -1,5 +1,16 @@
+import { supabase } from "@/supabaseClient";
 
 const Login = () => {
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${import.meta.env.VITE_SITE_URL}`, // Set the redirect URL
+      },
+    });
+    if (error) console.error('Error logging in with Google:', error.message);
+  };
+
   return (
     <div className="flex items-center justify-center text-center h-full p-3">
       <div>
@@ -10,6 +21,12 @@ const Login = () => {
           Let your event journey begin with the festive vibe of Agartala
         </p>
         <div className="mt-2 border" />
+        <button
+          onClick={handleGoogleLogin}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Sign in with Google
+        </button>
       </div>
     </div>
   )
