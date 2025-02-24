@@ -1,33 +1,30 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { supabase } from "@/supabaseClient";
 
-const Login = () => {
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        console.log("User already logged in");
-        navigate("/"); // Redirect to home page if user is already logged in
-      }
-    };
-    checkUser();
-  }, [navigate]);
+const Login = () => {
 
   const handleGoogleLogin = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-    });
-    if (error) console.error("Error logging in with Google:", error.message);
-    else {
-      console.log(data);
-      navigate("/"); // Redirect to home page after successful login
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      console.log('User already logged in');
+      console.log(user);
+    } else {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: `${window.location.origin}/home`,
+        },
+      });
+      if (error) console.error('Error logging in with Google:', error.message);
+
     }
   };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) console.error('Error logging out:', error.message);
+  }
 
   return (
     <div className="flex items-center justify-center text-center h-full p-3">
@@ -42,6 +39,12 @@ const Login = () => {
           className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
         >
           Sign in with Google
+        </button>
+        <button
+          onClick={handleLogout}
+          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Logout
         </button>
       </div>
     </div>
