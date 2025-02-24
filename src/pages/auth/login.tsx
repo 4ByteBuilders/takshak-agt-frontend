@@ -1,7 +1,4 @@
-
 import { supabase } from "@/supabaseClient";
-
-
 const Login = () => {
 
   const handleGoogleLogin = async () => {

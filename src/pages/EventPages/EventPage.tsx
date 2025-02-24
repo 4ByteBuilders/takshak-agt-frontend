@@ -9,8 +9,8 @@ const EventPage = () => {
           availability: {total: 500, available: 100},
           description: "Step into a Marathi world of hilarity and entertainment as we bring you an unforgettable solo performance by Pranit More! Get ready to laugh your heart out and experience comedy at its finest!",
           price: [
-            { type: "General", price: 20 },
-            { type: "VIP", price: 50 },
+            { type: "General", price: 2000 },
+            { type: "VIP", price: 5000 },
           ],
           image: "/public/event1.jpeg",
         },
