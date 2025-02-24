@@ -1,10 +1,15 @@
-import { Button } from '@/components/ui/button'
+import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
+import Login from './components/ui/login'
 
 function App() {
-  return (
-    <div>
-      <Button>Click me</Button>
-    </div>
+  return (  
+    <BrowserRouter>
+        <div>
+          <Routes>
+            <Route path = "/login" element = {<Login/>} /> 
+          </Routes>
+        </div>
+    </BrowserRouter>
   )
 }
 
