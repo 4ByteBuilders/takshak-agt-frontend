@@ -2,13 +2,19 @@ import { supabase } from "@/supabaseClient";
 
 const Login = () => {
   const handleGoogleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${import.meta.env.VITE_SITE_URL}`, // Set the redirect URL
-      },
-    });
-    if (error) console.error('Error logging in with Google:', error.message);
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      console.log('User already logged in')
+      console.log(user)
+    } else {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      if (error) console.error('Error logging in with Google:', error.message);
+      else {
+        console.log(data)
+      }
+    }
   };
 
   return (
