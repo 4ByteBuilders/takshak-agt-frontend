@@ -12,7 +12,7 @@ const Login = () => {
       } = await supabase.auth.getUser();
       if (user) {
         console.log("User already logged in");
-        navigate("/"); // Redirect to home page if user is already logged in
+        navigate("/");
       }
     };
     checkUser();
@@ -25,7 +25,7 @@ const Login = () => {
     if (user) {
       console.log("User already logged in");
       console.log(user);
-      navigate("/"); // Redirect to home page if user is already logged in
+      navigate("/");
     } else {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",

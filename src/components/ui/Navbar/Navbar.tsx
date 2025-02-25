@@ -1,23 +1,50 @@
-import { supabase } from "@/supabaseClient";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "../button"
-import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/lib/Providers/AuthProvider";
+import { UserRound, UserCog, LogOut, CircleHelp } from 'lucide-react';
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
+
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { supabase } from "@/supabaseClient";
 
 function Navbar() {
-    const isLoggedIn = useRef(false);
     const navigate = useNavigate();
+    const { user } = useAuth();
 
     const handleLoginClick = () => {
         navigate('/login');
     }
+    const handleTicketsClick = () => {
+        navigate('/tickets');
+    }
 
-    useEffect(() => {
-        const checkUser = async () => {
-            isLoggedIn.current = await supabase.auth.getUser() ? true : false;
-        };
-        checkUser();
-    }, [])
+    const handleLogOut = async () => {
+        const { error } = await supabase.auth.signOut();
+        if (error) {
+            console.error("Error logging out:", error.message);
+        }
+    }
+
+
     return (
         <div className="top-0 left-0 w-full shadow-sm shadow-slate-700">
             <div className="flex items-center p-2 justify-between">
@@ -26,14 +53,63 @@ function Navbar() {
                     Takshak
                 </div>
                 <div className="flex gap-4 items-center">
-                    {isLoggedIn.current ?
-                        <Button variant={"secondary"}>My Tickets</Button> :
+                    {user ?
+                        <Button variant={"secondary"} onClick={handleTicketsClick}>My Tickets</Button> :
                         <Button onClick={handleLoginClick}>Login</Button>}
-                    {isLoggedIn.current ? (
-                        <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
+                    {user ? (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger><Avatar>
+                                <AvatarImage src={user.user_metadata.picture} />
+                                <AvatarFallback>
+                                    <UserRound />
+                                </AvatarFallback>
+                            </Avatar>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="">
+                                <DropdownMenuLabel>
+                                    <div className="flex items-center">
+                                        <UserRound />
+                                        <span className="ml-2">{user.email}</span>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <div className="flex items-center">
+                                        <UserCog />
+                                        <span className="ml-2">Profile</span>
+                                    </div>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <div className="flex items-center">
+                                        <CircleHelp />
+                                        <span className="ml-2">FAQ</span>
+                                    </div>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <div className="flex items-center">
+                                                <LogOut />
+                                                <span className="ml-2">Logout</span>
+                                            </div>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Are you sure you want to logout?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    This action will log you out of the application.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction onClick={handleLogOut}>Logout</AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
                     ) : null}
                 </div>
             </div>
