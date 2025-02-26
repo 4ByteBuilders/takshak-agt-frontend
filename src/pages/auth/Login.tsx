@@ -12,8 +12,7 @@ const Login = () => {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        console.log("User already logged in");
-        // navigate("/");
+        navigate("/");
       }
     };
     checkUser();

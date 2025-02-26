@@ -1,11 +1,11 @@
-import React from 'react';
+
 import { MapPin, Calendar, Armchair } from 'lucide-react';
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
