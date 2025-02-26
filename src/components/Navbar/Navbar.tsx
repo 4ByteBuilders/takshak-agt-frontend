@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "../button"
+import { Button } from "../ui/button"
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/Providers/AuthProvider";
 import { UserRound, UserCog, LogOut, CircleHelp } from 'lucide-react';

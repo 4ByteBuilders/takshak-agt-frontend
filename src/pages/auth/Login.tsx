@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
+import { toast } from "sonner"
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,27 +20,13 @@ const Login = () => {
   }, [navigate]);
 
   const handleGoogleLogin = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (user) {
-      console.log("User already logged in");
-      console.log(user);
-      navigate("/");
-    } else {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/`,
-        },
-      });
-      if (error) console.error("Error logging in with Google:", error.message);
-    }
-  };
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) console.error("Error logging out:", error.message);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/`,
+      },
+    });
+    if (error) toast.error(error.message);
   };
 
   return (
@@ -56,12 +43,7 @@ const Login = () => {
         >
           Sign in with Google
         </button>
-        <button
-          onClick={handleLogout}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Logout
-        </button>
+        <div className=""></div>
       </div>
     </div>
   );
