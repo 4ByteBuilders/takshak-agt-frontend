@@ -53,10 +53,10 @@ const EventCard = ({ name, place, date, availability, description, price, image 
             {price.map((priceDetail, idx) => (
               <li
                 key={idx}
-                className="bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)] w-fit"
+                className="flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
               >
-                <span className="text-green-300">{priceDetail.type+"  "}</span>
-                <span className="text-xs font-bold">₹ {priceDetail.price}</span>
+                <span className="text-green-300">{priceDetail.type}</span>
+                <span className="text-xs font-bold">   ₹{priceDetail.price}</span>
 
               </li>
             ))}
@@ -81,7 +81,7 @@ interface EventsCardProps {
 
 const EventsCard = ({ events }: EventsCardProps) => {
   return (
-    <div className="m-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 lg:mx-12">
+    <div className="m-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-8 lg:mx-12">
       {events.map((event, index) => (
         <EventCard
           key={index}
