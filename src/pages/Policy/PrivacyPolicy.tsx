@@ -1,6 +1,6 @@
 const PrivacyPolicy = () => {
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-20 w-fit p-4">
             <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
             <p className="mb-4">
                 At takshakagt, we are committed to safeguarding your privacy. This Privacy Policy outlines how we collect, use, disclose, and protect your personal information when you use our event ticket booking application. By accessing or using our services, you agree to the terms of this policy.
