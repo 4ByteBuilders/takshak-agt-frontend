@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
@@ -7,15 +8,24 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { z } from "zod"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import axios from "axios";
 import { supabase } from "@/supabaseClient";
-// import { useState } from "react";
+import {
+    AlertDialog,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogFooter,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogAction,
+} from "@/components/ui/alert-dialog";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
     name: z.string().min(3, {
@@ -27,9 +37,11 @@ const formSchema = z.object({
     message: z.string().min(4, {
         message: "Message must be at least 4 characters.",
     }),
-})
+});
 
 const Contact = () => {
+    const [showDialog, setShowDialog] = useState({ status: false, title: "", message: "" });
+    const [loading, setLoading] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -37,22 +49,30 @@ const Contact = () => {
             email: "",
             message: "",
         },
-    })
-    // const [loading, setLoading] = useState(false);
+    });
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         try {
-            // setLoading(true);
+            setLoading(true);
             const { data } = await supabase.auth.getSession();
-            console.log(data.session?.access_token);
             const auth = data.session?.access_token;
             axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
-            const response = await axios.post("/policy/create", values);
-            if (response.status % 100 === 2) {
-                alert("Message sent successfully!");
-            }
+            await axios.post(`${import.meta.env.VITE_BACKEND_URL}/policy/create`, values);
+            setShowDialog({
+                status: true,
+                title: "Success",
+                message: "Your message has been sent successfully. We will get back to you soon.",
+            });
+
+            setLoading(false);
             form.reset();
         } catch (error) {
-            console.error(error);
+            setShowDialog({
+                status: true,
+                title: "Error",
+                message: (axios.isAxiosError(error) && error.response?.data?.message) ? error.response.data.message + ". Please try again later." : "An unexpected error occurred. Please try again later.",
+            });
+            setLoading(false);
         }
     }
 
@@ -67,7 +87,7 @@ const Contact = () => {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Name" {...field} />
+                                    <Input placeholder="Name" {...field} disabled={loading} />
                                 </FormControl>
                                 <FormDescription>
                                     This is your public display name.
@@ -83,7 +103,7 @@ const Contact = () => {
                             <FormItem>
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="example@domain.com" {...field} />
+                                    <Input placeholder="example@domain.com" {...field} disabled={loading} />
                                 </FormControl>
                                 <FormDescription>
                                     This is your email address.
@@ -99,17 +119,44 @@ const Contact = () => {
                             <FormItem>
                                 <FormLabel>Message</FormLabel>
                                 <FormControl>
-                                    <Textarea placeholder="Your message here..." {...field} />
+                                    <Textarea placeholder="Your message here..." {...field} disabled={loading} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
                     <div className="flex justify-center">
-                        <Button type="submit" className="w-1/2">Submit</Button>
+                        {
+                            loading ? (
+                                <Button disabled>
+                                    <Loader2 className="animate-spin" />
+                                    Please wait
+                                </Button>
+                            ) : (<Button type="submit" className="w-1/2" disabled={loading}>
+                                Submit
+                            </Button>)
+                        }
                     </div>
                 </form>
             </Form>
+
+            <AlertDialog open={showDialog.status} onOpenChange={(open) => setShowDialog(prev => ({ ...prev, status: open }))}>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>{showDialog.title}</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            {showDialog.message}
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogAction onClick={() => setShowDialog({
+                            status: false,
+                            title: "",
+                            message: "",
+                        })}>OK</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     );
 };

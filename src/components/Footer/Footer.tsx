@@ -21,9 +21,9 @@ function Footer() {
             {/* Contact Section */}
             <div className="flex flex-col items-center md:items-start">
                 <span className="font-semibold">Get in touch with us</span>
-                <span>Phone: 1234567890</span>
-                <span>Email: example@gmail.com</span>
-                <span>Address: 123, Example Street, Example City, Example Country</span>
+                <span>Phone: +91 7005483524</span>
+                <span>Email: chiagartala@gmail.com</span>
+                <span>Address: Dhaleswar Kalyani, Agartala</span>
             </div>
 
             {/* Links Section */}
