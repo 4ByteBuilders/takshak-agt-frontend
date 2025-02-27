@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
-import { toast } from "sonner"
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -30,10 +31,13 @@ const Login = () => {
     <div className="flex flex-col md:flex-row items-center text-center h-full p-3">
       <div className="flex flex-col w-1/2 items-start ml-10 ">
         <p className="text-6xl font-black my-5">স্বাগতম!</p>
-        <p className="text-4xl font-bold my-5">We are <span className="text-secondary">Takshak</span> Events</p>
+        <p className="text-4xl font-bold my-5">
+          We are <span className="text-secondary">Takshak</span> Events
+        </p>
 
         <p className="text-md font-normal my-5 w-3/4 text-left">
-          Let your event journey begin with the festive vibe of Agartala! Explore the best events around Agartala with the best deals!
+          Let your event journey begin with the festive vibe of Agartala!
+          Explore the best events around Agartala with the best deals!
         </p>
         <div className="border-b-2 border-gray-300" />
         <button
