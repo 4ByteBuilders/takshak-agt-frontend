@@ -12,7 +12,7 @@ const EventPage = () => {
         { type: "Stag", price: 499 },
         { type: "Couple", price: 799 },
       ],
-      image: ["/public/event1.jpeg"],
+      image: ["/event1.jpeg"],
     },
     {
       name: "D.I In The House - Live In Concert",
@@ -24,7 +24,7 @@ const EventPage = () => {
         { type: "Stag", price: 499 },
         { type: "Couple", price: 799 },
       ],
-      image: ["/public/event1.jpeg"],
+      image: ["/event1.jpeg"],
     },
     {
       name: "D.I In The House - Live In Concert",
@@ -36,7 +36,7 @@ const EventPage = () => {
         { type: "Stag", price: 499 },
         { type: "Couple", price: 799 },
       ],
-      image: ["/public/event1.jpeg"],
+      image: ["/event1.jpeg"],
     },
     {
       name: "D.I In The House - Live In Concert",
@@ -48,7 +48,7 @@ const EventPage = () => {
         { type: "Stag", price: 499 },
         { type: "Couple", price: 799 },
       ],
-      image: ["/public/event1.jpeg"],
+      image: ["/event1.jpeg"],
     },
   ];
   return (
