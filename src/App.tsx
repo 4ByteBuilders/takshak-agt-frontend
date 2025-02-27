@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner"
 import Page404 from './pages/404/404'
 import EventPage from './pages/EventPages/EventPage';
 import { AuthProvider } from './lib/Providers/AuthProvider'
+import PrivacyPolicyPage from './pages/privacyPolicy/PrivacyPolicyPage'
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
           <Toaster />
           <Routes>
             <Route path="/" element={<EventPage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage/>} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Page404 />} />
           </Routes>
