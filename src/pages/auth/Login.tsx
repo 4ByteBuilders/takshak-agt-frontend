@@ -6,25 +6,26 @@ import { toast } from "sonner"
 const Login = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        navigate("/");
-      }
-    };
-    checkUser();
-  }, [navigate]);
+  // useEffect(() => {
+  //   const checkUser = async () => {
+  //     const {
+  //       data: { user },
+  //     } = await supabase.auth.getUser();
+  //     if (user) {
+  //       navigate("/");
+  //     }
+  //   };
+  //   checkUser();
+  // }, [navigate]);
 
   const handleGoogleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/`,
+        // redirectTo: `${window.location.origin}/`,
       },
     });
+    console.log(data);
     if (error) toast.error(error.message);
   };
 

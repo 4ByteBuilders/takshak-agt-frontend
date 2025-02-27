@@ -33,7 +33,7 @@ function Navbar() {
     const handleLoginClick = () => {
         navigate('/login');
     }
-    const handleTicketsClick = () => {
+    const handleTicketsClick = async () => {
         navigate('/tickets');
     }
 
