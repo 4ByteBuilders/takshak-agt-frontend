@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react"
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+    const navigate = useNavigate();
     const targetDate = new Date("2025-03-14T00:00:00.000Z").getTime();
 
     const calculateTimeLeft = () => {
@@ -88,7 +90,7 @@ export default function HomePage() {
                     transition={{ duration: 1, delay: 0.7 }}
                     className="mt-8"
                 >
-                    <button className="relative px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <button onClick={() => navigate('/view/event')} className="relative px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105">
                         Book Your Tickets Now →
                     </button>
                 </motion.div>

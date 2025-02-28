@@ -1,6 +1,10 @@
-import { Facebook, Instagram, Youtube } from "lucide-react";
+import { Instagram } from "lucide-react";
 
 function Footer() {
+  const openLink = (url: string) => {
+    window.open(url, "_blank");
+  };
+
   return (
     <footer className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-gray-900 text-white p-6 text-center md:text-left">
       {/* Copyright Section */}
@@ -12,9 +16,9 @@ function Footer() {
       <div className="flex flex-col items-center">
         <span className="mb-2">Follow us on</span>
         <div className="flex gap-3">
-          <Instagram className="cursor-pointer hover:opacity-70" />
-          <Facebook className="cursor-pointer hover:opacity-70" />
-          <Youtube className="cursor-pointer hover:opacity-70" />
+          <Instagram onClick={() => openLink("https://www.instagram.com/takshak.agt")} className="cursor-pointer hover:opacity-70" />
+          {/* <Facebook onClick={() => openLink("https://www.facebook.com")} className="cursor-pointer hover:opacity-70" />
+          <Youtube onClick={() => openLink("https://www.youtube.com")} className="cursor-pointer hover:opacity-70" /> */}
         </div>
       </div>
 

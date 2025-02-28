@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "../ui/button"
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/Providers/AuthProvider";
-import { UserRound, UserCog, LogOut, CircleHelp } from 'lucide-react';
+import { UserRound, UserCog, LogOut, CircleHelp, Ticket } from 'lucide-react';
 import {
     AlertDialog,
     AlertDialogAction,
@@ -53,6 +53,7 @@ function Navbar() {
                     Takshak
                 </div>
                 <div className="flex gap-4 items-center">
+                    <Button variant={'link'} onClick={() => navigate('/')}>Home</Button>
                     {user ?
                         <Button variant={"secondary"} onClick={handleTicketsClick}>My Tickets</Button> :
                         <Button onClick={handleLoginClick}>Login</Button>}
@@ -77,6 +78,12 @@ function Navbar() {
                                     <div className="flex items-center">
                                         <UserCog />
                                         <span className="ml-2">Profile</span>
+                                    </div>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <div className="flex items-center">
+                                        <Ticket />
+                                        <span className="ml-2">My Tickets</span>
                                     </div>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem>
