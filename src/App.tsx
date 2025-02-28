@@ -11,6 +11,7 @@ import TermsAndCondition from "./pages/Policy/TermsAndCondition";
 import CancellationAndRefund from "./pages/Policy/CancellationAndRefund";
 import PrivacyPolicy from "./pages/Policy/PrivacyPolicy";
 import AboutUs from "./pages/Policy/AboutUs";
+import HomePage from "./pages/home/HomePage";
 function App() {
   return (
     <BrowserRouter>
@@ -19,7 +20,8 @@ function App() {
           <Navbar />
           <Toaster />
           <Routes>
-            <Route path="/" element={<EventPage />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/events" element={<EventPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Page404 />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
