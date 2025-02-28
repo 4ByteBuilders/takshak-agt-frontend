@@ -22,15 +22,15 @@ function App() {
             <Route path="/" element={<EventPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Page404 />} />
-            <Route path="/about" element={<AboutUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route
+              element={<TermsAndCondition />}
+              path="/terms-and-conditions"
+            />
+            <Route path="/about" element={<AboutUs />} />
             <Route
               path="/cancellation-and-refund"
               element={<CancellationAndRefund />}
-            />
-            <Route
-              path="/terms-and-conditions"
-              element={<TermsAndCondition />}
             />
             <Route path="/contact" element={<Contact />} />
           </Routes>

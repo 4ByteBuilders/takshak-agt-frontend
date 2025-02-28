@@ -62,7 +62,7 @@ export default function AboutUs() {
         </CardHeader>
         <CardContent>
           <p>
-            At Takshak Agt, our mission is to transform every event into an
+            At Takshak Event Management, our mission is to transform every event into an
             extraordinary celebration that resonates with energy, creativity,
             and passion. We are dedicated to crafting experiences that go beyond
             the ordinary by seamlessly blending high-caliber DJ performances,

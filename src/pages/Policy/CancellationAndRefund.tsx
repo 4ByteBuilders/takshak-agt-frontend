@@ -5,7 +5,7 @@ export default function CancellationAndRefund() {
             <p className="mb-4">Effective Date: 28th February 2025</p>
 
             <p className="mb-4">
-                At Takshak, we strive to provide the best possible experience for our customers. As a small and growing business, we currently do not support cancellations or refunds once an order has been placed.
+                At Takshak Event Management, we strive to provide the best possible experience for our customers. As a small and growing business, we currently do not support cancellations or refunds once an order has been placed.
             </p>
 
             <p className="mb-4">

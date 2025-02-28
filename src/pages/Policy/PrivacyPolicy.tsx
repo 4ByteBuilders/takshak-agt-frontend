@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
         <div className="container mx-20 w-fit p-4">
             <h1 className="text-4xl font-bold mb-4">Privacy Policy</h1>
             <p className="mb-4">
-                At takshakagt, we are committed to safeguarding your privacy. This Privacy Policy outlines how we collect, use, disclose, and protect your personal information when you use our event ticket booking application. By accessing or using our services, you agree to the terms of this policy.
+                At Takshak Event Management, we are committed to safeguarding your privacy. This Privacy Policy outlines how we collect, use, disclose, and protect your personal information when you use our event ticket booking application. By accessing or using our services, you agree to the terms of this policy.
             </p>
 
             {sections.map((section, index) => (
@@ -105,7 +105,7 @@ const sections = [
             'If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:',
             'Email: chiagartala@gmail.com',
             'Phone: +91-7005483524',
-            'Address: takshakagt, Dhaleswar Kalyani, Agartala'
+            'Address: Dhaleswar Kalyani, Agartala, Tripura, India'
         ]
     }
 ];
