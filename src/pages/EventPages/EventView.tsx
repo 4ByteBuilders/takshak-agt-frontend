@@ -1,16 +1,18 @@
 "use client";
-import { MapPin, Calendar, Armchair } from 'lucide-react';
+import { useAuth } from "@/lib/Providers/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 import {
     AlertDialog,
+    AlertDialogAction,  
     AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogFooter,
-    AlertDialogTitle,
     AlertDialogDescription,
-    AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+  } from "@/components/ui/alert-dialog"
 
 // Define types for event details
 interface PriceOffering {
@@ -37,6 +39,8 @@ interface SelectedTickets {
 }
 
 export default function EventView() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const event: Event = {
         name: "RangBarse 2.0",
         place: "Swami Vivekananda Stadium, Agartala",
@@ -65,10 +69,17 @@ export default function EventView() {
 
     // Lock Tickets
     const lockTickets = () => {
-        if (Object.values(selectedTickets).some((qty) => qty > 0)) {
-            setTicketsLocked(true);
-        } else {
-            setShowDialog(true);
+        if(!user){
+            toast("You are not logged in.")
+            navigate('/login')
+        }
+        else{
+
+            if (Object.values(selectedTickets).some((qty) => qty > 0)) {
+                setTicketsLocked(true);
+            } else {
+                setShowDialog(true);
+            }
         }
     };
 

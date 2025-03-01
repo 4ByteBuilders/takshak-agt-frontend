@@ -32,18 +32,18 @@ const Login = () => {
       <div
         className="flex flex-col md:flex-row items-center text-center h-full p-3"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('/public/EventBackgound.jpg')",
+          backgroundImage: "linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('/public/Loginbgimg.jpg')",
           backgroundSize: "contain",
           backgroundPosition: "right",
         }}
       >
-        <div className="flex flex-col w-full md:w-1/2 items-start ml-20">
+        <div className="flex flex-col w-full md:w-1/2 items-start ml-20 pb-8">
           <p className="text-6xl font-black my-5">স্বাগতম!</p>
-          <p className="text-4xl font-bold my-5">
+          <p className="text-4xl font-bold my-5 drop-shadow-lg">
             We are <span className="text-amber-400 ">Takshak</span> Events
           </p>
 
-          <p className="text-md font-normal my-5 w-3/4 text-left">
+          <p className="text-md font-medium my-5 w-4/5 text-left text-muted-foreground">
             Let your event journey begin with the festive vibe of Agartala!
             Explore the best events around Agartala with the best deals!
           </p>
