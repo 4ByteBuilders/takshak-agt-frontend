@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "motion/react"
+import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
@@ -54,10 +54,10 @@ export default function HomePage() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1.5 }}
-                    className="text-6xl font-extrabold leading-tight drop-shadow-lg"
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight drop-shadow-lg"
                 >
                     Get Ready to Witness the <br />
-                    <span className="text-amber-400">Grandeur of Agartala!</span>
+                    <span className="text-amber-400">Grandeur of Agartalaaa!</span>
                 </motion.h1>
 
                 {/* Event Name */}
@@ -65,7 +65,7 @@ export default function HomePage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.3 }}
-                    className="text-2xl font-light mt-4"
+                    className="text-lg sm:text-xl md:text-2xl font-light mt-4"
                 >
                     Rang Barse 2.0 🌈🎉
                 </motion.p>
@@ -75,7 +75,7 @@ export default function HomePage() {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1, delay: 0.5 }}
-                    className="text-4xl font-bold mt-8 flex justify-center gap-3 bg-white/20 px-6 py-3 rounded-lg shadow-lg backdrop-blur-md"
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-8 flex justify-center gap-2 sm:gap-3 bg-white/20 px-3 py-2 sm:px-4 sm:py-3 rounded-lg shadow-lg backdrop-blur-md"
                 >
                     <span className="text-amber-400">{timeLeft.days}</span>d :
                     <span className="text-green-400">{timeLeft.hours}</span>h :
@@ -88,9 +88,9 @@ export default function HomePage() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.7 }}
-                    className="mt-8"
+                    className="mt-6 sm:mt-8"
                 >
-                    <button onClick={() => navigate('/view/event')} className="relative px-8 py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-lg shadow-lg transition-all duration-300 transform hover:scale-105">
+                    <button onClick={() => navigate('/view/event')} className="relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-sm sm:text-base md:text-lg shadow-lg transition-all duration-300 transform hover:scale-105">
                         Book Your Tickets Now →
                     </button>
                 </motion.div>

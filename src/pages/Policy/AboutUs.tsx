@@ -28,7 +28,7 @@ export default function AboutUs() {
       fallback: "PS",
     },
     {
-      name: "Mayur Sashtri",
+      name: "Mayur Shastri",
       role: "Developer",
       avatarUrl: "https://placehold.co/200?text=MS",
       linkedinUrl: "https://www.linkedin.com/in/mayur-shastri-73772925b/",

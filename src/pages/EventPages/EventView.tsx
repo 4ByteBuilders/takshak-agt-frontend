@@ -1,15 +1,18 @@
 "use client";
+import { useAuth } from "@/lib/Providers/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { motion } from "motion/react";
+import { toast } from "sonner";
 import {
     AlertDialog,
+    AlertDialogAction,  
     AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogFooter,
-    AlertDialogTitle,
     AlertDialogDescription,
-    AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+  } from "@/components/ui/alert-dialog"
 
 // Define types for event details
 interface PriceOffering {
@@ -36,6 +39,8 @@ interface SelectedTickets {
 }
 
 export default function EventView() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const event: Event = {
         name: "RangBarse 2.0",
         place: "Swami Vivekananda Stadium, Agartala",
@@ -47,7 +52,7 @@ export default function EventView() {
             { type: "Couple", price: 799 },
         ],
         image: "/rangbarse.png",
-        availability: { total: 500, available: 100 },
+        availability: { total: 500, available: 10 },
     };
 
     const [selectedTickets, setSelectedTickets] = useState<SelectedTickets>({});
@@ -64,15 +69,22 @@ export default function EventView() {
 
     // Lock Tickets
     const lockTickets = () => {
-        if (Object.values(selectedTickets).some((qty) => qty > 0)) {
-            setTicketsLocked(true);
-        } else {
-            setShowDialog(true);
+        if(!user){
+            toast("You are not logged in.")
+            navigate('/login')
+        }
+        else{
+
+            if (Object.values(selectedTickets).some((qty) => qty > 0)) {
+                setTicketsLocked(true);
+            } else {
+                setShowDialog(true);
+            }
         }
     };
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center py-10 px-6">
+        <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center py-10 px-6">
             {/* Event Banner */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -96,7 +108,7 @@ export default function EventView() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.3 }}
-                className="max-w-3xl mt-6 p-6 bg-gray-800 rounded-lg shadow-lg text-center"
+                className="max-w-3xl mt-6 p-6 bg-gray-900 rounded-lg shadow-lg text-center"
             >
                 <p className="text-lg">{event.description}</p>
                 <p className="mt-2 text-yellow-400">
@@ -109,19 +121,22 @@ export default function EventView() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.5 }}
-                className="max-w-3xl mt-6 p-6 bg-gray-800 rounded-lg shadow-lg"
+                className="max-w-3xl mt-6 p-6 bg-gray-900 rounded-lg shadow-lg"
             >
                 <h2 className="text-2xl font-semibold mb-4 text-center">Select Your Tickets</h2>
                 {event.priceOfferings.map(({ type, price }) => (
                     <div key={type} className="flex justify-between items-center mb-4">
-                        <span className="text-lg">{type} - ₹{price}</span>
-                        <div className="flex items-center">
+                        <div className={!ticketsLocked ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]" : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"}>
+                            <span className="text-white">{type}</span>
+                            <span className="text-xs font-bold">   ₹{price}</span>
+                        </div>
+                        <div className="flex items-center mx-5">
                             <button
                                 className="px-3 py-1 bg-gray-700 rounded-l"
                                 onClick={() =>
                                     handleTicketChange(type, (selectedTickets[type] || 0) - 1)
                                 }
-                                disabled={(selectedTickets[type] || 0) === 0}
+                                disabled={((selectedTickets[type] || 0) === 0 || ticketsLocked)}
                             >
                                 -
                             </button>
@@ -131,6 +146,7 @@ export default function EventView() {
                                 onClick={() =>
                                     handleTicketChange(type, (selectedTickets[type] || 0) + 1)
                                 }
+                                disabled={((selectedTickets[type] || 0) === event.availability.available || ticketsLocked)}
                             >
                                 +
                             </button>

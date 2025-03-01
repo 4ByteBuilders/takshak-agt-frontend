@@ -44,16 +44,14 @@ function Navbar() {
         }
     }
 
-
     return (
         <div className="top-0 left-0 w-full">
             <div className="flex items-center p-2 justify-between">
-                <div className="flex gap-4 items-center font-alfa text-2xl">
+                <div className="flex gap-4 items-center font-alfa text-2xl cursor-pointer" onClick={() => navigate('/')}>
                     <img src="/takshak-logo.png" className="max-h-10" />
                     Takshak
                 </div>
                 <div className="flex gap-4 items-center">
-                    <Button variant={'link'} onClick={() => navigate('/')}>Home</Button>
                     {user ?
                         <Button variant={"secondary"} onClick={handleTicketsClick}>My Tickets</Button> :
                         <Button onClick={handleLoginClick}>Login</Button>}
