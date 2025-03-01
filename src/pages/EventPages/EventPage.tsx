@@ -19,7 +19,7 @@ const EventPage = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center p-4">
       {/* Blurred Colorful Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-500 via-slate-900 to-slate-600 opacity-60 blur-3xl"></div>
+      <div className="absolute inset-0 blur-3xl"></div>
       <div className="relative z-10">
         <EventsCard events={eventData} />
       </div>
