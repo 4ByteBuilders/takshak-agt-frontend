@@ -100,7 +100,12 @@ export default function AboutUs() {
         <CardHeader>
           <CardTitle>Management & Marketing Team</CardTitle>
         </CardHeader>
-        <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <CardContent>
+          <p className="text-center text-muted-foreground">
+            Our management and marketing team details will be updated soon. Stay tuned!
+          </p>
+        </CardContent>
+        {/* <CardContent className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {[
             {
               name: "Raghu Rajan",
@@ -129,7 +134,7 @@ export default function AboutUs() {
               </div>
             </div>
           ))}
-        </CardContent>
+        </CardContent> */}
       </Card>
 
       {/* Development Team */}
