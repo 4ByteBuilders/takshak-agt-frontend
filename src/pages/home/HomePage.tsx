@@ -57,7 +57,7 @@ export default function HomePage() {
                     className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight drop-shadow-lg"
                 >
                     Get Ready to Witness the <br />
-                    <span className="text-amber-400">Grandeur of Agartala!</span>
+                    <span className="text-amber-400">Grandeur of Agartalaaa!</span>
                 </motion.h1>
 
                 {/* Event Name */}
