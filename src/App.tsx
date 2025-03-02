@@ -17,54 +17,36 @@ import EventView from "./pages/EventPages/EventView";
 import Verify from "./pages/verify/Verify";
 import Pending from "./pages/PendingBooking/Pending";
 import MyTickets from "./pages/ConfirmedTickets/MyTickets";
-
-interface SelectedTickets {
-  [key: string]: number;
-}
-
+import { EventProvider } from "./lib/Providers/EventProvider";
 function App() {
   const [selectedTickets, setSelectedTickets] = useState<SelectedTickets>({});
   const [ticketsLocked, setTicketsLocked] = useState<boolean>(false);
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <div className="h-full">
-          <Navbar />
-          <Toaster />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/events" element={<EventPage />} />
-            <Route
-              path="/view/event"
-              element={
-                <EventView
-                  selectedTickets={selectedTickets}
-                  setSelectedTickets={setSelectedTickets}
-                  ticketsLocked={ticketsLocked}
-                  setTicketsLocked={setTicketsLocked}
-                />
-              }
-            />
-            <Route path="/verify" element={<Verify />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route
-              path="/terms-and-conditions"
-              element={<TermsAndCondition />}
-            />
-            <Route path="/about" element={<AboutUs />} />
-            <Route
-              path="/cancellation-and-refund"
-              element={<CancellationAndRefund />}
-            />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/pending-booking" element={<Pending />} />
+      <EventProvider>
+        <AuthProvider>
+          <div className="h-full">
+            <Navbar />
+            <Toaster />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/events" element={<EventPage />} />
+              <Route path="/view/event" element={<EventView />} />
+              <Route path="/verify" element={<Verify />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/pending-booking" element={<Pending />} />
             <Route path="/tickets" element={<MyTickets />} />
-            <Route path="*" element={<Page404 />} />
-          </Routes>
-          <Footer />
-        </div>
-      </AuthProvider>
+              <Route path="*" element={<Page404 />} />
+            </Routes>
+            <Footer />
+          </div>
+        </AuthProvider>
+      </EventProvider>
     </BrowserRouter>
   );
 }

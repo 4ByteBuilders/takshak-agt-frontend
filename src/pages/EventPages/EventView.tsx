@@ -1,96 +1,143 @@
 import { useAuth } from "@/lib/Providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useEvent } from "../../lib/Providers/EventProvider";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatDate } from "@/utils/dateFormatter";
+import { supabase } from "@/supabaseClient";
+import axios from "axios";
 
-// Define types for event details
-interface PriceOffering {
-  type: string;
-  price: number;
-}
-
-interface Event {
-  name: string;
-  place: string;
-  date: string;
-  description: string;
-  priceOfferings: PriceOffering[];
-  image: string;
-  availability: {
-    total: number;
-    available: number;
-  };
-}
-
-// Define type for selected tickets
 interface SelectedTickets {
   [key: string]: number;
 }
 
-interface EventViewProps {
-  selectedTickets: SelectedTickets;
-  setSelectedTickets: React.Dispatch<React.SetStateAction<SelectedTickets>>;
-  ticketsLocked: boolean;
-  setTicketsLocked: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export default function EventView() {
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const { event } = useEvent();
+    const [selectedTickets, setSelectedTickets] = useState<SelectedTickets>({});
+    const [ticketsLocked, setTicketsLocked] = useState<boolean>(false);
+    const [showDialog, setShowDialog] = useState<boolean>(false);
+    const [timeLeft, setTimeLeft] = useState<string>("");
+    const [bookingTime, setBookingTime] = useState<string | null>(null);
+    const handleTicketChange = (type: string, value: number) => {
+        setSelectedTickets((prev) => ({
+            ...prev,
+            [type]: Math.max(0, value),
+        }));
+    };
 
-export default function EventView({
-  selectedTickets,
-  setSelectedTickets,
-  ticketsLocked,
-  setTicketsLocked,
-}: EventViewProps) {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const event: Event = {
-    name: "RangBarse 2.0",
-    place: "Swami Vivekananda Stadium, Agartala",
-    date: "14th March 2025",
-    description:
-      "Get ready for the most vibrant and electrifying Holi celebration in Agartala! Immerse yourself in a festival of colors, music, and endless fun with live DJs, dance, and rain showers. Celebrate Holi like never before with organic colors, water guns, and a spectacular lineup of performances. Let’s make this festival a day to remember! 🔥",
-    priceOfferings: [
-      { type: "Stag", price: 499 },
-      { type: "Couple", price: 799 },
-    ],
-    image: "/rangbarse.png",
-    availability: { total: 500, available: 10 },
-  };
+    const lockTickets = async () => {
+        if (!user) {
+            toast("You are not logged in.");
+            navigate("/login");
+            return;
+        }
 
-  const [showDialog, setShowDialog] = useState<boolean>(false);
+        if (Object.values(selectedTickets).every((qty) => qty === 0)) {
+            setShowDialog(true);
+            return;
+        }
 
-  // Handle Ticket Selection
-  const handleTicketChange = (type: string, value: number) => {
-    setSelectedTickets((prev) => ({
-      ...prev,
-      [type]: Math.max(0, value), // Prevent negative values
-    }));
-    console.log(selectedTickets);
-  };
-
-  // Lock Tickets
-  const lockTickets = () => {
-    if (!user) {
-      toast("You are not logged in.");
-      navigate("/login");
-      window.scrollTo(0, 0);
-    } else {
-      if (Object.values(selectedTickets).some((qty) => qty > 0)) {
         setTicketsLocked(true);
-      } else {
-        setShowDialog(true);
-      }
+
+        try {
+            const { data } = await supabase.auth.getSession();
+            const auth = data.session?.access_token;
+            axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
+
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/booking/create-order`, {
+                eventId: event!.id,
+                priceOfferings: selectedTickets,
+            });
+
+            if (response.status === 200) {
+                setBookingTime(response.data.createdAt);
+                toast("Tickets locked successfully.");
+            } else {
+                toast("Failed to lock tickets. Please try again.");
+                setTicketsLocked(false);
+            }
+        } catch (err) {
+            console.error("Error locking tickets:", err);
+            toast("Something went wrong.");
+            setTicketsLocked(false);
+        }
+    };
+
+
+
+    useEffect(() => {
+        const getBooking = async () => {
+            try {
+                const { data } = await supabase.auth.getSession();
+                const auth = data.session?.access_token;
+                axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
+
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/booking/get-pending-bookings`, {
+                    params: {
+                        eventId: event!.id,
+                    },
+                });
+
+                if (response.data) {
+                    setTicketsLocked(true);
+                    setBookingTime(response.data.createdAt);
+                    const parsedPriceOfferings = JSON.parse(response.data.priceOfferingSelected);
+                    setSelectedTickets(parsedPriceOfferings);
+                }
+            } catch (err) {
+                console.error("Error fetching booking:", err);
+            }
+        };
+
+        if (event) {
+            getBooking();
+        }
+    }, [event]);
+
+    useEffect(() => {
+        const timer = () => {
+            if (bookingTime === null) return;
+            const createdAt = new Date(bookingTime);
+            const expiryTime = new Date(createdAt.getTime() + 16 * 60000); // 16 minutes
+
+            const updateTimer = () => {
+                const now = new Date();
+                const difference = expiryTime.getTime() - now.getTime();
+
+                if (difference > 0) {
+                    const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                    setTimeLeft(`${minutes}m ${seconds}s`);
+                } else {
+                    setTimeLeft("Expired");
+                    clearInterval(interval);
+                }
+            };
+
+            const interval = setInterval(updateTimer, 1000);
+            updateTimer();
+
+            return () => clearInterval(interval);
+        };
+        timer();
+    }, [bookingTime]);
+
+    if (!event) {
+        return <Skeleton className="w-full h-screen" />;
     }
-  };
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center">
