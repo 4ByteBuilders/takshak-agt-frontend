@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import { useEffect } from "react";
@@ -11,9 +11,10 @@ const Login = () => {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        navigate("/");
+        navigate('/');
       }
     };
+    console.log("hrfgjdh");
     checkUser();
   }, [navigate]);
 
@@ -25,6 +26,9 @@ const Login = () => {
       },
     });
     if (error) toast.error(error.message);
+    else{
+      toast("Logged in successfully!");
+    } 
   };
 
   return (
