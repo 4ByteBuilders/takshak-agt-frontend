@@ -34,7 +34,10 @@ function Navbar() {
         navigate('/login');
     }
     const handleTicketsClick = async () => {
-        navigate('/tickets');
+        const auth = await supabase.auth.getSession();
+        // print access token
+        console.log(auth);
+        // navigate('/tickets');
     }
 
     const handleLogOut = async () => {
