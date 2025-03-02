@@ -1,4 +1,4 @@
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import { useEffect } from "react";
@@ -11,7 +11,7 @@ const Login = () => {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        navigate('/');
+        navigate("/");
       }
     };
     console.log("hrfgjdh");
@@ -26,9 +26,9 @@ const Login = () => {
       },
     });
     if (error) toast.error(error.message);
-    else{
+    else {
       toast("Logged in successfully!");
-    } 
+    }
   };
 
   return (
@@ -36,7 +36,8 @@ const Login = () => {
       <div
         className="flex flex-col md:flex-row items-center text-center h-full p-3"
         style={{
-          backgroundImage: "linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('/public/Loginbgimg.jpg')",
+          backgroundImage:
+            "linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('/public/Loginbgimg.jpg')",
           backgroundSize: "contain",
           backgroundPosition: "right",
         }}

@@ -106,8 +106,8 @@ const MyTickets = () => {
 
   return (
     <>
-      <div className="font-bold text-2xl mt-4 mx-20">
-        <h1>Your confirmed tickets:</h1>
+      <div className="font-bold text-2xl mt-4 mx-12">
+        <h1>Confirmed tickets:</h1>
       </div>
       {confirmedBookings.map((booking) => {
         const event = Event.find((event) =>
@@ -117,10 +117,13 @@ const MyTickets = () => {
         if (!event) {
           return <div key={booking.id}>Event details not found.</div>;
         }
-
+        const totalTickets = booking.tickets.reduce(
+          (total, ticket) => total + ticket.quantity,
+          0
+        );
         return (
-          <div className="m-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-8 lg:mx-12">
-            <Card className="flex flex-col h-full rounded-lg transition duration-300 ease-in-out hover:border-stone-50">
+          <div className="m-5 flex flex-row flex-wrap align-middle justify-center md:mx-8 lg:mx-12">
+            <Card className="flex flex-col h-full rounded-lg transition duration-300 ease-in-out hover:border-stone-50 lg:w-1/3 md:w-1/3 sm:w-1">
               <div className="flex justify-center items-center">
                 <img
                   src={event.image}
@@ -166,28 +169,27 @@ const MyTickets = () => {
                       </CardDescription>
                     </div>
                   </div>
-                  <ul className="flex flex-row items-end sm:flex-col gap-4 mt-4">
-                    {event.priceOfferings.map((priceDetail, idx) => (
-                      <li
-                        key={idx}
-                        className="flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
-                      >
-                        <span className="text-green-300">
-                          {priceDetail.type}
-                        </span>
-                        <span className="text-xs font-bold">
-                          {" "}
-                          ₹{priceDetail.price}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
                 </div>
               </CardHeader>
               <CardContent className="min-h-[100px]">
-                <CardDescription>
-                  <p className="mt-2">{event.description}</p>
-                </CardDescription>
+                <CardHeader>
+                  <div className="flex flex-row justify-between">
+                    <p className="mt-2">{totalTickets} Tickets</p>
+                    <ul className="flex items-end flex-row gap-4">
+                      {booking.tickets.map((ticket, idx) => (
+                        <li
+                          key={idx}
+                          className="flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                        >
+                          <span>{ticket.type}</span>
+                          <span>
+                            {ticket.quantity} x ₹{ticket.price}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </CardHeader>
               </CardContent>
               <CardContent>
                 <Button className="bg-amber-500 text-white transition duration-300 ease-in-out hover:bg-amber-600">

@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { useState } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Login from "./pages/auth/Login";
 import { Toaster } from "@/components/ui/sonner";
@@ -19,8 +18,6 @@ import Pending from "./pages/PendingBooking/Pending";
 import MyTickets from "./pages/ConfirmedTickets/MyTickets";
 import { EventProvider } from "./lib/Providers/EventProvider";
 function App() {
-  const [selectedTickets, setSelectedTickets] = useState<SelectedTickets>({});
-  const [ticketsLocked, setTicketsLocked] = useState<boolean>(false);
   return (
     <BrowserRouter>
       <EventProvider>
@@ -35,12 +32,18 @@ function App() {
               <Route path="/view/event" element={<EventView />} />
               <Route path="/verify" element={<Verify />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
+              <Route
+                path="/terms-and-conditions"
+                element={<TermsAndCondition />}
+              />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
+              <Route
+                path="/cancellation-and-refund"
+                element={<CancellationAndRefund />}
+              />
               <Route path="/contact" element={<Contact />} />
               <Route path="/pending-booking" element={<Pending />} />
-            <Route path="/tickets" element={<MyTickets />} />
+              <Route path="/tickets" element={<MyTickets />} />
               <Route path="*" element={<Page404 />} />
             </Routes>
             <Footer />
