@@ -94,7 +94,6 @@ export default function EventView() {
                         },
                     }
                 );
-
                 if (response.data) {
                     setTicketsLocked(true);
                     setBookingTime(response.data.createdAt);
@@ -117,7 +116,7 @@ export default function EventView() {
         const timer = () => {
             if (bookingTime === null) return;
             const createdAt = new Date(bookingTime);
-            const expiryTime = new Date(createdAt.getTime() + 16 * 60000); // 16 minutes
+            const expiryTime = new Date(createdAt.getTime() + 16 * 60000);
 
             const updateTimer = () => {
                 const now = new Date();
@@ -149,7 +148,7 @@ export default function EventView() {
 
     return (
         <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center">
-            {/* Event Banner */}
+
             <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}

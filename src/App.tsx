@@ -17,6 +17,7 @@ import Verify from "./pages/verify/Verify";
 import Pending from "./pages/PendingBooking/Pending";
 import MyTickets from "./pages/ConfirmedTickets/MyTickets";
 import { EventProvider } from "./lib/Providers/EventProvider";
+import PaymentStatus from "./pages/Payment/PaymentStatus";
 function App() {
   return (
     <BrowserRouter>
@@ -32,18 +33,13 @@ function App() {
               <Route path="/view/event" element={<EventView />} />
               <Route path="/verify" element={<Verify />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route
-                path="/terms-and-conditions"
-                element={<TermsAndCondition />}
-              />
+              <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
               <Route path="/about" element={<AboutUs />} />
-              <Route
-                path="/cancellation-and-refund"
-                element={<CancellationAndRefund />}
-              />
+              <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/pending-booking" element={<Pending />} />
               <Route path="/tickets" element={<MyTickets />} />
+              <Route path="/payment-status" element={<PaymentStatus />} />
               <Route path="*" element={<Page404 />} />
             </Routes>
             <Footer />
