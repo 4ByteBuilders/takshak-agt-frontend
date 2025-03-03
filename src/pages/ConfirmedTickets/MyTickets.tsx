@@ -1,4 +1,3 @@
-
 import { MapPin, Calendar, Armchair } from "lucide-react";
 import {
   Card,
@@ -8,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import QRCode from "react-qr-code"; // Use default import for QRCode from react-qr-code
+import QRCode from "react-qr-code";
 
 interface Ticket {
   id: string;
@@ -122,81 +121,73 @@ const MyTickets = () => {
           0
         );
         return (
-          <div className="m-5 flex flex-row flex-wrap align-middle justify-center md:mx-8 lg:mx-12">
-            <Card className="flex flex-col h-full rounded-lg transition duration-300 ease-in-out hover:border-stone-50 lg:w-1/3 md:w-1/3 sm:w-1">
-              <div className="flex justify-center items-center">
-                <img
-                  src={event.image}
-                  alt={event.name}
-                  className="rounded-t-lg w-full h-40 object-cover"
+          <div className="min-h-full m-5 flex flex-row items-stretch justify-center md:mx-8 lg:mx-12">
+            <Card className="h-full bg-gray-800 rounded-xl border-0 border-r-4 p-6">
+              <div className="h-1/3">
+                <QRCode
+                  className="bg-white border-4 border-white rounded-lg m-auto"
+                  value={booking.qrCode}
                 />
               </div>
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">
-                  {event.name}
-                </CardTitle>
-                <div className="flex-row sm:flex justify-between mt-2">
-                  <div>
-                    <div className="flex items-center mt-2">
-                      <MapPin
-                        strokeWidth={"1px"}
-                        size={"16px"}
-                        className="mr-2"
-                      />
-                      <CardDescription className="inline-block">
-                        {event.place}
-                      </CardDescription>
-                    </div>
-                    <div className="flex items-center mt-2">
-                      <Calendar
-                        strokeWidth={"1px"}
-                        size={"16px"}
-                        className="mr-2"
-                      />
-                      <CardDescription className="inline-block">
-                        {event.date}
-                      </CardDescription>
-                    </div>
-                    <div className="flex items-center mt-2">
-                      <Armchair
-                        strokeWidth={"1px"}
-                        size={"16px"}
-                        className="mr-2"
-                      />
-                      <CardDescription className="inline-block">
-                        {event.availability.available} /{" "}
-                        {event.availability.total} available
-                      </CardDescription>
+            </Card>
+            <Card className="flex flex-col h-full rounded-xl bg-gray-800 border-0 border-l-4 border-dashed border-stone-100">
+              <div className="flex flex-row justify-start">
+                <div className="flex justify-center items-center max-w- ml-3 mt-3 max-w-52">
+                  <img
+                    src={event.image}
+                    alt={event.name}
+                    className="rounded-lg h-40 object-cover"
+                  />
+                </div>
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">
+                    {event.name}
+                  </CardTitle>
+                  <div className="flex-row sm:flex justify-between mt-2">
+                    <div>
+                      <div className="flex items-center mt-2">
+                        <MapPin
+                          strokeWidth={"1px"}
+                          size={"16px"}
+                          className="mr-2"
+                        />
+                        <CardDescription className="inline-block">
+                          {event.place}
+                        </CardDescription>
+                      </div>
+                      <div className="flex items-center mt-2">
+                        <Calendar
+                          strokeWidth={"1px"}
+                          size={"16px"}
+                          className="mr-2"
+                        />
+                        <CardDescription className="inline-block">
+                          {event.date}
+                        </CardDescription>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardHeader>
-              <CardContent className="min-h-[100px]">
-                <CardHeader>
+                </CardHeader>
+              </div>
+              <CardContent>
+                <CardDescription className="mx-5 mt-6">
                   <div className="flex flex-row justify-between">
-                    <p className="mt-2">{totalTickets} Tickets</p>
-                    <ul className="flex items-end flex-row gap-4">
+                    <p className="mt-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]">
+                      {totalTickets} Ticket
+                    </p>
+                    <ul className="flex items-center justify-between gap-4">
                       {booking.tickets.map((ticket, idx) => (
-                        <li
-                          key={idx}
-                          className="flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
-                        >
-                          <span>{ticket.type}</span>
-                          <span>
-                            {ticket.quantity} x ₹{ticket.price}
-                          </span>
+                        <li key={idx} className="text-muted-foregorund">
+                          {ticket.quantity} x {ticket.type} (₹{ticket.price})
                         </li>
                       ))}
                     </ul>
                   </div>
-                </CardHeader>
+                </CardDescription>
               </CardContent>
               <CardContent>
-                <Button className="bg-amber-500 text-white transition duration-300 ease-in-out hover:bg-amber-600">
-                  View QR Code
-                </Button>
-                <div className="flex justify-center mt-4">
-                  <QRCode value={booking.qrCode} />
+                <div className="flex flex-row justify-end">
+                  <p>Grand Total {sampleConfirmedBookings[0].amountPaid}</p>
                 </div>
               </CardContent>
             </Card>
