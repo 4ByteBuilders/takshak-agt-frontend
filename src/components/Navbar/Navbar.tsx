@@ -33,9 +33,7 @@ function Navbar() {
     navigate("/login");
   };
   const handleMyTicketsClick = async () => {
-    // navigate("/tickets");
-    const auth = await supabase.auth.getSession();
-    console.log(auth.data.session?.access_token)
+    navigate("/tickets");
   };
   const handlePendingTicketsClick = async () => {
     navigate("/pending-booking");
