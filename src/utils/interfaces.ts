@@ -24,9 +24,9 @@ export interface UnparsedEvent {
 }
 
 interface PhotoUrls {
-    loginImageUrl: string;
-    homePageImageUrl: string;
-    eventPageImageUrl: string;
+    loginPageUrl: string;
+    homePageUrl: string;
+    eventPageUrl: string;
 }
 
 export interface PriceOffering {

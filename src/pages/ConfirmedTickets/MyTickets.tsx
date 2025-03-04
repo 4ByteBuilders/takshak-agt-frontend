@@ -13,6 +13,11 @@ import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import Loader from "@/components/Loader/Loader";
 import { Booking, UnparsedBooking } from "@/utils/interfaces";
+import { Button } from "@/components/ui/button";
+import Lottie from "lottie-react";
+import noTickets from "@/assets/no_tickets.json";
+import { useNavigate } from "react-router-dom";
+
 interface ExtendedBooking extends Booking {
   priceDetails: {
     name: string;
@@ -22,6 +27,10 @@ interface ExtendedBooking extends Booking {
 }
 
 const MyTickets = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/");
+  }
   const [bookings, setBookings] = useState<ExtendedBooking[]>([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -37,10 +46,10 @@ const MyTickets = () => {
             photoUrls: JSON.parse(booking.event.photoUrls),
           },
         }));
-        console.log(parsedBookings);
+
         setBookings(parsedBookings);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         toast.error("Failed to fetch tickets. Please try again later.");
       }
       setLoading(false);
@@ -53,7 +62,22 @@ const MyTickets = () => {
   }
 
   if (bookings.length === 0) {
-    return <div>No confirmed bookings found.</div>;
+    return <div className="flex flex-col items-center justify-center min-h-screen px-4">
+      <Card className="w-full max-w-md shadow-md dark:shadow-lg">
+        <CardContent className="p-6 text-center">
+          <Lottie animationData={noTickets} className="w-40 h-40 m-auto" />
+          <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mt-4">
+            No tickets found
+          </h2>
+          <p className="text-gray-500 dark:text-gray-400 mt-2">
+            Looks like you haven't booked any tickets yet. Don't miss out on exciting events!
+          </p>
+          <Button onClick={handleClick} className="mt-4" variant="default">
+            Explore Events
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   }
 
   return (
@@ -84,7 +108,7 @@ const MyTickets = () => {
             <Card className="flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 w-5/12">
               <div className="flex flex-row justify-start">
                 <div className="flex justify-center items-center ml-3 mt-3 max-w-52">
-                  <img src={booking.event.photoUrls.eventPageImageUrl} alt="eventImage" className="rounded-lg h-40 object-cover" />
+                  <img src={booking.event.photoUrls.eventPageUrl} alt="eventImage" className="rounded-lg h-40 object-cover" />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">{event.title}</CardTitle>

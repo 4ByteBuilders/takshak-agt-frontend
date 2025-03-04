@@ -14,7 +14,7 @@ const Login = () => {
         navigate("/");
       }
     };
-    console.log("hrfgjdh");
+
     checkUser();
   }, [navigate]);
 
