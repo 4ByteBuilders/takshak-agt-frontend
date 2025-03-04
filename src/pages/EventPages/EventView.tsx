@@ -156,7 +156,7 @@ export default function EventView() {
                 className="relative w-full"
             >
                 <img
-                    src={event.photoUrls[0]}
+                    src={event.photoUrls.loginImageUrl}
                     alt="Event"
                     className="w-full h-96 sticky top-0 left-0 object-cover rounded-lg shadow-lg z-0"
                 />

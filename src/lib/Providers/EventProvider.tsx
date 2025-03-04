@@ -15,11 +15,11 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const getEvent = async () => {
-      const event = await axios.get(
+      const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + "/event/get-latest"
       );
-      console.log(event.data);
-      setEvent(event.data);
+      const photoUrls = JSON.parse(response.data.photoUrls);
+      setEvent({ ...response.data, photoUrls });
     };
 
     getEvent();

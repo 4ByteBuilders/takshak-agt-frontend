@@ -37,7 +37,7 @@ const Login = () => {
         className="flex flex-col md:flex-row items-center text-center h-full p-3"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('/public/Loginbgimg.jpg')",
+            "linear-gradient(to right, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0)), url('/Loginbgimg.jpg')",
           backgroundSize: "contain",
           backgroundPosition: "right",
         }}

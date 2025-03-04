@@ -33,7 +33,9 @@ function Navbar() {
     navigate("/login");
   };
   const handleMyTicketsClick = async () => {
-    navigate("/tickets");
+    // navigate("/tickets");
+    const auth = await supabase.auth.getSession();
+    console.log(auth.data.session?.access_token)
   };
   const handlePendingTicketsClick = async () => {
     navigate("/pending-booking");
@@ -45,7 +47,6 @@ function Navbar() {
       console.error("Error logging out:", error.message);
     }
   };
-
   return (
     <div className="top-0 left-0 w-full">
       <div className="flex items-center p-2 justify-between">
