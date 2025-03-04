@@ -18,7 +18,7 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
       const event = await axios.get(
         import.meta.env.VITE_BACKEND_URL + "/event/get-latest"
       );
-      console.log(event.data);
+      event.data.photoUrls = JSON.parse(event.data.photoUrls);
       setEvent(event.data);
     };
 
