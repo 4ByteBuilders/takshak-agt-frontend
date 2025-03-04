@@ -1,4 +1,4 @@
-import React from "react";
+
 import { MapPin, Calendar } from "lucide-react";
 import {
   Card,
