@@ -1,16 +1,29 @@
 import { useState, useEffect } from "react";
 import { useZxing } from "react-zxing";
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogFooter,
-  AlertDialogTitle,
-  AlertDialogDescription,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
+
+interface Ticket {
+  id: string;
+  eventId: string;
+  bookingId: string | null;
+  status: string;
+  type: string;
+  quantity: number;
+  price: number;
+}
+
+interface Booking {
+  id: string;
+  userId: string;
+  tickets: Ticket[];
+  amountPaid: number;
+  paymentStatus: string;
+  paymentSessionId: string | null;
+  createdAt: Date;
+  numVerifiedAtVenue: number | null;
+  qrCode: string;
+}
 
 export default function Verify() {
   const [qrData, setQrData] = useState<string | null>(null);
@@ -19,7 +32,7 @@ export default function Verify() {
     title: "",
     message: "",
   });
-  const [booking, setBooking] = useState({} as any);
+  const [booking, setBooking] = useState<Booking | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cameraPermission, setCameraPermission] = useState<boolean | null>(
     null
@@ -59,17 +72,25 @@ export default function Verify() {
       setShowDialog({
         status: true,
         title: "Success",
-        message: response.data.message || "successfully fetched",
+        message: response.data.message || "Tickets Verified!",
       });
       setBooking(response.data);
       console.log(booking);
       console.log(response.data);
     } catch (error) {
-      setShowDialog({
-        status: true,
-        title: "Error",
-        message: error as string,
-      });
+      if (error instanceof Error) {
+        setShowDialog({
+          status: true,
+          title: "Error",
+          message: "An error occurred while verifying the booking.",
+        });
+      } else {
+        setShowDialog({
+          status: true,
+          title: "Error",
+          message: "An unknown error occurred while verifying the booking.",
+        });
+      }
       console.log(error);
     }
   };
@@ -90,12 +111,20 @@ export default function Verify() {
       });
       console.log(response);
     } catch (error) {
-      setShowDialog({
-        status: true,
-        title: "Error",
-        message: error as string,
-      });
-      console.log(error);
+      if (error instanceof Error) {
+        setShowDialog({
+          status: true,
+          title: "Error",
+          message:
+            error.message || "An error occurred while verifying the booking.",
+        });
+      } else {
+        setShowDialog({
+          status: true,
+          title: "Error",
+          message: "An unknown error occurred while verifying the booking.",
+        });
+      }
     }
   };
 
@@ -121,100 +150,139 @@ export default function Verify() {
     },
   });
 
+  const incrementCheckedInCount = () => {
+    setCheckedInCount((prevCount) => prevCount + 1);
+  };
+
+  const decrementCheckedInCount = () => {
+    setCheckedInCount((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+  };
+
   return (
-    <div className="min-h-screen text-white flex flex-col items-center py-10 px-6">
-      <h1 className="text-4xl font-bold mb-6">Verify QR Code</h1>
+    <>
+      <style>
+        {`
+      @keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
 
-      {cameraPermission === false ? (
-        <div className="text-red-500">
-          <p>Camera permission is required to scan QR codes.</p>
-          <button
-            onClick={requestCameraPermission}
-            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Retry Permission
-          </button>
-        </div>
-      ) : (
-        <video ref={ref} style={{ width: "100%" }} />
-      )}
+.animate-scan {
+  animation: scan 2s infinite;
+}
+      `}
+      </style>
+      <div className="min-h-screen text-white flex flex-col items-center">
+        <h1 className="text-4xl font-bold mb-6">Verify QR Code</h1>
 
-      {qrData && (
-        <div className="mt-4">
-          <p>QR Code Data: {qrData}</p>
-        </div>
-      )}
-      {error && (
-        <div className="mt-4 text-red-500">
-          <p>Error: {error}</p>
-        </div>
-      )}
+        {cameraPermission === false ? (
+          <div className="text-red-500">
+            <p>Camera permission is required to scan QR codes.</p>
+            <button
+              onClick={requestCameraPermission}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Retry Permission
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center relative w-64 h-64">
+            <video ref={ref} className="w-full h-full object-cover" />
+            <div className="absolute inset-0 border-4 border-green-500 overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-green-500 opacity-50 animate-scan"></div>
+            </div>
+          </div>
+        )}
 
-      <AlertDialog
-        open={showDialog.status}
-        onOpenChange={(open) =>
-          setShowDialog((prev) => ({ ...prev, status: open }))
-        }
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{showDialog.title}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {showDialog.title === "Success" ? (
-                <>
-                  <p>Number of Tickets: {booking.tickets.length}</p>
-                  <p>
-                    Number of Members Already Checked In:{" "}
-                    {booking.numVerifiedAtVenue}
+        {qrData && (
+          <div className="mt-4">
+            <p>QR Code Data: {qrData}</p>
+          </div>
+        )}
+        {error && (
+          <div className="mt-4 text-red-500">
+            <p>Error: {error}</p>
+          </div>
+        )}
+
+        {showDialog.status && (
+          <div className="mt-8 bg-gray-800 text-white rounded-lg p-6 w-11/12 md:w-1/2 lg:w-1/3">
+            <h2 className="text-xl font-bold mb-4">{showDialog.title}</h2>
+            {showDialog.title === "Success" && booking ? (
+              <>
+                <p>{booking.tickets.length} tickets verified!</p>
+                {booking.tickets.length === booking.numVerifiedAtVenue ? (
+                  <p style={{ color: "orange" }}>
+                    All members have already checked in.
                   </p>
-                  {booking.tickets.length === booking.numVerifiedAtVenue ? (
-                    <p style={{ color: "orange" }}>
-                      All members have already checked in.
+                ) : (
+                  <>
+                    <p>
+                      {booking.numVerifiedAtVenue === 0 ? (
+                        <p>No Check-Ins Yet</p>
+                      ) : (
+                        <p>
+                          {booking.numVerifiedAtVenue} members Already Checked
+                          In
+                        </p>
+                      )}
                     </p>
-                  ) : (
-                    <>
+                    <div className="flex items-center mt-2">
+                      <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded-l"
+                        onClick={decrementCheckedInCount}
+                      >
+                        -
+                      </button>
                       <input
-                        type="number"
+                        type="text"
                         placeholder="Enter number of people"
-                        className="mt-2 p-2 border rounded"
+                        className="p-2 bg-slate-500 border-t border-b border-gray-300 text-center w-16"
                         value={checkedInCount}
                         onChange={(e) =>
-                          setCheckedInCount(Number(e.target.value))
+                          setCheckedInCount(Math.max(0, Number(e.target.value)))
                         }
                       />
                       <button
-                        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-                        onClick={() =>
-                          checkInPeople(booking.id, checkedInCount)
-                        }
+                        className="bg-amber-500 text-white px-4 py-2 rounded-r"
+                        onClick={incrementCheckedInCount}
                       >
-                        Submit
+                        +
                       </button>
-                    </>
-                  )}
-                </>
-              ) : showDialog.title === "Complete" ? (
-                <p>{showDialog.message}</p>
-              ) : (
-                <p>{showDialog.message}</p>
-              )}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction
-              onClick={() =>
-                setShowDialog({
-                  status: false,
-                  title: "",
-                  message: "",
-                })
-              }
-            >
-              OK
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+                    </div>
+                    <button
+                      className="mt-2 bg-amber-500 text-white px-4 py-1 rounded"
+                      onClick={() => checkInPeople(booking.id, checkedInCount)}
+                    >
+                      Submit
+                    </button>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <p className="mb-4">{showDialog.message}</p>
+                <button
+                  className="mt-4 bg-amber-500 text-white px-4 py-1 rounded"
+                  onClick={() =>
+                    setShowDialog({
+                      status: false,
+                      title: "",
+                      message: "",
+                    })
+                  }
+                >
+                  Ok
+                </button>
+              </>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

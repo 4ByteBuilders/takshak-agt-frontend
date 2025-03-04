@@ -32,13 +32,13 @@ interface Booking {
 
 interface Event {
   id: string;
-  name: string;
-  place: string;
-  date: string;
+  title: string;
+  venue: string;
+  dateTime: string;
   description: string;
+  photoUrls: string[];
   priceOfferings: { type: string; price: number }[];
-  image: string;
-  availability: { total: number; available: number };
+  totalNumberOfTickets: number;
 }
 
 const sampleConfirmedBookings: Booking[] = [
@@ -72,25 +72,23 @@ const sampleConfirmedBookings: Booking[] = [
     numVerifiedAtVenue: 2,
     qrCode: "unique-qrcode-1",
   },
-  // Add more confirmed bookings if needed
 ];
 
-const Event: Event[] = [
+const events: Event[] = [
   {
     id: "1",
-    name: "RangBarse 2.0",
-    place: "Swami Vivekananda Stadium, Agartala",
-    date: "14th March 2025",
+    title: "RangBarse 2.0",
+    venue: "Swami Vivekananda Stadium, Agartala",
+    dateTime: "14th March 2025",
     description:
       "Get ready for the most vibrant and electrifying Holi celebration in Agartala! Immerse yourself in a festival of colors, music, and endless fun with live DJs, dance, and rain showers. Celebrate Holi like never before with organic colors, water guns, and a spectacular lineup of performances. Let’s make this festival a day to remember! 🔥",
+    photoUrls: ["/rangbarse.png"],
     priceOfferings: [
       { type: "Stag", price: 499 },
       { type: "Couple", price: 799 },
     ],
-    image: "/rangbarse.png",
-    availability: { total: 500, available: 10 },
+    totalNumberOfTickets: 500,
   },
-  // Add more events if needed
 ];
 
 const MyTickets = () => {
@@ -108,20 +106,25 @@ const MyTickets = () => {
         <h1>Confirmed tickets:</h1>
       </div>
       {confirmedBookings.map((booking) => {
-        const event = Event.find((event) =>
+        const event = events.find((event) =>
           booking.tickets.some((ticket) => event.id === ticket.eventId)
         );
 
         if (!event) {
           return <div key={booking.id}>Event details not found.</div>;
         }
+
         const totalTickets = booking.tickets.reduce(
           (total, ticket) => total + ticket.quantity,
           0
         );
+
         return (
-          <div className="min-h-full m-5 flex flex-row items-stretch justify-center md:mx-8 lg:mx-12">
-            <Card className="h-full bg-gray-800 rounded-xl border-0 border-r-4 p-6">
+          <div
+            className="min-h-full m-5 flex flex-row items-stretch justify-center md:mx-8 lg:mx-12"
+            key={booking.id}
+          >
+            <Card className="h-full bg-zinc-800 rounded-xl border-0 border-r-4 p-6">
               <div className="h-1/3">
                 <QRCode
                   className="bg-white border-4 border-white rounded-lg m-auto"
@@ -129,18 +132,18 @@ const MyTickets = () => {
                 />
               </div>
             </Card>
-            <Card className="flex flex-col h-full rounded-xl bg-gray-800 border-0 border-l-4 border-dashed border-stone-100">
+            <Card className="flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300">
               <div className="flex flex-row justify-start">
                 <div className="flex justify-center items-center max-w- ml-3 mt-3 max-w-52">
                   <img
-                    src={event.image}
-                    alt={event.name}
+                    src={event.photoUrls[0]}
+                    alt={event.title}
                     className="rounded-lg h-40 object-cover"
                   />
                 </div>
                 <CardHeader>
                   <CardTitle className="text-xl font-bold">
-                    {event.name}
+                    {event.title}
                   </CardTitle>
                   <div className="flex-row sm:flex justify-between mt-2">
                     <div>
@@ -151,7 +154,7 @@ const MyTickets = () => {
                           className="mr-2"
                         />
                         <CardDescription className="inline-block">
-                          {event.place}
+                          {event.venue}
                         </CardDescription>
                       </div>
                       <div className="flex items-center mt-2">
@@ -161,7 +164,7 @@ const MyTickets = () => {
                           className="mr-2"
                         />
                         <CardDescription className="inline-block">
-                          {event.date}
+                          {event.dateTime}
                         </CardDescription>
                       </div>
                     </div>
@@ -176,7 +179,7 @@ const MyTickets = () => {
                     </p>
                     <ul className="flex items-center justify-between gap-4">
                       {booking.tickets.map((ticket, idx) => (
-                        <li key={idx} className="text-muted-foregorund">
+                        <li key={idx} className="text-muted-foreground">
                           {ticket.quantity} x {ticket.type} (₹{ticket.price})
                         </li>
                       ))}
@@ -186,7 +189,7 @@ const MyTickets = () => {
               </CardContent>
               <CardContent>
                 <div className="flex flex-row justify-end">
-                  <p>Grand Total {sampleConfirmedBookings[0].amountPaid}</p>
+                  <p>Grand Total ₹{booking.amountPaid}</p>
                 </div>
               </CardContent>
             </Card>

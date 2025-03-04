@@ -46,7 +46,7 @@ export default function HomePage() {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center pt-14"
       style={{
         backgroundImage:
           "url('https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg')",
