@@ -13,12 +13,19 @@ import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Booking } from "@/utils/interfaces";
 import Loader from "@/components/Loader/Loader";
+import Lottie from "lottie-react";
+import noPendingAnimation from "@/assets/no_payments.json";
+import { useNavigate } from "react-router-dom";
 
 const Pending = () => {
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const cashfree = useRef<Cashfree | null>(null);
 
+  const handleClick = () => {
+    navigate("/");
+  };
   useEffect(() => {
     const initializeSDK = async () => {
       cashfree.current = await load({ mode: "sandbox" });
@@ -35,7 +42,6 @@ const Pending = () => {
           import.meta.env.VITE_BACKEND_URL + "/booking/get-pending-bookings"
         );
 
-        console.log(response.data);
         if (response.data && Array.isArray(response.data)) {
           setBookings(response.data);
         } else {
@@ -58,11 +64,21 @@ const Pending = () => {
 
   if (bookings.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen text-white">
-        <h2 className="text-2xl font-semibold">No pending payments</h2>
-        <p className="text-gray-400 mt-2">
-          You have no pending bookings at the moment.
-        </p>
+      <div className="flex flex-col items-center justify-center min-h-screen px-4">
+        <Card className="w-full max-w-md shadow-md dark:shadow-lg">
+          <CardContent className="p-6 text-center">
+            <Lottie animationData={noPendingAnimation} className="h-40 mx-auto" loop={true} />
+            <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mt-4">
+              No Pending Payments
+            </h2>
+            <p className="text-gray-500 dark:text-gray-400 mt-2">
+              You have no pending bookings at the moment.
+            </p>
+            <Button onClick={handleClick} className="mt-4" variant="default">
+              Browse Events
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
