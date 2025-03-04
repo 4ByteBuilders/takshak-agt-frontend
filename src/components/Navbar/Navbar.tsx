@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/Providers/AuthProvider";
 import {
   UserRound,
@@ -34,7 +34,6 @@ import { supabase } from "@/supabaseClient";
 
 function Navbar() {
   const navigate = useNavigate();
-  const location = useLocation();
   const { user } = useAuth();
 
   const handleLoginClick = () => {

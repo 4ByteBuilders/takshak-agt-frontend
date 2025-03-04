@@ -26,7 +26,6 @@ interface Booking {
 }
 
 export default function Verify() {
-  const [qrData, setQrData] = useState<string | null>(null);
   const [showDialog, setShowDialog] = useState({
     status: false,
     title: "",
@@ -58,8 +57,6 @@ export default function Verify() {
   }, []);
 
   const handleScan = async (data: string) => {
-
-    setQrData(data);
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       const auth = sessionData.session?.access_token;
