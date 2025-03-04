@@ -28,10 +28,14 @@ const Pending = () => {
     const fetchPendingBookings = async () => {
       try {
         setLoading(true);
-        const auth = (await supabase.auth.getSession()).data.session?.access_token;
+        const auth = (await supabase.auth.getSession()).data.session
+          ?.access_token;
         axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
-        const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/booking/get-pending-bookings");
+        const response = await axios.get(
+          import.meta.env.VITE_BACKEND_URL + "/booking/get-pending-bookings"
+        );
 
+        console.log(response.data);
         if (response.data && Array.isArray(response.data)) {
           setBookings(response.data);
         } else {
@@ -56,7 +60,9 @@ const Pending = () => {
     return (
       <div className="flex flex-col items-center justify-center h-screen text-white">
         <h2 className="text-2xl font-semibold">No pending payments</h2>
-        <p className="text-gray-400 mt-2">You have no pending bookings at the moment.</p>
+        <p className="text-gray-400 mt-2">
+          You have no pending bookings at the moment.
+        </p>
       </div>
     );
   }
@@ -73,44 +79,57 @@ const Pending = () => {
         <h1>Your pending payments:</h1>
       </div>
       {bookings.map((booking, index) => {
-        const { event, priceOfferingSelected, amountPaid, paymentSessionId } = booking;
-        const tickets = Object.entries(priceOfferingSelected || {}).map(([ticketType, quantity]) => ({
-          type: ticketType,
-          quantity,
-        }));
+        const { event, amountPaid, paymentSessionId } = booking;
 
         return (
-          <Card key={index} className="flex flex-col rounded-lg bg-gray-900 w-1/3 m-9 mx-auto">
+          <Card
+            key={index}
+            className="flex flex-col rounded-lg bg-gray-900 w-1/3 m-9 mx-auto"
+          >
             <CardHeader>
-              <CardTitle className="text-xl font-bold">{event?.title}</CardTitle>
+              <CardTitle className="text-xl font-bold">
+                {event?.title}
+              </CardTitle>
               <div className="flex-row sm:flex justify-between mt-2">
                 <div>
                   <div className="flex items-center mt-2">
-                    <MapPin strokeWidth={"1px"} size={"16px"} className="mr-2" />
-                    <CardDescription className="inline-block">{event?.venue}</CardDescription>
+                    <MapPin
+                      strokeWidth={"1px"}
+                      size={"16px"}
+                      className="mr-2"
+                    />
+                    <CardDescription className="inline-block">
+                      {event?.venue}
+                    </CardDescription>
                   </div>
                   <div className="flex items-center mt-2">
-                    <Calendar strokeWidth={"1px"} size={"16px"} className="mr-2" />
+                    <Calendar
+                      strokeWidth={"1px"}
+                      size={"16px"}
+                      className="mr-2"
+                    />
                     <CardDescription className="inline-block">
                       {new Date(event?.dateTime).toLocaleString()}
                     </CardDescription>
                   </div>
                 </div>
-                <ul className="flex flex-row items-end sm:flex-col gap-4 mt-4">
-                  {tickets.map((ticket, idx) => (
-                    <li
+                <div className="flex flex-col gap-2">
+                  {event?.priceOfferings.map((offering, idx) => (
+                    <div
                       key={idx}
-                      className="flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                      className="flex flex-row items-center justify-between gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
                     >
-                      <span className="text-green-300">{ticket.type}</span>
-                      <span className="text-xs font-bold">x {ticket.quantity}</span>
-                    </li>
+                      <span>
+                        {offering.name} x {offering.capacity}
+                      </span>
+                      <span>₹{offering.price * offering.capacity}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-end">
+              <div className="flex flex-col items-end mt-4">
                 <Button
                   onClick={() => doPayment(paymentSessionId!)}
                   className="bg-amber-500 text-white transition duration-300 ease-in-out hover:bg-amber-600"
