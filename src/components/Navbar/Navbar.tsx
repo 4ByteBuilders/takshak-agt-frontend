@@ -54,14 +54,8 @@ function Navbar() {
     }
   };
 
-  const isFixed = location.pathname === "/" || location.pathname === "/login";
-
   return (
-    <div
-      className={`${
-        isFixed ? "fixed" : "relative"
-      } top-0 left-0 w-full bg-opacity-0 text-white z-10`}
-    >
+    <div className="absolute top-0 left-0 w-full bg-opacity-0 text-white z-10">
       <div className="flex items-center p-2 justify-between">
         <div
           className="flex gap-4 items-center font-alfa text-2xl cursor-pointer"

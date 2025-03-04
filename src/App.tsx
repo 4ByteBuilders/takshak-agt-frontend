@@ -33,9 +33,15 @@ function App() {
               <Route path="/view/event" element={<EventView />} />
               <Route path="/verify" element={<Verify />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
+              <Route
+                path="/terms-and-conditions"
+                element={<TermsAndCondition />}
+              />
               <Route path="/about" element={<AboutUs />} />
-              <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
+              <Route
+                path="/cancellation-and-refund"
+                element={<CancellationAndRefund />}
+              />
               <Route path="/contact" element={<Contact />} />
               <Route path="/pending-booking" element={<Pending />} />
               <Route path="/tickets" element={<MyTickets />} />
