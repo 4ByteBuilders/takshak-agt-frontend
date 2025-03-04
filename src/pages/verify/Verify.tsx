@@ -58,7 +58,7 @@ export default function Verify() {
   }, []);
 
   const handleScan = async (data: string) => {
-    console.log(data);
+
     setQrData(data);
     try {
       const { data: sessionData } = await supabase.auth.getSession();
@@ -68,15 +68,15 @@ export default function Verify() {
         `${import.meta.env.VITE_BACKEND_URL}/booking/verify-booking`,
         { qr: data }
       );
-      console.log(response.data);
+
       setShowDialog({
         status: true,
         title: "Success",
         message: response.data.message || "Tickets Verified!",
       });
       setBooking(response.data);
-      console.log(booking);
-      console.log(response.data);
+
+
     } catch (error) {
       if (error instanceof Error) {
         setShowDialog({
@@ -91,7 +91,7 @@ export default function Verify() {
           message: "An unknown error occurred while verifying the booking.",
         });
       }
-      console.log(error);
+
     }
   };
 
@@ -100,7 +100,7 @@ export default function Verify() {
       const { data: sessionData } = await supabase.auth.getSession();
       const auth = sessionData.session?.access_token;
       axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/booking/check-in`,
         { booking_id, checkedInCount }
       );
@@ -109,7 +109,7 @@ export default function Verify() {
         title: "Complete",
         message: `Check in successful for ${checkedInCount} people`,
       });
-      console.log(response);
+
     } catch (error) {
       if (error instanceof Error) {
         setShowDialog({

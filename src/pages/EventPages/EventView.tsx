@@ -40,7 +40,7 @@ export default function EventView() {
 
   const lockTickets = async () => {
     if (!user) {
-      toast.custom((_) => (
+      toast.custom(() => (
         <div className="bg-red-600 text-white p-4 rounded-lg shadow-lg">
           You are not logged in.
         </div>
@@ -67,7 +67,7 @@ export default function EventView() {
           priceOfferings: selectedTickets,
         }
       );
-      console.log("LOcked Tickets:", response);
+
       if (response.status === 200) {
         setBookingTime(response.data.createdAt);
 
@@ -84,7 +84,7 @@ export default function EventView() {
   };
 
   useEffect(() => {
-    console.log("Event:", event);
+
     const getBooking = async () => {
       try {
         const { data } = await supabase.auth.getSession();
@@ -160,7 +160,7 @@ export default function EventView() {
         className="relative w-full"
       >
         <img
-          src={event.photoUrls.loginImageUrl}
+          src={event.photoUrls.eventPageUrl}
           alt="Event"
           className="w-full h-96 sticky top-0 left-0 object-cover rounded-lg shadow-lg z-0"
         />

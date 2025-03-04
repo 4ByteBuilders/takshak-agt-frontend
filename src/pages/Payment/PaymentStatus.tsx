@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 export default function PaymentStatus() {
     const [searchParams] = useSearchParams();
     const order_id = searchParams.get("order_id");
-    console.log(order_id);
+
     const [status, setStatus] = useState<PaymentResponse["payment_status"] | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -26,7 +26,7 @@ export default function PaymentStatus() {
                     params: { order_id },
                 });
 
-                console.log(response.data);
+
                 const data: PaymentResponse[] = await response.data;
 
                 if (data.length > 0) {
