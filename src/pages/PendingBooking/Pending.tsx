@@ -12,6 +12,7 @@ import { supabase } from "@/supabaseClient";
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Booking } from "@/utils/interfaces";
+import Loader from "@/components/Loader/Loader";
 
 const Pending = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -48,7 +49,7 @@ const Pending = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center text-white mt-10">Loading...</div>;
+    return <Loader />;
   }
 
   if (bookings.length === 0) {

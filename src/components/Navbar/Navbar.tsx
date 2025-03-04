@@ -42,8 +42,6 @@ function Navbar() {
   };
   const handleMyTicketsClick = async () => {
     navigate("/tickets");
-    const auth = await supabase.auth.getSession();
-    console.log(auth.data.session?.access_token);
   };
   const handlePendingTicketsClick = async () => {
     navigate("/pending-booking");
