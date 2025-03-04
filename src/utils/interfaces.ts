@@ -11,6 +11,18 @@ export interface Event {
     createdAt: string;
 }
 
+export interface UnparsedEvent {
+    id: string;
+    title: string;
+    venue: string;
+    dateTime: string;
+    totalNumberOfTickets: number;
+    description: string;
+    photoUrls: string;
+    priceOfferings: PriceOffering[];
+    createdAt: string;
+}
+
 interface PhotoUrls {
     loginImageUrl: string;
     homePageImageUrl: string;
@@ -26,6 +38,7 @@ export interface PriceOffering {
 
 export interface Ticket {
     id: string;
+    event: Event;
     eventId: string;
     bookingId: string | null;
     status: string;
@@ -44,6 +57,20 @@ export interface Booking {
     numVerifiedAtVenue: number | null;
     qrCode: string;
     event: Event;
+}
+export interface UnparsedBooking {
+    id: string;
+    userId: string;
+    eventId: string;
+    priceOfferingSelected: PriceOffering;
+    tickets: Ticket[];
+    amountPaid: number;
+    paymentStatus: string;
+    paymentSessionId: string | null;
+    createdAt: string;
+    numVerifiedAtVenue: number | null;
+    qrCode: string;
+    event: UnparsedEvent;
 }
 
 export interface PaymentGatewayDetails {
