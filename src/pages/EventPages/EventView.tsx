@@ -56,7 +56,6 @@ export default function EventView() {
             const { data } = await supabase.auth.getSession();
             const auth = data.session?.access_token;
             axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
-
             const response = await axios.post(
                 `${import.meta.env.VITE_BACKEND_URL}/booking/create-order`,
                 {
@@ -64,9 +63,10 @@ export default function EventView() {
                     priceOfferings: selectedTickets,
                 }
             );
-
+            console.log("LOcked Tickets:", response);
             if (response.status === 200) {
                 setBookingTime(response.data.createdAt);
+
                 toast("Tickets locked successfully.");
             } else {
                 toast("Failed to lock tickets. Please try again.");
@@ -80,6 +80,7 @@ export default function EventView() {
     };
 
     useEffect(() => {
+        console.log("Event:", event);
         const getBooking = async () => {
             try {
                 const { data } = await supabase.auth.getSession();
@@ -156,7 +157,7 @@ export default function EventView() {
                 className="relative w-full"
             >
                 <img
-                    src={event.photoUrls[0]}
+                    src={event.photoUrls.loginImageUrl}
                     alt="Event"
                     className="w-full h-96 sticky top-0 left-0 object-cover rounded-lg shadow-lg z-0"
                 />

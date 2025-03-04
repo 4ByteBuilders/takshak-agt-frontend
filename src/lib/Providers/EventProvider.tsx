@@ -19,6 +19,7 @@ export const EventProvider = ({ children }: { children: ReactNode }) => {
         import.meta.env.VITE_BACKEND_URL + "/event/get-latest"
       );
       event.data.photoUrls = JSON.parse(event.data.photoUrls);
+
       setEvent(event.data);
     };
 

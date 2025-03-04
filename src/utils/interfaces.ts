@@ -6,9 +6,14 @@ export interface Event {
     dateTime: string;
     totalNumberOfTickets: number;
     description: string;
-    photoUrls: string[];
+    photoUrls: PhotoUrls;
     priceOfferings: PriceOffering[];
     createdAt: string;
+}
+
+interface PhotoUrls {
+    homePageImageUrl: string;
+    loginImageUrl: string;
 }
 
 export interface PriceOffering {

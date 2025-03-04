@@ -1,4 +1,4 @@
-import { MapPin, Calendar, Armchair } from "lucide-react";
+import { MapPin, Calendar } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import QRCode from "react-qr-code";
 
 interface Ticket {
