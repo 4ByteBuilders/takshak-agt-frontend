@@ -197,12 +197,6 @@ export default function Verify() {
             </div>
           </div>
         )}
-
-        {qrData && (
-          <div className="mt-4">
-            <p>QR Code Data: {qrData}</p>
-          </div>
-        )}
         {error && (
           <div className="mt-4 text-red-500">
             <p>Error: {error}</p>
@@ -233,7 +227,7 @@ export default function Verify() {
                     </p>
                     <div className="flex items-center mt-2">
                       <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-l"
+                        className="bg-amber-500 text-white px-4 py-2 rounded-l"
                         onClick={decrementCheckedInCount}
                       >
                         -
@@ -255,7 +249,7 @@ export default function Verify() {
                       </button>
                     </div>
                     <button
-                      className="mt-2 bg-amber-500 text-white px-4 py-1 rounded"
+                      className="mt-2 bg-green-500 text-white px-4 py-1 rounded"
                       onClick={() => checkInPeople(booking.id, checkedInCount)}
                     >
                       Submit

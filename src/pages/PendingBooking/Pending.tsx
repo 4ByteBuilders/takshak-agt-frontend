@@ -103,7 +103,7 @@ const Pending = () => {
                       className="flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
                     >
                       <span className="text-green-300">{ticket.type}</span>
-                      <span className="text-xs font-bold">x {ticket.quantity}</span>
+                      <span className="text-xs font-obld">x {ticket.quantity}</span>
                     </li>
                   ))}
                 </ul>

@@ -97,11 +97,25 @@ const MyTickets = () => {
   );
 
   if (confirmedBookings.length === 0) {
-    return <div>No confirmed bookings found.</div>;
+    return <div className="w-screen">No confirmed bookings found.</div>;
   }
 
   return (
     <>
+      <style>
+        {`
+          @media screen and (max-width: 768px) {
+            .ticket-container {
+              overflow-x: auto;
+              white-space: nowrap;
+            }
+            .ticket-card {
+              display: inline-block;
+              vertical-align: top;
+            }
+          }
+        `}
+      </style>
       <div className="font-bold text-2xl mt-4 mx-12">
         <h1>Confirmed tickets:</h1>
       </div>
@@ -121,10 +135,10 @@ const MyTickets = () => {
 
         return (
           <div
-            className="min-h-full m-5 flex flex-row items-stretch justify-center md:mx-8 lg:mx-12"
+            className="min-h-full m-5 flex flex-col md:flex-row items-stretch justify-center md:mx-8 lg:mx-12 ticket-container"
             key={booking.id}
           >
-            <Card className="h-full bg-zinc-800 rounded-xl border-0 border-r-4 p-6">
+            <Card className="h-full bg-zinc-800 rounded-xl border-0 border-r-4 p-6 ticket-card">
               <div className="h-1/3">
                 <QRCode
                   className="bg-white border-4 border-white rounded-lg m-auto"
@@ -132,9 +146,9 @@ const MyTickets = () => {
                 />
               </div>
             </Card>
-            <Card className="flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300">
+            <Card className="flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 ticket-card">
               <div className="flex flex-row justify-start">
-                <div className="flex justify-center items-center max-w- ml-3 mt-3 max-w-52">
+                <div className="flex justify-center items-center ml-3 mt-3 max-w-52">
                   <img
                     src={event.photoUrls[0]}
                     alt={event.title}
