@@ -21,7 +21,7 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     const redirectUrl = getWithExpiry("redirectAfterLogin") || "";
     removeLocalData("redirectAfterLogin");
-    const redirectTo = `${window.location.origin}/${redirectUrl}`;
+    const redirectTo = `${window.location.origin}${redirectUrl}`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
