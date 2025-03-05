@@ -1,4 +1,3 @@
-
 const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const monthNamesLong = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -29,6 +28,34 @@ export const formatDate = (isoDate: string, format: string): string => {
             return `${dayWithSuffix} ${monthLong} ${year}`;
         case 'DD MMM':
             return `${dayWithSuffix} ${monthShort}`;
+        default:
+            return isoDate;
+    }
+};
+
+export const formatTime = (isoDate: string, format: string): string => {
+    const date = new Date(isoDate);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const padZero = (num: number) => (num < 10 ? `0${num}` : num);
+
+    switch (format) {
+        case 'HH:mm':
+            return `${padZero(hours)}:${padZero(minutes)}`;
+        case 'HH:mm:ss':
+            return `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+        case 'hh:mm A': {
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const adjustedHours = hours % 12 || 12;
+            return `${padZero(adjustedHours)}:${padZero(minutes)} ${period}`;
+        }
+        case 'hh:mm:ss A': {
+            const periodWithSeconds = hours >= 12 ? 'PM' : 'AM';
+            const adjustedHoursWithSeconds = hours % 12 || 12;
+            return `${padZero(adjustedHoursWithSeconds)}:${padZero(minutes)}:${padZero(seconds)} ${periodWithSeconds}`;
+        }
         default:
             return isoDate;
     }
