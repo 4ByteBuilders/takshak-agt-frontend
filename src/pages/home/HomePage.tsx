@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEvent } from "../../lib/Providers/EventProvider";
 import { Skeleton } from "@/components/ui/skeleton";
+import { supabase } from "@/supabaseClient";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -44,6 +45,25 @@ export default function HomePage() {
       return () => clearInterval(timer);
     }
   }, [event]);
+
+  useEffect (()=>{
+    const getTokenAndLog = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+
+      if (error) {
+        console.error("Error fetching session:", error);
+        return;
+      }
+
+      if (session) {
+        console.log("User token:", session.access_token);
+      } else {
+        console.log("No active session found.");
+      }
+    };
+
+    getTokenAndLog();
+  }, []);
 
   const loading = !event;
 

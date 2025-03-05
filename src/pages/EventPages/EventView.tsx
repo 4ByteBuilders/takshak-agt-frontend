@@ -69,8 +69,7 @@ export default function EventView() {
       );
 
       if (response.status === 200) {
-        setBookingTime(response.data.createdAt);
-
+        setBookingTime(response.data.data.created_at);
         toast("Tickets locked successfully.");
       } else {
         toast("Failed to lock tickets. Please try again.");
@@ -125,7 +124,6 @@ export default function EventView() {
       const updateTimer = () => {
         const now = new Date();
         const difference = expiryTime.getTime() - now.getTime();
-
         if (difference > 0) {
           const minutes = Math.floor(
             (difference % (1000 * 60 * 60)) / (1000 * 60)
@@ -136,6 +134,7 @@ export default function EventView() {
           setTimeLeft("Expired");
           clearInterval(interval);
         }
+        
       };
 
       const interval = setInterval(updateTimer, 1000);
