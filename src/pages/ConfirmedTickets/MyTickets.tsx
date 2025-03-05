@@ -12,7 +12,7 @@ import axios from "axios";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import Loader from "@/components/Loader/Loader";
-import { Booking, UnparsedBooking } from "@/utils/interfaces";
+import { Booking } from "@/utils/interfaces";
 import { Button } from "@/components/ui/button";
 import Lottie from "lottie-react";
 import noTickets from "@/assets/no_tickets.json";
@@ -39,15 +39,7 @@ const MyTickets = () => {
         const auth = (await supabase.auth.getSession()).data.session?.access_token;
         axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
         const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/booking/get-bookings");
-        const parsedBookings = response.data.map((booking: UnparsedBooking) => ({
-          ...booking,
-          event: {
-            ...booking.event,
-            photoUrls: JSON.parse(booking.event.photoUrls),
-          },
-        }));
-
-        setBookings(parsedBookings);
+        setBookings(response.data);
       } catch (err) {
         console.error(err);
         toast.error("Failed to fetch tickets. Please try again later.");
