@@ -1,7 +1,8 @@
+import { useLocation, useNavigate } from "react-router-dom"; // Import useLocation
+import { useAuth } from "@/lib/Providers/AuthProvider";
+import { supabase } from "@/supabaseClient";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/lib/Providers/AuthProvider";
 import {
   UserRound,
   UserCog,
@@ -21,7 +22,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,11 +30,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { supabase } from "@/supabaseClient";
 
 function Navbar() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const location = useLocation(); // Get the current route location
 
   const handleLoginClick = () => {
     navigate("/login");
@@ -52,6 +52,9 @@ function Navbar() {
       console.error("Error logging out:", error.message);
     }
   };
+
+  // Check if the current route is "/login"
+  const isLoginRoute = location.pathname === "/login";
 
   return (
     <div className="absolute top-0 left-0 w-full bg-opacity-0 text-white z-10">
@@ -78,7 +81,8 @@ function Navbar() {
                 </Button>
               </>
             ) : (
-              <Button onClick={handleLoginClick}>Login</Button>
+              // Conditionally render the Login button
+              !isLoginRoute && <Button onClick={handleLoginClick}>Login</Button>
             )}
           </div>
           {user ? (
@@ -164,9 +168,12 @@ function Navbar() {
                   </DropdownMenuItem>
                 </>
               ) : (
-                <DropdownMenuItem onClick={handleLoginClick}>
-                  Login
-                </DropdownMenuItem>
+                // Conditionally render the Login button in the mobile menu
+                !isLoginRoute && (
+                  <DropdownMenuItem onClick={handleLoginClick}>
+                    Login
+                  </DropdownMenuItem>
+                )
               )}
             </DropdownMenuContent>
           </DropdownMenu>

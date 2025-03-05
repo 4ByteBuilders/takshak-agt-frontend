@@ -18,6 +18,7 @@ import Pending from "./pages/PendingBooking/Pending";
 import MyTickets from "./pages/ConfirmedTickets/MyTickets";
 import { EventProvider } from "./lib/Providers/EventProvider";
 import PaymentStatus from "./pages/Payment/PaymentStatus";
+import ProtectedRoute from "./components/Wrapper/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -30,7 +31,11 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/events" element={<EventPage />} />
-              <Route path="/view/event" element={<EventView />} />
+              <Route path="/view/event" element={
+                <ProtectedRoute>
+                  <EventView />
+                </ProtectedRoute>
+              } />
               <Route path="/verify" element={<Verify />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route
