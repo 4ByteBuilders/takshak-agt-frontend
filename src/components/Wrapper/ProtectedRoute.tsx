@@ -17,7 +17,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     useEffect(() => {
         const checkAuth = async () => {
             const { data: user } = await supabase.auth.getUser();
-            setIsAuthenticated(!!user?.user);
+            setIsAuthenticated(!user?.user);
             setLoading(false);
         };
         checkAuth();

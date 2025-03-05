@@ -18,7 +18,6 @@ import Pending from "./pages/PendingBooking/Pending";
 import MyTickets from "./pages/ConfirmedTickets/MyTickets";
 import { EventProvider } from "./lib/Providers/EventProvider";
 import PaymentStatus from "./pages/Payment/PaymentStatus";
-import ProtectedRoute from "./components/Wrapper/ProtectedRoute";
 function App() {
   return (
     <BrowserRouter>
@@ -30,15 +29,9 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
-              <ProtectedRoute>
-                <Route path="/events" element={<EventPage />} />
-              </ProtectedRoute>
-              <ProtectedRoute>
-                <Route path="/view/event" element={<EventView />} />
-              </ProtectedRoute>
-              <ProtectedRoute>
-                <Route path="/verify" element={<Verify />} />
-              </ProtectedRoute>
+              <Route path="/events" element={<EventPage />} />
+              <Route path="/view/event" element={<EventView />} />
+              <Route path="/verify" element={<Verify />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route
                 path="/terms-and-conditions"
@@ -49,18 +42,10 @@ function App() {
                 path="/cancellation-and-refund"
                 element={<CancellationAndRefund />}
               />
-              <ProtectedRoute>
-                <Route path="/contact" element={<Contact />} />
-              </ProtectedRoute>
-              <ProtectedRoute>
-                <Route path="/pending-booking" element={<Pending />} />
-              </ProtectedRoute>
-              <ProtectedRoute>
-                <Route path="/tickets" element={<MyTickets />} />
-              </ProtectedRoute>
-              <ProtectedRoute>
-                <Route path="/payment-status" element={<PaymentStatus />} />
-              </ProtectedRoute>
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/pending-booking" element={<Pending />} />
+              <Route path="/tickets" element={<MyTickets />} />
+              <Route path="/payment-status" element={<PaymentStatus />} />
               <Route path="*" element={<Page404 />} />
             </Routes>
             <Footer />
