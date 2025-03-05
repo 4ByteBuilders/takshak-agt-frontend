@@ -29,7 +29,10 @@ export default function HomePage() {
       seconds: Math.floor((difference / 1000) % 60),
     };
   };
-
+  // useEffect(() => {
+  //   if(user)
+  //   toast("Logged in successfully");
+  // }, []);
   useEffect(() => {
     if (event?.dateTime) {
       setTimeLeft(calculateTimeLeft(new Date(event.dateTime)));

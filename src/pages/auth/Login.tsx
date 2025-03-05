@@ -25,9 +25,6 @@ const Login = () => {
       },
     });
     if (error) toast.error(error.message);
-    else {
-      toast("Logged in successfully!");
-    }
   };
 
   return (
