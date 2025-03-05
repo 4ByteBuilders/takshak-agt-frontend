@@ -1,6 +1,6 @@
 export default function CancellationAndRefund() {
     return (
-        <div className="container mx-20 w-fit p-4">
+        <div className="container mx-auto p-4 sm:mx-20 sm:w-fit mt-12">
             <h1 className="text-4xl font-bold mb-4">Cancellation and Refund Policy</h1>
             <p className="mb-4">Effective Date: 28th February 2025</p>
 
