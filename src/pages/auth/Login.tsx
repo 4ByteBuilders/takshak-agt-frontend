@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { getWithExpiry, removeLocalData } from "@/utils/fetchLocalStorage";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,16 +19,16 @@ const Login = () => {
   }, [navigate]);
 
   const handleGoogleLogin = async () => {
+    const redirectUrl = getWithExpiry("redirectAfterLogin") || "";
+    removeLocalData("redirectAfterLogin");
+    const redirectTo = `${window.location.origin}/${redirectUrl}`;
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/`,
+        redirectTo,
       },
     });
     if (error) toast.error(error.message);
-    else {
-      toast("Logged in successfully!");
-    }
   };
 
   return (
