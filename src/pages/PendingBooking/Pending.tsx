@@ -41,7 +41,6 @@ const Pending = () => {
         const response = await axios.get(
           import.meta.env.VITE_BACKEND_URL + "/booking/get-pending-bookings"
         );
-
         if (response.data && Array.isArray(response.data)) {
           setBookings(response.data);
         } else {

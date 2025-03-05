@@ -39,6 +39,7 @@ const MyTickets = () => {
         const auth = (await supabase.auth.getSession()).data.session?.access_token;
         axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
         const response = await axios.get(import.meta.env.VITE_BACKEND_URL + "/booking/get-bookings");
+        console.log(response.data);
         setBookings(response.data);
       } catch (err) {
         console.error(err);
