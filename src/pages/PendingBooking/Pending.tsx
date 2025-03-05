@@ -1,4 +1,4 @@
-import { MapPin, Calendar } from "lucide-react";
+import { MapPin, Calendar, Watch } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -16,6 +16,7 @@ import Loader from "@/components/Loader/Loader";
 import Lottie from "lottie-react";
 import noPendingAnimation from "@/assets/no_payments.json";
 import { useNavigate } from "react-router-dom";
+import { formatDate, formatTime } from "@/utils/dateFormatter";
 
 const Pending = () => {
   const navigate = useNavigate();
@@ -67,7 +68,11 @@ const Pending = () => {
       <div className="flex flex-col items-center justify-center min-h-screen px-4">
         <Card className="w-full max-w-md shadow-md dark:shadow-lg">
           <CardContent className="p-6 text-center">
-            <Lottie animationData={noPendingAnimation} className="h-40 mx-auto" loop={true} />
+            <Lottie
+              animationData={noPendingAnimation}
+              className="h-40 mx-auto"
+              loop={true}
+            />
             <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mt-4">
               No Pending Payments
             </h2>
@@ -90,9 +95,9 @@ const Pending = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-full bg-grey-950">
-      <div className="font-bold text-2xl w-1/3 mt-10 mx-auto">
-        <h1>Your pending payments:</h1>
+    <div className="flex flex-col min-h-full bg-grey-950 mt-12">
+      <div className="font-bold text-2xl mt-10 mx-auto">
+        <h1>Your pending payments</h1>
       </div>
       {bookings.map((booking, index) => {
         const { event, amountPaid, paymentSessionId } = booking;
@@ -100,13 +105,13 @@ const Pending = () => {
         return (
           <Card
             key={index}
-            className="flex flex-col rounded-lg bg-gray-900 w-1/3 m-9 mx-auto"
+            className="flex flex-col rounded-lg bg-zinc-900 md:w-1/3 sm:w-5/6 m-9 mx-auto"
           >
             <CardHeader>
               <CardTitle className="text-xl font-bold">
                 {event?.title}
               </CardTitle>
-              <div className="flex-row sm:flex justify-between mt-2">
+              <div className="flex-row sm:flex justify-between items-end mt-2">
                 <div>
                   <div className="flex items-center mt-2">
                     <MapPin
@@ -125,15 +130,21 @@ const Pending = () => {
                       className="mr-2"
                     />
                     <CardDescription className="inline-block">
-                      {new Date(event?.dateTime).toLocaleString()}
+                      {formatDate(event?.dateTime, "DD MMMM YYYY")}
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center mt-2">
+                    <Watch strokeWidth={"1px"} size={"16px"} className="mr-2" />
+                    <CardDescription className="inline-block">
+                      {formatTime(event?.dateTime, "hh:mm A")}
                     </CardDescription>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col md:flex-row items-end gap-2">
                   {event?.priceOfferings.map((offering, idx) => (
                     <div
                       key={idx}
-                      className="flex flex-row items-center justify-between gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                      className="w-fit flex flex-row items-center justify-end gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
                     >
                       <span>
                         {offering.name} x {offering.capacity}
@@ -145,7 +156,7 @@ const Pending = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex flex-col items-end mt-4">
+              <div className="flex flex-col items-end md:mt-4 sm:mt-1">
                 <Button
                   onClick={() => doPayment(paymentSessionId!)}
                   className="bg-amber-500 text-white transition duration-300 ease-in-out hover:bg-amber-600"

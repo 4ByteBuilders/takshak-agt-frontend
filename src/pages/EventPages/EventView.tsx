@@ -84,7 +84,6 @@ export default function EventView() {
   };
 
   useEffect(() => {
-
     const getBooking = async () => {
       try {
         const { data } = await supabase.auth.getSession();

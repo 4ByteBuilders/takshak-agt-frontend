@@ -119,10 +119,10 @@ const MyTickets = () => {
               key={booking.id}
             >
               {/* QR Code Card */}
-              <Card className="w-80 h-full bg-zinc-800 rounded-xl border-0 border-r-4 p-6 pb-2 md:my-5 sm:my-0 ticket-card">
+              <Card className="h-full bg-zinc-800 rounded-xl border-0 border-r-4 p-6 pb-2 md:my-5 sm:my-0 ticket-card">
                 <div>
                   <QRCode
-                    className="bg-white border-4 border-white rounded-lg m-auto"
+                    className="w-52 h-52 md:w-auto md:h-auto bg-white border-4 border-white rounded-lg m-auto"
                     value={booking.qrCode}
                   />
                 </div>
@@ -133,7 +133,7 @@ const MyTickets = () => {
               </Card>
 
               {/* Event Details Card for Large Screens */}
-              <Card className="flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 w-5/12 my-5 event-details-card">
+              <Card className="flex flex-col h-80 rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 w-5/12 my-5 event-details-card">
                 <div className="flex flex-row justify-start">
                   <div className="flex justify-center items-center ml-3 mt-3 max-w-52">
                     <img
@@ -209,7 +209,7 @@ const MyTickets = () => {
               </Card>
 
               {/* Event Details Card for Small Screens */}
-              <Card className="w-80 flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-t-2 border-dashed border-stone-300 mb-5 event-details-card-mobile">
+              <Card className="w-64 flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-t-2 border-dashed border-stone-300 mb-5 event-details-card-mobile">
                 <div className="flex justify-center items-center mt-3">
                   <img
                     src={booking.event.photoUrls.eventPageUrl}
