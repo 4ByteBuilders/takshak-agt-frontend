@@ -12,20 +12,12 @@ import axios from "axios";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import Loader from "@/components/Loader/Loader";
-import { Booking } from "@/utils/interfaces";
+import { ExtendedBooking } from "@/utils/interfaces";
 import { Button } from "@/components/ui/button";
 import Lottie from "lottie-react";
 import noTickets from "@/assets/no_tickets.json";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "@/utils/dateFormatter";
-
-interface ExtendedBooking extends Booking {
-  priceDetails: {
-    name: string;
-    price: number;
-    quantity: number;
-  }[];
-}
 
 const MyTickets = () => {
   const navigate = useNavigate();
@@ -107,7 +99,7 @@ const MyTickets = () => {
           }
         `}
       </style>
-      <div className="mt-20 mx-12">
+      <div className="pt-20 mx-12">
         <h1 className="font-bold text-2xl">Confirmed tickets:</h1>
         {bookings.map((booking) => {
           const event = booking.event;
@@ -133,7 +125,10 @@ const MyTickets = () => {
               </Card>
 
               {/* Event Details Card for Large Screens */}
-              <Card className="flex flex-col h-80 rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 w-5/12 my-5 event-details-card">
+              <Card
+                className="flex flex-col h-80
+               rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 w-5/12 my-5 event-details-card"
+              >
                 <div className="flex flex-row justify-start">
                   <div className="flex justify-center items-center ml-3 mt-3 max-w-52">
                     <img

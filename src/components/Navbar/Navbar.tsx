@@ -3,14 +3,7 @@ import { useAuth } from "@/lib/Providers/AuthProvider";
 import { supabase } from "@/supabaseClient";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
-import {
-  UserRound,
-  UserCog,
-  LogOut,
-  CircleHelp,
-  Ticket,
-  Menu,
-} from "lucide-react";
+import { UserRound, UserCog, LogOut, History, Menu } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -45,12 +38,19 @@ function Navbar() {
   const handlePendingTicketsClick = async () => {
     navigate("/pending-booking");
   };
+  const handleHomeTicketsClick = async () => {
+    navigate("/");
+  };
+  const handleBookingHistoryClick = async () => {
+    navigate("/booking-history");
+  };
 
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error("Error logging out:", error.message);
     }
+    navigate("/");
   };
 
   // Check if the current route is "/login"
@@ -80,9 +80,11 @@ function Navbar() {
                   My Tickets
                 </Button>
               </>
+            ) : // Conditionally render the Login button
+            !isLoginRoute ? (
+              <Button onClick={handleLoginClick}>Login</Button>
             ) : (
-              // Conditionally render the Login button
-              !isLoginRoute && <Button onClick={handleLoginClick}>Login</Button>
+              <Button onClick={handleHomeTicketsClick}>Home</Button>
             )}
           </div>
           {user ? (
@@ -109,16 +111,10 @@ function Navbar() {
                     <span className="ml-2">Profile</span>
                   </div>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleBookingHistoryClick}>
                   <div className="flex items-center">
-                    <Ticket />
-                    <span className="ml-2">My Tickets</span>
-                  </div>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <div className="flex items-center">
-                    <CircleHelp />
-                    <span className="ml-2">FAQ</span>
+                    <History />
+                    <span className="ml-2">Booking History</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
@@ -150,33 +146,31 @@ function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : null}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="md:hidden">
-              <Menu />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="md:hidden">
-              {user ? (
-                <>
-                  <DropdownMenuItem onClick={handlePendingTicketsClick}>
-                    Pending Tickets
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleMyTicketsClick}>
-                    My Tickets
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleLogOut}>
-                    Logout
-                  </DropdownMenuItem>
-                </>
-              ) : (
-                // Conditionally render the Login button in the mobile menu
-                !isLoginRoute && (
+          {!isLoginRoute && (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="md:hidden">
+                <Menu />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="md:hidden">
+                {user ? (
+                  <>
+                    <DropdownMenuItem onClick={handlePendingTicketsClick}>
+                      Pending Tickets
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleMyTicketsClick}>
+                      My Tickets
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  // Conditionally render the Login button in the mobile menu
+
                   <DropdownMenuItem onClick={handleLoginClick}>
                     Login
                   </DropdownMenuItem>
-                )
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
     </div>

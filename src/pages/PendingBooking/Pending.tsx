@@ -95,7 +95,7 @@ const Pending = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-full bg-grey-950 mt-12">
+    <div className="flex flex-col min-h-full bg-grey-950 pt-12">
       <div className="font-bold text-2xl mt-10 mx-auto">
         <h1>Your pending payments</h1>
       </div>

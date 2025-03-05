@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/utils/dateFormatter";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
+import { set } from "react-hook-form";
 
 interface SelectedTickets {
   [key: string]: number;
@@ -26,6 +27,7 @@ export default function EventView() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { event } = useEvent();
+  const [showLockLoader, setShowLockLoader] = useState<boolean>(false);
   const [selectedTickets, setSelectedTickets] = useState<SelectedTickets>({});
   const [ticketsLocked, setTicketsLocked] = useState<boolean>(false);
   const [showDialog, setShowDialog] = useState<boolean>(false);
@@ -39,6 +41,7 @@ export default function EventView() {
   };
 
   const lockTickets = async () => {
+    setShowLockLoader(true);
     if (!user) {
       toast.custom(() => (
         <div className="bg-red-600 text-white p-4 rounded-lg shadow-lg">
@@ -79,6 +82,8 @@ export default function EventView() {
       console.error("Error locking tickets:", err);
       toast("Something went wrong.");
       setTicketsLocked(false);
+    } finally {
+      setShowLockLoader(false);
     }
   };
 
@@ -134,7 +139,6 @@ export default function EventView() {
           setTimeLeft("Expired");
           clearInterval(interval);
         }
-        
       };
 
       const interval = setInterval(updateTimer, 1000);
@@ -183,87 +187,98 @@ export default function EventView() {
       </motion.div>
 
       {/* Ticket Selection */}
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.5 }}
         className="max-w-3xl my-6 p-6 bg-gray-900 rounded-lg shadow-lg"
       >
-        <h2 className="text-2xl font-semibold mb-4 text-center">
-          Select Your Tickets
-        </h2>
-        {event.priceOfferings.map(({ id, name, price, capacity }) => (
-          <div key={id} className="flex justify-between items-center mb-4">
-            <div
-              className={
-                !ticketsLocked
-                  ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
-                  : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-    md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
-              }
-            >
-              <span className="text-white">{name}</span>
-              <span className="text-xs font-bold"> ₹{price}</span>
-              <span className="text-xs font-bold"> {capacity} person(s)</span>
-            </div>
-            <div className="flex items-center mx-5">
-              <button
-                className="px-3 py-1 bg-gray-700 rounded-l"
-                onClick={() =>
-                  handleTicketChange(id, (selectedTickets[id] || 0) - 1)
-                }
-                disabled={selectedTickets[id] === 0 || ticketsLocked}
-              >
-                -
-              </button>
-              <span className="px-4">{selectedTickets[id] || 0}</span>
-              <button
-                className="px-3 py-1 bg-gray-700 rounded-r"
-                onClick={() =>
-                  handleTicketChange(id, (selectedTickets[id] || 0) + 1)
-                }
-                disabled={
-                  selectedTickets[id] === event.totalNumberOfTickets ||
-                  ticketsLocked
-                }
-              >
-                +
-              </button>
-            </div>
-          </div>
-        ))}
-
-        {/* Lock Tickets Button */}
-        {!ticketsLocked ? (
-          <button
-            onClick={lockTickets}
-            className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
-          >
-            Lock Tickets
-          </button>
+        {showLockLoader ? (
+          <Skeleton />
         ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mt-4"
-          >
-            <p className="text-green-400 text-lg font-semibold">
-              Tickets Locked!
-            </p>
-            <div className="mt-4 p-4 bg-gray-800 rounded-lg">
-              <p className="text-lg font-semibold">
-                Time Left: <span className="text-amber-500">{timeLeft}</span>
-              </p>
-            </div>
-            <button
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
-              onClick={() => {
-                navigate("/pending-booking");
-              }}
-            >
-              Proceed to Payment →
-            </button>
-          </motion.div>
+          <>
+            <h2 className="text-2xl font-semibold mb-4 text-center">
+              Select Your Tickets
+            </h2>
+            {event.priceOfferings.map(({ id, name, price, capacity }) => (
+              <div key={id} className="flex justify-between items-center mb-4">
+                <div
+                  className={
+                    !ticketsLocked
+                      ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
+                      : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-    md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                  }
+                >
+                  <span className="text-white">{name}</span>
+                  <span className="text-xs font-bold"> ₹{price}</span>
+                  <span className="text-xs font-bold">
+                    {" "}
+                    {capacity} person(s)
+                  </span>
+                </div>
+                <div className="flex items-center mx-5">
+                  <button
+                    className="px-3 py-1 bg-gray-700 rounded-l"
+                    onClick={() =>
+                      handleTicketChange(id, (selectedTickets[id] || 0) - 1)
+                    }
+                    disabled={selectedTickets[id] === 0 || ticketsLocked}
+                  >
+                    -
+                  </button>
+                  <span className="px-4">{selectedTickets[id] || 0}</span>
+                  <button
+                    className="px-3 py-1 bg-gray-700 rounded-r"
+                    onClick={() =>
+                      handleTicketChange(id, (selectedTickets[id] || 0) + 1)
+                    }
+                    disabled={
+                      selectedTickets[id] === event.totalNumberOfTickets ||
+                      ticketsLocked
+                    }
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            ))}
+
+            {/* Lock Tickets Button */}
+            {!ticketsLocked ? (
+              <button
+                onClick={lockTickets}
+                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
+              >
+                Lock Tickets
+              </button>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="text-center mt-4"
+              >
+                <p className="text-green-400 text-lg font-semibold">
+                  Tickets Locked!
+                </p>
+                <div className="mt-4 p-4 bg-gray-800 rounded-lg">
+                  <p className="text-lg font-semibold">
+                    Time Left:{" "}
+                    <span className="text-amber-500">{timeLeft}</span>
+                  </p>
+                </div>
+                <button
+                  className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
+                  onClick={() => {
+                    navigate("/pending-booking");
+                  }}
+                >
+                  Proceed to Payment →
+                </button>
+              </motion.div>
+            )}
+          </>
         )}
       </motion.div>
 

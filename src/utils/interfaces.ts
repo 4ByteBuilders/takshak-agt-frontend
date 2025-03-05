@@ -84,3 +84,11 @@ export interface PaymentResponse {
     payment_status: "SUCCESS" | "FAILED" | "USER_DROPPED" | "ERROR" | "UNKNOWN";
     payment_time: string;
 }
+
+export interface ExtendedBooking extends Booking {
+  priceDetails: {
+    name: string;
+    price: number;
+    quantity: number;
+  }[];
+}

@@ -46,9 +46,12 @@ export default function HomePage() {
     }
   }, [event]);
 
-  useEffect (()=>{
+  useEffect(() => {
     const getTokenAndLog = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const {
+        data: { session },
+        error,
+      } = await supabase.auth.getSession();
 
       if (error) {
         console.error("Error fetching session:", error);
@@ -69,7 +72,7 @@ export default function HomePage() {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center pt-14"
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center pt-0 md:pt-14"
       style={{
         backgroundImage:
           "url('https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg')",

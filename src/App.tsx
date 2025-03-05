@@ -16,6 +16,7 @@ import EventView from "./pages/EventPages/EventView";
 import Verify from "./pages/verify/Verify";
 import Pending from "./pages/PendingBooking/Pending";
 import MyTickets from "./pages/ConfirmedTickets/MyTickets";
+import History from "./pages/TicketHistory/History";
 import { EventProvider } from "./lib/Providers/EventProvider";
 import PaymentStatus from "./pages/Payment/PaymentStatus";
 import ProtectedRoute from "./components/Wrapper/ProtectedRoute";
@@ -31,11 +32,14 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/events" element={<EventPage />} />
-              <Route path="/view/event" element={
-                <ProtectedRoute>
-                  <EventView />
-                </ProtectedRoute>
-              } />
+              <Route
+                path="/view/event"
+                element={
+                  <ProtectedRoute>
+                    <EventView />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/verify" element={<Verify />} />
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route
@@ -51,6 +55,7 @@ function App() {
               <Route path="/pending-booking" element={<Pending />} />
               <Route path="/tickets" element={<MyTickets />} />
               <Route path="/payment-status" element={<PaymentStatus />} />
+              <Route path="/booking-history" element={<History />} />
               <Route path="*" element={<Page404 />} />
             </Routes>
             <Footer />
