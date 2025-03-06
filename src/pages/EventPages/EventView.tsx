@@ -17,7 +17,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/utils/dateFormatter";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
-// import Lottie from "lottie-react";
+import Lottie from "lottie-react";
+import scrolldown from "@/assets/scroll_down.json";
 
 interface SelectedTickets {
   [key: string]: number;
@@ -241,21 +242,29 @@ export default function EventView() {
           }}
         />
         <div
-          className="absolute inset-0 flex flex-col justify-end text-start"
+          className="absolute inset-0 flex flex-row text-start"
           style={backgroundStyle}
         >
-          <h1
-            className="text-4xl font-bold mx-4 transition-transform duration-300"
-            style={titleStyle}
-          >
-            {event.title}
-          </h1>
-          <p
-            className="text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
-            style={subtitleStyle}
-          >
-            {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
-          </p>
+          <div className="flex flex-col justify-end text-start">
+            <h1
+              className="text-4xl font-bold mx-4 transition-transform duration-300"
+              style={titleStyle}
+            >
+              {event.title}
+            </h1>
+            <p
+              className="text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
+              style={subtitleStyle}
+            >
+              {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
+            </p>
+          </div>
+          <div className={scrollY > 0 ? "hidden" : "flex items-end mb-5"}>
+            <Lottie
+              animationData={scrolldown}
+              style={{ width: 50, height: 50 }}
+            />
+          </div>
         </div>
       </motion.div>
       {/* Event Details */}
