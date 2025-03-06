@@ -93,8 +93,6 @@ export default function EventView() {
           priceOfferings: selectedTickets,
         }
       );
-      console.log("Here:");
-      console.log(response);
       if (response.status === 200) {
         setBookingTime(response.data.data.created_at);
         setBookingId(response.data.data.order_id);
@@ -222,7 +220,7 @@ export default function EventView() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className="max-w-3xl my-6 p-6 bg-gray-900 rounded-lg shadow-lg"
+          className="max-w-3xl my-6 p-4 md:p-6 bg-gray-900 rounded-lg shadow-lg mx-auto"
         >
           <h2 className="text-2xl font-semibold mb-4 text-center">
             Select Your Tickets
@@ -233,7 +231,7 @@ export default function EventView() {
                 className={
                   !ticketsLocked
                     ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
-                    : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-    md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                    : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
                 }
               >
                 <span className="text-white">{name}</span>
@@ -299,7 +297,7 @@ export default function EventView() {
                 Proceed to Payment →
               </button>
               <button
-                className="w-full bg-red-500 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition-all mt-4"
+                className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
                 onClick={cancelLockedTickets}
               >
                 Cancel
