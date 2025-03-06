@@ -238,9 +238,9 @@ export default function EventView() {
                 <span className="text-xs font-bold"> ₹{price}</span>
                 <span className="text-xs font-bold"> {capacity} person(s)</span>
               </div>
-              <div className="flex items-center mx-5">
+              <div className="flex items-center mx-3 md:mx-5">
                 <button
-                  className="px-3 py-1 bg-gray-700 rounded-l"
+                  className="px-2 md:px-3 py-1 bg-gray-700 rounded-l"
                   onClick={() =>
                     handleTicketChange(id, (selectedTickets[id] || 0) - 1)
                   }
@@ -248,9 +248,9 @@ export default function EventView() {
                 >
                   -
                 </button>
-                <span className="px-4">{selectedTickets[id] || 0}</span>
+                <span className="px-2 md:px-4">{selectedTickets[id] || 0}</span>
                 <button
-                  className="px-3 py-1 bg-gray-700 rounded-r"
+                  className="px-2 md:px-3 py-1 bg-gray-700 rounded-r"
                   onClick={() =>
                     handleTicketChange(id, (selectedTickets[id] || 0) + 1)
                   }
