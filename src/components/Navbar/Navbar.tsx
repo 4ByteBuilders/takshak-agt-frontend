@@ -51,6 +51,9 @@ function Navbar() {
   const handleBookingHistoryClick = async () => {
     navigate("/booking-history");
   };
+  const handleProfileClick = async () => {
+    navigate("/profile");
+  };
 
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -113,7 +116,7 @@ function Navbar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleProfileClick}>
                   <div className="flex items-center py-2 border-b-2 w-full">
                     <UserCog />
                     <span className="ml-2">Profile</span>
