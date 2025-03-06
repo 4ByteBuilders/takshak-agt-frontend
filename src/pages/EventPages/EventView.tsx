@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/utils/dateFormatter";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
+// import Lottie from "lottie-react";
 
 interface SelectedTickets {
   [key: string]: number;
@@ -34,6 +35,7 @@ export default function EventView() {
   const [bookingTime, setBookingTime] = useState<string | null>(null);
   const [bookingid, setBookingId] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
+  const [isLargeScreen, setIsLargeScreen] = useState<boolean>(false);
 
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
@@ -189,20 +191,37 @@ export default function EventView() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsLargeScreen(window.innerWidth >= 1024); // Adjust the breakpoint as needed
+    };
+
+    handleResize(); // Set initial value
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (!event) {
     return <Skeleton className="w-full h-screen" />;
   }
 
-  const titleStyle = {
-    transform: `translateX(${Math.min(scrollY / 3, 100)}px)`,
-  };
+  const titleStyle = isLargeScreen
+    ? {
+        transform: `translateX(${Math.min(scrollY, 100)}px)`,
+      }
+    : {};
 
-  const subtitleStyle = {
-    transform: `translateX(${Math.min(scrollY / 3, 100)}px)`,
-  };
+  const subtitleStyle = isLargeScreen
+    ? {
+        transform: `translateX(${Math.min(scrollY, 100)}px)`,
+      }
+    : {};
 
   const backgroundStyle = {
-    backgroundColor: `rgba(0, 0, 0, ${Math.min(scrollY / 300, 0.65)})`,
+    backgroundColor: `rgba(3, 7, 18, ${Math.max(scrollY / 300, 0.5)})`,
   };
 
   return (
