@@ -1,7 +1,7 @@
 import { useAuth } from "@/lib/Providers/AuthProvider";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { useEvent } from "../../lib/Providers/EventProvider";
 import {
@@ -32,6 +32,8 @@ export default function EventView() {
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [bookingTime, setBookingTime] = useState<string | null>(null);
+  const [bookingid, setBookingId] = useState<string | null>(null);
+
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
       ...prev,
@@ -39,8 +41,29 @@ export default function EventView() {
     }));
   };
 
+  const cancelLockedTickets = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/booking/cancel-booking`,
+        {
+          bookingId: bookingid,
+        }
+      );
+
+      if (response.status === 200) {
+        toast("Tickets cancelled successfully.");
+        setTicketsLocked(false);
+        setSelectedTickets({});
+      } else {
+        toast("Failed to cancel tickets. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error cancelling tickets:", err);
+      toast("Something went wrong.");
+    }
+  };
+
   const lockTickets = async () => {
-    setShowLockLoader(true);
     if (!user) {
       toast.custom(() => (
         <div className="bg-red-600 text-white p-4 rounded-lg shadow-lg">
@@ -56,6 +79,7 @@ export default function EventView() {
       return;
     }
 
+    setShowLockLoader(true);
     setTicketsLocked(true);
 
     try {
@@ -69,9 +93,11 @@ export default function EventView() {
           priceOfferings: selectedTickets,
         }
       );
-
+      console.log("Here:");
+      console.log(response);
       if (response.status === 200) {
         setBookingTime(response.data.data.created_at);
+        setBookingId(response.data.data.order_id);
         toast("Tickets locked successfully.");
       } else {
         toast("Failed to lock tickets. Please try again.");
@@ -101,9 +127,12 @@ export default function EventView() {
             },
           }
         );
+        console.log("Booking response:");
+        console.log(response);
         if (response.data) {
           setTicketsLocked(true);
           setBookingTime(response.data.createdAt);
+          setBookingId(response.data.id);
           const parsedPriceOfferings = JSON.parse(
             response.data.priceOfferingSelected
           );
@@ -186,100 +215,99 @@ export default function EventView() {
       </motion.div>
 
       {/* Ticket Selection */}
-
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.5 }}
-        className="max-w-3xl my-6 p-6 bg-gray-900 rounded-lg shadow-lg"
-      >
-        {showLockLoader ? (
-          <Skeleton />
-        ) : (
-          <>
-            <h2 className="text-2xl font-semibold mb-4 text-center">
-              Select Your Tickets
-            </h2>
-            {event.priceOfferings.map(({ id, name, price, capacity }) => (
-              <div key={id} className="flex justify-between items-center mb-4">
-                <div
-                  className={
-                    !ticketsLocked
-                      ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
-                      : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-    md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+      {showLockLoader ? (
+        <Skeleton className="h-80 w-96 md:w-1/3 my-6 p-6" />
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="max-w-3xl my-6 p-6 bg-gray-900 rounded-lg shadow-lg"
+        >
+          <h2 className="text-2xl font-semibold mb-4 text-center">
+            Select Your Tickets
+          </h2>
+          {event.priceOfferings.map(({ id, name, price, capacity }) => (
+            <div key={id} className="flex justify-between items-center mb-4">
+              <div
+                className={
+                  !ticketsLocked
+                    ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
+                    : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-    md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                }
+              >
+                <span className="text-white">{name}</span>
+                <span className="text-xs font-bold"> ₹{price}</span>
+                <span className="text-xs font-bold"> {capacity} person(s)</span>
+              </div>
+              <div className="flex items-center mx-5">
+                <button
+                  className="px-3 py-1 bg-gray-700 rounded-l"
+                  onClick={() =>
+                    handleTicketChange(id, (selectedTickets[id] || 0) - 1)
+                  }
+                  disabled={selectedTickets[id] === 0 || ticketsLocked}
+                >
+                  -
+                </button>
+                <span className="px-4">{selectedTickets[id] || 0}</span>
+                <button
+                  className="px-3 py-1 bg-gray-700 rounded-r"
+                  onClick={() =>
+                    handleTicketChange(id, (selectedTickets[id] || 0) + 1)
+                  }
+                  disabled={
+                    selectedTickets[id] === event.totalNumberOfTickets ||
+                    ticketsLocked
                   }
                 >
-                  <span className="text-white">{name}</span>
-                  <span className="text-xs font-bold"> ₹{price}</span>
-                  <span className="text-xs font-bold">
-                    {" "}
-                    {capacity} person(s)
-                  </span>
-                </div>
-                <div className="flex items-center mx-5">
-                  <button
-                    className="px-3 py-1 bg-gray-700 rounded-l"
-                    onClick={() =>
-                      handleTicketChange(id, (selectedTickets[id] || 0) - 1)
-                    }
-                    disabled={selectedTickets[id] === 0 || ticketsLocked}
-                  >
-                    -
-                  </button>
-                  <span className="px-4">{selectedTickets[id] || 0}</span>
-                  <button
-                    className="px-3 py-1 bg-gray-700 rounded-r"
-                    onClick={() =>
-                      handleTicketChange(id, (selectedTickets[id] || 0) + 1)
-                    }
-                    disabled={
-                      selectedTickets[id] === event.totalNumberOfTickets ||
-                      ticketsLocked
-                    }
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-            ))}
-
-            {/* Lock Tickets Button */}
-            {!ticketsLocked ? (
-              <button
-                onClick={lockTickets}
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
-              >
-                Lock Tickets
-              </button>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="text-center mt-4"
-              >
-                <p className="text-green-400 text-lg font-semibold">
-                  Tickets Locked!
-                </p>
-                <div className="mt-4 p-4 bg-gray-800 rounded-lg">
-                  <p className="text-lg font-semibold">
-                    Time Left:{" "}
-                    <span className="text-amber-500">{timeLeft}</span>
-                  </p>
-                </div>
-                <button
-                  className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
-                  onClick={() => {
-                    navigate("/pending-booking");
-                  }}
-                >
-                  Proceed to Payment →
+                  +
                 </button>
-              </motion.div>
-            )}
-          </>
-        )}
-      </motion.div>
+              </div>
+            </div>
+          ))}
+
+          {/* Lock Tickets Button */}
+          {!ticketsLocked ? (
+            <button
+              onClick={lockTickets}
+              className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
+            >
+              Lock Tickets
+            </button>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5 }}
+              className="text-center mt-4"
+            >
+              <p className="text-green-400 text-lg font-semibold">
+                Tickets Locked!
+              </p>
+              <div className="mt-4 p-4 bg-gray-800 rounded-lg">
+                <p className="text-lg font-semibold">
+                  Time Left: <span className="text-amber-500">{timeLeft}</span>
+                </p>
+              </div>
+              <button
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all mt-4"
+                onClick={() => {
+                  navigate("/pending-booking");
+                }}
+              >
+                Proceed to Payment →
+              </button>
+              <button
+                className="w-full bg-red-500 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition-all mt-4"
+                onClick={cancelLockedTickets}
+              >
+                Cancel
+              </button>
+            </motion.div>
+          )}
+        </motion.div>
+      )}
 
       {/* Alert Dialog for no ticket selection */}
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>

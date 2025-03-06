@@ -84,10 +84,13 @@ const History = () => {
 
   return (
     <div className="pt-20 m-5 h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-8 lg:mx-12">
-      {bookings.map((booking) => {
+      {bookings.map((booking, idx) => {
         if (booking.paymentStatus !== "PENDING") {
           return (
-            <Card className="flex flex-col h-fit rounded-lg bg-zinc-800 transition duration-300 ease-in-out hover:border-stone-50">
+            <Card
+              key={idx}
+              className="flex flex-col h-fit rounded-lg bg-zinc-800 transition duration-300 ease-in-out hover:border-stone-50"
+            >
               <div className="relative">
                 <div
                   className={`absolute top-2 right-2 ${
