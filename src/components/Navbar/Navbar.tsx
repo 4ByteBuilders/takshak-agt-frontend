@@ -77,16 +77,21 @@ function Navbar() {
           <span className="hidden md:block">Takshak</span>
         </div>
         <div className="flex gap-4 items-center ml-auto">
-          <div className="gap-4 items-center hidden md:flex">
+          <div className="gap-4 items-center flex">
             {user ? (
               <>
                 <Button
+                  className="hidden md:block"
                   variant={"secondary"}
                   onClick={handlePendingTicketsClick}
                 >
                   Pending Payments
                 </Button>
-                <Button variant={"secondary"} onClick={handleMyTicketsClick}>
+                <Button
+                  className="hidden md:block"
+                  variant={"secondary"}
+                  onClick={handleMyTicketsClick}
+                >
                   My Tickets
                 </Button>
               </>
