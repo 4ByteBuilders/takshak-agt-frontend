@@ -19,6 +19,8 @@ import { supabase } from "@/supabaseClient";
 import axios from "axios";
 import Lottie from "lottie-react";
 import scrolldown from "@/assets/scroll_down.json";
+import { RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface SelectedTickets {
   [key: string]: number;
@@ -37,6 +39,7 @@ export default function EventView() {
   const [bookingid, setBookingId] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState<boolean>(false);
+  const [availableTickets, setAvailableTickets] = useState<number>(0);
 
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
@@ -44,6 +47,34 @@ export default function EventView() {
       [type]: Math.max(0, value),
     }));
   };
+
+  const updateAvailableTicketCount = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/event/get-available-tickets`,
+        {
+          params: {
+            eventId: event!.id,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log(response.data);
+        setAvailableTickets(response.data.availableTicketCount);
+        toast("Tickets count updated successfully.");
+      } else {
+        toast("Failed to update tickets count. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error updating tickets count:", err);
+      toast("Something went wrong.");
+    }
+  }
+
+  useEffect(()=>{
+    updateAvailableTicketCount();
+  }, [event]);
 
   const cancelLockedTickets = async () => {
     try {
@@ -275,9 +306,17 @@ export default function EventView() {
         className="mx-10 mt-3 p-6 rounded-lg shadow-lg text-center"
       >
         <p className="text-lg">{event.description}</p>
-        <p className="mt-2 text-yellow-400">
-          {event.totalNumberOfTickets} total tickets
-        </p>
+        <div className="mt-2 flex items-center justify-center gap-4">
+            <p className="text-yellow-400">
+              {availableTickets} tickets available
+            </p>
+            <Button
+              variant={"link"}
+              onClick={updateAvailableTicketCount}
+            >
+              <RefreshCw className="w-5 h-5" />
+            </Button>
+        </div>
       </motion.div>
 
       {/* Ticket Selection */}
