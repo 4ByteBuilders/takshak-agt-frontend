@@ -17,7 +17,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/utils/dateFormatter";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
-import { set } from "react-hook-form";
 
 interface SelectedTickets {
   [key: string]: number;
