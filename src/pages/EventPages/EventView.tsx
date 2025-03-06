@@ -33,6 +33,7 @@ export default function EventView() {
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [bookingTime, setBookingTime] = useState<string | null>(null);
   const [bookingid, setBookingId] = useState<string | null>(null);
+  const [scrollY, setScrollY] = useState(0);
 
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
@@ -176,9 +177,33 @@ export default function EventView() {
     timer();
   }, [bookingTime]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   if (!event) {
     return <Skeleton className="w-full h-screen" />;
   }
+
+  const titleStyle = {
+    transform: `translateX(${Math.min(scrollY / 3, 100)}px)`,
+  };
+
+  const subtitleStyle = {
+    transform: `translateX(${Math.min(scrollY / 3, 100)}px)`,
+  };
+
+  const backgroundStyle = {
+    backgroundColor: `rgba(0, 0, 0, ${Math.min(scrollY / 300, 0.65)})`,
+  };
 
   return (
     <div className="min-h-screen bg-gray-950 text-white flex flex-col items-center">
@@ -188,14 +213,28 @@ export default function EventView() {
         transition={{ duration: 1 }}
         className="relative w-full"
       >
-        <img
-          src={event.photoUrls.eventPageUrl}
-          alt="Event"
-          className="w-full h-96 sticky top-0 left-0 object-cover rounded-lg shadow-lg z-0"
+        <div
+          className="w-full h-screen rounded-lg bg-cover bg-no-repeat"
+          style={{
+            backgroundImage: `url(${event.photoUrls.eventPageUrl})`,
+            backgroundPosition: "bottom",
+            backgroundAttachment: "fixed",
+          }}
         />
-        <div className="absolute inset-0 bg-black bg-opacity-75 flex flex-col justify-end text-start rounded-lg z-8">
-          <h1 className="text-4xl font-bold mx-4">{event.title}</h1>
-          <p className="text-pretty font-sans mx-4 my-2 text-muted-foreground">
+        <div
+          className="absolute inset-0 flex flex-col justify-end text-start"
+          style={backgroundStyle}
+        >
+          <h1
+            className="text-4xl font-bold mx-4 transition-transform duration-300"
+            style={titleStyle}
+          >
+            {event.title}
+          </h1>
+          <p
+            className="text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
+            style={subtitleStyle}
+          >
             {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
           </p>
         </div>
@@ -215,7 +254,7 @@ export default function EventView() {
 
       {/* Ticket Selection */}
       {showLockLoader ? (
-        <Skeleton className="h-80 w-96 md:w-1/3 my-6 p-6" />
+        <Skeleton className="h-60 w-96 md:w-1/3 my-6 p-6" />
       ) : (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
