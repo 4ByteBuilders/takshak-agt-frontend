@@ -45,7 +45,7 @@ const Login = () => {
   if (loading) return <Loader />;
   return (
     <div
-      className="relative grid md:grid-cols-2 sm:grid-cols-1 items-center text-center h-full p-3 pt-20"
+      className="relative grid md:grid-cols-2 sm:grid-cols-1 items-center text-center min-h-screen p-3 pt-20"
       style={{
         backgroundImage: "url('/Loginbgimg.jpg')",
         backgroundSize: "cover",

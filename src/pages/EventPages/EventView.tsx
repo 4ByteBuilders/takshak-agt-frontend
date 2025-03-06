@@ -70,9 +70,9 @@ export default function EventView() {
       console.error("Error updating tickets count:", err);
       toast("Something went wrong.");
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     updateAvailableTicketCount();
   }, [event]);
 
@@ -276,7 +276,7 @@ export default function EventView() {
           className="absolute inset-0 flex flex-row text-start"
           style={backgroundStyle}
         >
-          <div className="flex flex-col justify-end text-start">
+          <div className="flex flex-col justify-end text-start mb-16">
             <h1
               className="text-4xl font-bold mx-4 transition-transform duration-300"
               style={titleStyle}
@@ -290,7 +290,7 @@ export default function EventView() {
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
             </p>
           </div>
-          <div className={scrollY > 0 ? "hidden" : "flex items-end mb-5"}>
+          <div className={scrollY > 0 ? "hidden" : "flex items-end mb-24"}>
             <Lottie
               animationData={scrolldown}
               style={{ width: 50, height: 50 }}
@@ -307,15 +307,12 @@ export default function EventView() {
       >
         <p className="text-lg">{event.description}</p>
         <div className="mt-2 flex items-center justify-center gap-4">
-            <p className="text-yellow-400">
-              {availableTickets} tickets available
-            </p>
-            <Button
-              variant={"link"}
-              onClick={updateAvailableTicketCount}
-            >
-              <RefreshCw className="w-5 h-5" />
-            </Button>
+          <p className="text-yellow-400">
+            {availableTickets} tickets available
+          </p>
+          <Button variant={"link"} onClick={updateAvailableTicketCount}>
+            <RefreshCw className="w-5 h-5" />
+          </Button>
         </div>
       </motion.div>
 

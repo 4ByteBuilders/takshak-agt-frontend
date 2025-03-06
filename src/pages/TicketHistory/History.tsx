@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ExtendedBooking } from "@/utils/interfaces";
-import { MapPin, Calendar, Watch } from "lucide-react";
+import { MapPin, Calendar, Watch, BadgeAlert } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -165,25 +165,53 @@ const History = () => {
                             formatDate(booking.createdAt, "DD MMMM YYYY")}
                       </CardDescription>
                     </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
-                        {booking.priceDetails.map((priceDetail, idx) => (
-                          <li key={idx} className="text-muted-foreground">
-                            {priceDetail.quantity} x {priceDetail.name} (₹
-                            {priceDetail.price})
-                          </li>
-                        ))}
-                      </ul>
-                      <p
-                        className={
-                          booking.paymentStatus === "PAID"
-                            ? "font-semibold text-green-400"
-                            : "font-semibold text-red-400"
-                        }
-                      >
-                        {"Grand Total ₹" + booking.amountPaid}
-                      </p>
-                    </div>
+                    {booking.paymentStatus != "PAID" ? (
+                      <div className="flex justify-between items-center mt-4">
+                        <Button className="text-amber-300 p-0" variant="link">
+                          <BadgeAlert />
+                          Raise Concern
+                        </Button>
+                        <div className="flex flex-col items-end gap-2">
+                          <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
+                            {booking.priceDetails.map((priceDetail, idx) => (
+                              <li key={idx} className="text-muted-foreground">
+                                {priceDetail.quantity} x {priceDetail.name} (₹
+                                {priceDetail.price})
+                              </li>
+                            ))}
+                          </ul>
+                          <p
+                            className={
+                              booking.paymentStatus === "PAID"
+                                ? "font-semibold text-green-400"
+                                : "font-semibold text-red-400"
+                            }
+                          >
+                            {"Grand Total ₹" + booking.amountPaid}
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col items-end gap-2 mb-4">
+                        <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
+                          {booking.priceDetails.map((priceDetail, idx) => (
+                            <li key={idx} className="text-muted-foreground">
+                              {priceDetail.quantity} x {priceDetail.name} (₹
+                              {priceDetail.price})
+                            </li>
+                          ))}
+                        </ul>
+                        <p
+                          className={
+                            booking.paymentStatus === "PAID"
+                              ? "font-semibold text-green-400"
+                              : "font-semibold text-red-400"
+                          }
+                        >
+                          {"Grand Total ₹" + booking.amountPaid}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </CardHeader>
               </Card>
