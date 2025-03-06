@@ -3,7 +3,15 @@ import { useAuth } from "@/lib/Providers/AuthProvider";
 import { supabase } from "@/supabaseClient";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
-import { UserRound, UserCog, LogOut, History, Menu, Ticket, BadgeIndianRupee } from "lucide-react";
+import {
+  UserRound,
+  UserCog,
+  LogOut,
+  History,
+  Menu,
+  Ticket,
+  BadgeIndianRupee,
+} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -44,6 +52,9 @@ function Navbar() {
   const handleBookingHistoryClick = async () => {
     navigate("/booking-history");
   };
+  const handleProfileClick = async () => {
+    navigate("/profile");
+  };
 
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut();
@@ -80,12 +91,11 @@ function Navbar() {
                   My Tickets
                 </Button>
               </>
-            ) :
-              !isLoginRoute ? (
-                <Button onClick={handleLoginClick}>Login</Button>
-              ) : (
-                <Button onClick={handleHomeTicketsClick}>Home</Button>
-              )}
+            ) : !isLoginRoute ? (
+              <Button onClick={handleLoginClick}>Login</Button>
+            ) : (
+              <Button onClick={handleHomeTicketsClick}>Home</Button>
+            )}
           </div>
           {user ? (
             <DropdownMenu>
@@ -105,7 +115,7 @@ function Navbar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleProfileClick}>
                   <div className="flex items-center py-2 border-b-2 w-full">
                     <UserCog />
                     <span className="ml-2">Profile</span>
@@ -148,19 +158,28 @@ function Navbar() {
               <DropdownMenuContent className="md:hidden">
                 {user ? (
                   <>
-                    <DropdownMenuItem onClick={handlePendingTicketsClick} className="py-3 border-b-2">
+                    <DropdownMenuItem
+                      onClick={handlePendingTicketsClick}
+                      className="py-3 border-b-2"
+                    >
                       <div className="flex items-center gap-2">
                         <BadgeIndianRupee />
                         <span>Pending Payments</span>
                       </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleMyTicketsClick} className="py-3 border-b-2">
+                    <DropdownMenuItem
+                      onClick={handleMyTicketsClick}
+                      className="py-3 border-b-2"
+                    >
                       <div className="flex items-center gap-2">
                         <Ticket />
                         <span>My Tickets</span>
                       </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleBookingHistoryClick} className="py-3">
+                    <DropdownMenuItem
+                      onClick={handleBookingHistoryClick}
+                      className="py-3"
+                    >
                       <div className="flex items-center">
                         <History />
                         <span className="ml-2">Booking History</span>
@@ -168,7 +187,6 @@ function Navbar() {
                     </DropdownMenuItem>
                   </>
                 ) : (
-
                   <DropdownMenuItem onClick={handleLoginClick} className="py-3">
                     Login
                   </DropdownMenuItem>
