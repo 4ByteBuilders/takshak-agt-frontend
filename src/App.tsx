@@ -20,44 +20,49 @@ import History from "./pages/TicketHistory/History";
 import { EventProvider } from "./lib/Providers/EventProvider";
 import PaymentStatus from "./pages/Payment/PaymentStatus";
 import ProtectedRoute from "./components/Wrapper/ProtectedRoute";
+import Profile from "./pages/Profile/Profile";
+
 function App() {
   return (
     <BrowserRouter>
       <EventProvider>
         <AuthProvider>
-          <div className="h-full">
+          <div className="flex flex-col min-h-screen">
             <Navbar />
             <Toaster />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/events" element={<EventPage />} />
-              <Route
-                path="/view/event"
-                element={
-                  <ProtectedRoute>
-                    <EventView />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/verify" element={<Verify />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route
-                path="/terms-and-conditions"
-                element={<TermsAndCondition />}
-              />
-              <Route path="/about" element={<AboutUs />} />
-              <Route
-                path="/cancellation-and-refund"
-                element={<CancellationAndRefund />}
-              />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/pending-booking" element={<Pending />} />
-              <Route path="/tickets" element={<MyTickets />} />
-              <Route path="/payment-status" element={<PaymentStatus />} />
-              <Route path="/booking-history" element={<History />} />
-              <Route path="*" element={<Page404 />} />
-            </Routes>
+            <div className="flex-grow">
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/events" element={<EventPage />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route
+                  path="/view/event"
+                  element={
+                    <ProtectedRoute>
+                      <EventView />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route path="/verify" element={<Verify />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route
+                  path="/terms-and-conditions"
+                  element={<TermsAndCondition />}
+                />
+                <Route path="/about" element={<AboutUs />} />
+                <Route
+                  path="/cancellation-and-refund"
+                  element={<CancellationAndRefund />}
+                />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/pending-booking" element={<Pending />} />
+                <Route path="/tickets" element={<MyTickets />} />
+                <Route path="/payment-status" element={<PaymentStatus />} />
+                <Route path="/booking-history" element={<History />} />
+                <Route path="*" element={<Page404 />} />
+              </Routes>
+            </div>
             <Footer />
           </div>
         </AuthProvider>
