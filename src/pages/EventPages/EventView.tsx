@@ -54,6 +54,7 @@ export default function EventView() {
         toast("Tickets cancelled successfully.");
         setTicketsLocked(false);
         setSelectedTickets({});
+        setBookingTime(null);
       } else {
         toast("Failed to cancel tickets. Please try again.");
       }

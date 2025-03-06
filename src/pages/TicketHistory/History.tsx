@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ExtendedBooking } from "@/utils/interfaces";
-import { MapPin, Calendar } from "lucide-react";
+import { MapPin, Calendar, Watch } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -83,92 +83,114 @@ const History = () => {
   }
 
   return (
-    <div className="pt-20 m-5 h-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-8 lg:mx-12">
-      {bookings.map((booking, idx) => {
-        if (booking.paymentStatus !== "PENDING") {
-          return (
-            <Card
-              key={idx}
-              className="flex flex-col h-fit rounded-lg bg-zinc-800 transition duration-300 ease-in-out hover:border-stone-50"
-            >
-              <div className="relative">
-                <div
-                  className={`absolute top-2 right-2 ${
-                    booking.paymentStatus === "PAID"
-                      ? "bg-green-700/40 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
-                      : "bg-red-700/40 backdrop-blur-md border border-red-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
-                  } `}
-                >
-                  {booking.paymentStatus === "PAID" &&
-                    (dateNow > new Date(booking.event.dateTime) ? (
-                      <span>Completed and </span>
-                    ) : (
-                      <span>Upcoming and </span>
-                    ))}
-                  {booking.paymentStatus.toString()[0] +
-                    booking.paymentStatus.toString().slice(1).toLowerCase()}
+    <div className="min-h-full bg-grey-950 pt-20">
+      <div className="font-bold text-2xl mx-5 md:mx-8 lg:mx-12">
+        <h1>Your Booking History</h1>
+      </div>
+      <div className="m-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:mx-8 lg:mx-12">
+        {bookings.map((booking, idx) => {
+          if (booking.paymentStatus !== "PENDING") {
+            return (
+              <Card
+                key={idx}
+                className="flex flex-col h-fit rounded-lg bg-zinc-800 transition duration-300 ease-in-out hover:border-stone-50"
+              >
+                <div className="relative">
+                  <div
+                    className={`absolute top-2 right-2 ${
+                      booking.paymentStatus === "PAID"
+                        ? "bg-green-700/40 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                        : "bg-red-700/40 backdrop-blur-md border border-red-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
+                    } `}
+                  >
+                    {booking.paymentStatus === "PAID" &&
+                      (dateNow > new Date(booking.event.dateTime) ? (
+                        <span>Completed and </span>
+                      ) : (
+                        <span>Upcoming and </span>
+                      ))}
+                    {booking.paymentStatus.toString()[0] +
+                      booking.paymentStatus.toString().slice(1).toLowerCase()}
+                  </div>
+                  <div className="flex justify-center items-center">
+                    <img
+                      src={booking.event.photoUrls.eventPageUrl}
+                      className="rounded-t-lg w-full h-40 object-cover"
+                    />
+                  </div>
                 </div>
-                <div className="flex justify-center items-center">
-                  <img
-                    src={booking.event.photoUrls.eventPageUrl}
-                    className="rounded-t-lg w-full h-40 object-cover"
-                  />
-                </div>
-              </div>
-              <CardHeader>
-                <CardTitle className="text-xl font-bold">
-                  {booking.event.title}
-                </CardTitle>
-                <div className="flex-row sm:flex justify-between mt-2">
-                  <div>
-                    <div className="flex items-center mt-2">
-                      <MapPin
-                        strokeWidth={"1px"}
-                        size={"16px"}
-                        className="mr-2"
-                      />
-                      <CardDescription className="inline-block">
-                        {booking.event.venue}
+                <CardHeader>
+                  <CardTitle className="text-xl font-bold">
+                    {booking.event.title}
+                  </CardTitle>
+                  <div className="flex-col sm:flex justify-between mt-2">
+                    <div>
+                      <div className="flex items-center mt-2">
+                        <MapPin
+                          strokeWidth={"1px"}
+                          size={"16px"}
+                          className="mr-2"
+                        />
+                        <CardDescription className="inline-block">
+                          {booking.event.venue}
+                        </CardDescription>
+                      </div>
+                      <div className="flex items-center mt-2">
+                        <Calendar
+                          strokeWidth={"1px"}
+                          size={"16px"}
+                          className="mr-2"
+                        />
+                        <CardDescription className="inline-block">
+                          {formatDate(booking.event.dateTime, "DD MMMM YYYY")}
+                        </CardDescription>
+                      </div>
+                      <div className="flex items-center mt-2">
+                        <Watch
+                          strokeWidth={"1px"}
+                          size={"16px"}
+                          className="mr-2"
+                        />
+                        <CardDescription className="inline-block">
+                          {formatTime(booking.event.dateTime, "hh:mm A")}
+                        </CardDescription>
+                      </div>
+                    </div>
+                    <div className="mt-3">
+                      <CardDescription className="text-md">
+                        {booking.paymentStatus === "PAID"
+                          ? "Booked on: " +
+                            formatDate(booking.createdAt, "DD MMMM YYYY")
+                          : "Booking tried on " +
+                            formatDate(booking.createdAt, "DD MMMM YYYY")}
                       </CardDescription>
                     </div>
-                    <div className="flex items-center mt-2">
-                      <Calendar
-                        strokeWidth={"1px"}
-                        size={"16px"}
-                        className="mr-2"
-                      />
-                      <CardDescription className="inline-block">
-                        {formatDate(booking.event.dateTime, "DD MMMM YYYY")}
-                      </CardDescription>
-                    </div>
-                    <div className="flex items-center mt-2">
-                      <Calendar
-                        strokeWidth={"1px"}
-                        size={"16px"}
-                        className="mr-2"
-                      />
-                      <CardDescription className="inline-block">
-                        {formatTime(booking.event.dateTime, "hh:mm A")}
-                      </CardDescription>
+                    <div className="flex flex-col items-end gap-2">
+                      <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
+                        {booking.priceDetails.map((priceDetail, idx) => (
+                          <li key={idx} className="text-muted-foreground">
+                            {priceDetail.quantity} x {priceDetail.name} (₹
+                            {priceDetail.price})
+                          </li>
+                        ))}
+                      </ul>
+                      <p
+                        className={
+                          booking.paymentStatus === "PAID"
+                            ? "font-semibold text-green-400"
+                            : "font-semibold text-red-400"
+                        }
+                      >
+                        {"Grand Total ₹" + booking.amountPaid}
+                      </p>
                     </div>
                   </div>
-                  <ul className="flex flex-row items-end sm:flex-col gap-4 mt-4">
-                    {booking.priceDetails.map((priceDetail, idx) => (
-                      <li key={idx} className="text-muted-foreground">
-                        {priceDetail.quantity} x {priceDetail.name} (₹
-                        {priceDetail.price})
-                      </li>
-                    ))}
-                    <p className="font-semibold text-white">
-                      {"Grand Total ₹" + booking.amountPaid}
-                    </p>
-                  </ul>
-                </div>
-              </CardHeader>
-            </Card>
-          );
-        }
-      })}
+                </CardHeader>
+              </Card>
+            );
+          }
+        })}
+      </div>
     </div>
   );
 };
