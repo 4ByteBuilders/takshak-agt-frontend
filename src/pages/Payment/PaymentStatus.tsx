@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { PaymentResponse } from "@/utils/interfaces";
 import Lottie from "lottie-react";
 import sucessAnimation from "@/assets/payment/success.json";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 export default function PaymentStatus() {
   const [searchParams] = useSearchParams();
   const order_id = searchParams.get("order_id");
+  const navigate = useNavigate();
 
   const [status, setStatus] = useState<
     PaymentResponse["payment_status"] | null
@@ -84,17 +85,17 @@ export default function PaymentStatus() {
                   animationData={failedAnimation}
                   className="h-24 mx-auto"
                 />
-                <h2 className="text-red-600 dark:text-red-400 text-2xl font-bold mt-4">
-                  Payment Failed
+                <h2 className="text-amber-600 dark:text-amber-400 text-2xl font-bold mt-4">
+                  Payment Not Verified
                 </h2>
                 <p className="text-gray-600 dark:text-gray-300 mt-2">
-                  Something went wrong. Please try again.
+                  It seems we couldn’t verify your payment. If any amount has
+                  been deducted, it will be refunded to your account in 2–3
+                  business days.
                 </p>
-                <button className="mt-4 bg-red-600 dark:bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700 dark:hover:bg-red-600 transition">
-                  Retry Payment
-                </button>
               </div>
             )}
+
             {status === "USER_DROPPED" && (
               <div>
                 <Lottie
@@ -126,12 +127,20 @@ export default function PaymentStatus() {
                 </p>
               </div>
             )}
-            <Button
-              className="mt-8"
-              onClick={() => window.location.replace("/")}
-            >
-              Back to Home
-            </Button>
+            <div className="flex justify-center gap-2 ">
+              <Button
+                className="mt-8 w-20 md:w-32 text-xs md:text-sm bg-cyan-500"
+                onClick={() => navigate("/")}
+              >
+                Home
+              </Button>
+              <Button
+                className="mt-8 w-20 md:w-32 text-xs md:text-sm bg-yellow-400"
+                onClick={() => navigate("/tickets")}
+              >
+                My Tickets
+              </Button>
+            </div>
           </>
         )}
       </div>

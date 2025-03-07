@@ -40,6 +40,7 @@ export default function EventView() {
   const [scrollY, setScrollY] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState<boolean>(false);
   const [availableTickets, setAvailableTickets] = useState<number>(0);
+  const [grandTotal, setGrandTotal] = useState<number>(0);
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
       ...prev,
@@ -61,7 +62,7 @@ export default function EventView() {
       if (response.status === 200) {
         console.log(response.data);
         setAvailableTickets(response.data.availableTicketCount);
-        toast("Tickets count updated successfully.");
+        // toast("Tickets count updated successfully.");
       } else {
         toast("Failed to update tickets count. Please try again.");
       }
@@ -75,6 +76,17 @@ export default function EventView() {
     updateAvailableTicketCount();
   }, [event]);
 
+  const calculateAndSetGrandTotal = () => {
+    let totalAmount = 0;
+    for (const [key, value] of Object.entries(selectedTickets)) {
+      const ticket = event?.priceOfferings.find(
+        (priceOffering) => priceOffering.id === key
+      );
+      totalAmount += value * ticket!.price;
+    }
+    setGrandTotal(totalAmount);
+  };
+
   const cancelLockedTickets = async () => {
     try {
       const response = await axios.post(
@@ -85,7 +97,6 @@ export default function EventView() {
       );
       if (response.status === 200) {
         toast("Tickets cancelled successfully.");
-        
         setTicketsLocked(false);
         setSelectedTickets({});
         setBookingTime(null);
@@ -144,6 +155,9 @@ export default function EventView() {
       setShowLockLoader(false);
     }
   };
+  useEffect(() => {
+    calculateAndSetGrandTotal();
+  }, [selectedTickets, event]);
 
   useEffect(() => {
     const getBooking = async () => {
@@ -327,44 +341,52 @@ export default function EventView() {
           className="max-w-3xl my-6 p-4 md:p-6 bg-gray-900 rounded-lg shadow-lg mx-auto"
         >
           <h2 className="text-2xl font-semibold mb-4 text-center">
-            Select Your Tickets
+            {!ticketsLocked ? "Select Your Tickets" : "You Have Selected"}
           </h2>
           {event.priceOfferings.map(({ id, name, price, capacity }) => (
             <div key={id} className="flex justify-between items-center mb-4">
               <div
                 className={
                   !ticketsLocked
-                    ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
-                    : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                    ? "flex flex-row items-center justify-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 md:mx-5 text-xs md:text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] w-40 md:w-64"
+                    : "flex flex-row items-center justify-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs md:text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)] w-40 md:w-64"
                 }
               >
                 <span className="text-white">{name}</span>
-                <span className="text-xs font-bold"> ₹{price}</span>
-                <span className="text-xs font-bold"> {capacity} person(s)</span>
+                <span className="text-xs md:text-sm"> ₹{price}</span>
+                <span className="text-xs md:text-sm ">
+                  {`(${capacity} ${capacity == 1 ? "person" : "people"})`}
+                </span>
               </div>
               <div className="flex items-center mx-3 md:mx-5">
-                <button
-                  className="px-2 md:px-3 py-1 bg-gray-700 rounded-l"
-                  onClick={() =>
-                    handleTicketChange(id, (selectedTickets[id] || 0) - 1)
-                  }
-                  disabled={selectedTickets[id] === 0 || ticketsLocked}
-                >
-                  -
-                </button>
-                <span className="px-2 md:px-4">{selectedTickets[id] || 0}</span>
-                <button
-                  className="px-2 md:px-3 py-1 bg-gray-700 rounded-r"
-                  onClick={() =>
-                    handleTicketChange(id, (selectedTickets[id] || 0) + 1)
-                  }
-                  disabled={
-                    selectedTickets[id] === event.totalNumberOfTickets ||
-                    ticketsLocked
-                  }
-                >
-                  +
-                </button>
+                {!ticketsLocked && (
+                  <button
+                    className="px-2 text-xs md:text-sm md:px-3 py-1 bg-gray-700 rounded-l"
+                    onClick={() =>
+                      handleTicketChange(id, (selectedTickets[id] || 0) - 1)
+                    }
+                    disabled={selectedTickets[id] === 0 || ticketsLocked}
+                  >
+                    -
+                  </button>
+                )}
+                <span className="px-2 text-xs md:text-sm md:px-4 mx-2 bg-gray-800 text-white rounded">
+                  {selectedTickets[id] || 0}
+                </span>
+                {!ticketsLocked && (
+                  <button
+                    className="px-2 text-xs md:text-sm md:px-3 py-1 bg-gray-700 rounded-r"
+                    onClick={() =>
+                      handleTicketChange(id, (selectedTickets[id] || 0) + 1)
+                    }
+                    disabled={
+                      selectedTickets[id] === event.totalNumberOfTickets ||
+                      ticketsLocked
+                    }
+                  >
+                    +
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -373,7 +395,7 @@ export default function EventView() {
           {!ticketsLocked ? (
             <button
               onClick={lockTickets}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
+              className="w-full text-xs md:text-sm bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
             >
               Lock Tickets
             </button>
@@ -387,19 +409,42 @@ export default function EventView() {
               <p className="text-green-400 text-lg font-semibold">
                 Tickets Locked!
               </p>
+              <p>
+                If you change your mind, you can cancel your booking and select
+                new tickets.
+              </p>
               <div className="mt-4 p-4 bg-gray-800 rounded-lg">
                 <p className="text-lg font-semibold">
                   Time Left: <span className="text-amber-500">{timeLeft}</span>
                 </p>
               </div>
-              <button
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all mt-4"
-                onClick={() => {
-                  navigate("/pending-booking");
-                }}
+              <motion.button
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all mt-4 flex items-center justify-center gap-2"
+                onClick={() => navigate("/pending-booking")}
               >
-                Proceed to Payment →
-              </button>
+                <span>Proceed to Pay: ₹{grandTotal}</span>
+                <motion.svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </motion.svg>
+              </motion.button>
+
               <button
                 className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
                 onClick={cancelLockedTickets}
