@@ -419,9 +419,6 @@ export default function EventView() {
               <motion.button
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all mt-4 flex items-center justify-center gap-2"
                 onClick={() => navigate("/pending-booking")}
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
               >
                 <span>Proceed to Pay: ₹{grandTotal}</span>
                 <motion.svg
@@ -430,11 +427,12 @@ export default function EventView() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  variants={{
-                    rest: { x: 0 },
-                    hover: { x: 5 },
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    ease: "easeInOut",
                   }}
-                  transition={{ type: "tween", duration: 0.3 }}
                 >
                   <path
                     strokeLinecap="round"
