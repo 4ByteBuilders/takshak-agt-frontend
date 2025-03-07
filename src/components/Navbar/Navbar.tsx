@@ -4,12 +4,13 @@ import { supabase } from "@/supabaseClient";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import {
-  UserRound,
   UserCog,
   LogOut,
   History,
   Ticket,
-  BadgeIndianRupee,
+  LogIn,
+  Home,
+  CreditCard,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -74,7 +75,11 @@ function Navbar() {
           className="flex gap-4 items-center font-alfa text-2xl cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <img src="/takshak-logo.png" className="max-h-10" />
+          <img
+            src="/takshak-logo.png"
+            className="max-h-10"
+            alt="Takshak logo"
+          />
           <span className="hidden md:block">Takshak</span>
         </div>
         <div className="flex gap-4 items-center ml-auto">
@@ -82,50 +87,59 @@ function Navbar() {
             {user ? (
               <>
                 <Button
-                  className="hidden md:block"
+                  className="hidden md:flex items-center gap-2"
                   variant={"secondary"}
                   onClick={handleBookingHistoryClick}
                 >
-                  Booking History
+                  <History size={20} />
+                  <span>Booking History</span>
                 </Button>
                 <Button
-                  className="hidden md:block"
+                  className="hidden md:flex items-center gap-2"
                   variant={"secondary"}
                   onClick={handleMyTicketsClick}
                 >
-                  My Tickets
+                  <Ticket size={20} />
+                  <span>My Tickets</span>
                 </Button>
               </>
             ) : !isLoginRoute ? (
               <Button variant={"link"} onClick={handleLoginClick}>
-                Login
+                <LogIn size={20} />
+                <span>Login</span>
               </Button>
             ) : (
-              <Button onClick={handleHomeTicketsClick}>Home</Button>
+              <Button onClick={handleHomeTicketsClick}>
+                <Home size={20} />
+                <span>Home</span>
+              </Button>
             )}
           </div>
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Avatar>
-                  <AvatarImage src={user.user_metadata.picture} />
+                  <AvatarImage
+                    src={user.user_metadata.picture}
+                    alt="User Avatar"
+                  />
                   <AvatarFallback>
-                    <UserRound />
+                    <UserCog size={20} />
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="">
+              <DropdownMenuContent>
                 <DropdownMenuLabel>
                   <div className="flex items-center">
-                    <UserRound />
+                    <UserCog size={16} />
                     <span className="ml-2">{user.email}</span>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleProfileClick}>
-                  <div className="flex items-center py-2 border-b-2 w-full">
-                    <UserCog />
-                    <span className="ml-2">Profile</span>
+                  <div className="flex items-center gap-2">
+                    <UserCog size={16} />
+                    <span>Profile</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -133,8 +147,8 @@ function Navbar() {
                   className="py-3 border-b-2"
                 >
                   <div className="flex items-center gap-2">
-                    <BadgeIndianRupee />
-                    <span>Booking History</span>
+                    <CreditCard size={16} />
+                    <span>Pending Payments</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -142,7 +156,7 @@ function Navbar() {
                   className="py-3 border-b-2"
                 >
                   <div className="flex items-center gap-2">
-                    <Ticket />
+                    <Ticket size={16} />
                     <span>My Tickets</span>
                   </div>
                 </DropdownMenuItem>
@@ -150,17 +164,17 @@ function Navbar() {
                   onClick={handleBookingHistoryClick}
                   className="py-3 border-b-2"
                 >
-                  <div className="flex items-center">
-                    <History />
-                    <span className="ml-2">Booking History</span>
+                  <div className="flex items-center gap-2">
+                    <History size={16} />
+                    <span>Booking History</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <div className="flex items-center py-2 w-full">
-                        <LogOut />
-                        <span className="ml-2">Logout</span>
+                      <div className="flex items-center gap-2 py-2 w-full">
+                        <LogOut size={16} />
+                        <span>Logout</span>
                       </div>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
