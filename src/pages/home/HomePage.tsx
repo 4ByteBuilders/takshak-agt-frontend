@@ -149,7 +149,7 @@ export default function HomePage() {
             className="mt-6 sm:mt-8"
           >
             <button
-              onClick={() => navigate("/view/event")}
+              onClick={() => navigate("/view-event")}
               className="relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-sm sm:text-base md:text-lg shadow-lg transition-all duration-300 transform hover:scale-105"
             >
               Grab your passes Now →
