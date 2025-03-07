@@ -41,7 +41,7 @@ export default function Verify() {
       const auth = sessionData.session?.access_token;
       axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
       const response = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/booking/verify-booking`,
+        `${import.meta.env.VITE_BACKEND_URL}/verify/booking`,
         { qr: data }
       );
       // Set booking data but do not show success dialog
