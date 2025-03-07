@@ -77,7 +77,8 @@ const Contact = () => {
     }
 
     return (
-        <div className="flex items-center justify-center pt-7 pb-40 px-4 mt-12">
+        <div className="flex flex-col items-center justify-center pb-40 px-4 pt-16">
+            <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full max-w-md">
                     <FormField

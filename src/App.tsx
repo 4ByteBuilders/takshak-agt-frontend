@@ -27,7 +27,7 @@ function App() {
     <BrowserRouter>
       <EventProvider>
         <AuthProvider>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col min-h-screen font-poppins">
             <Navbar />
             <Toaster />
             <div className="flex-grow">
