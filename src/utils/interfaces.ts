@@ -1,4 +1,12 @@
 
+export interface User {
+    id: string;
+    full_name: string;
+    email: string;
+    avatar_url: string;
+    // other properties
+}
+
 export interface Event {
     id: string;
     title: string;
@@ -45,6 +53,8 @@ export interface Booking {
     numVerifiedAtVenue: number | null;
     qrCode: string;
     event: Event;
+    user: User;
+    totalPeople: number;
 }
 
 
@@ -86,9 +96,10 @@ export interface PaymentResponse {
 }
 
 export interface ExtendedBooking extends Booking {
-  priceDetails: {
-    name: string;
-    price: number;
-    quantity: number;
-  }[];
+    priceDetails: {
+        name: string;
+        price: number;
+        quantity: number;
+    }[];
 }
+

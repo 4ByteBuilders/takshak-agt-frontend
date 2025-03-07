@@ -8,7 +8,7 @@ const TermsAndCondition = () => {
     };
 
     return (
-        <div className="container mx-auto p-4 sm:mx-20 sm:w-fit mt-12">
+        <div className="container mx-auto p-4 sm:mx-20 sm:w-fit pt-14">
             <h1 className="text-4xl font-bold mb-4">Terms and Conditions</h1>
             <p className="mb-4">Last Updated: 28th February 2025</p>
 

@@ -44,7 +44,7 @@ export default function AboutUs() {
   ];
 
   return (
-    <div className="container mx-auto py-10 px-4 flex-grow">
+    <div className="container mx-auto py-10 px-4 flex-grow pt-14">
       {/* Hero Section */}
       <div className="text-center space-y-4 mb-10">
         <h1 className="text-4xl font-bold">About Us</h1>
@@ -61,7 +61,7 @@ export default function AboutUs() {
           <CardTitle>Our Mission</CardTitle>
         </CardHeader>
         <CardContent>
-          <p>
+          <p className="text-center">
             At Takshak Event Management, our mission is to transform every event into an
             extraordinary celebration that resonates with energy, creativity,
             and passion. We are dedicated to crafting experiences that go beyond
@@ -71,7 +71,7 @@ export default function AboutUs() {
             music festival, corporate event, or themed party is a unique
             masterpiece of entertainment and innovation.
           </p>
-          <p className="mt-4">
+          <p className="mt-4 text-center">
             We believe that every event should not only captivate but also
             inspire and connect people. With a keen eye for detail and a drive
             to exceed expectations, we work tirelessly to create moments that

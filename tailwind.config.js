@@ -6,6 +6,7 @@ module.exports = {
 		extend: {
 			fontFamily: {
 				alfa: ['Alfa Slab One', 'sans-serif'],
+				poppins: ['Poppins', 'sans-serif'],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
