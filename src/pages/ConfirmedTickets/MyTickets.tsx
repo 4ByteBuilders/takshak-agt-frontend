@@ -99,7 +99,7 @@ const MyTickets = () => {
           }
         `}
       </style>
-      <div className="pt-20 h-screen">
+      <div className="pt-20 h-full">
         <h1 className="text-center font-bold text-2xl">
           Scan the Pass at the Venue
         </h1>

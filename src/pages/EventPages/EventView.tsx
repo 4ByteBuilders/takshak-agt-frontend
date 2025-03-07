@@ -189,7 +189,6 @@ export default function EventView() {
   useEffect(() => {
     calculateAndSetGrandTotal();
   }, [selectedTickets, event]);
-
   useEffect(() => {
     const getBooking = async () => {
       try {
