@@ -89,18 +89,10 @@ function Navbar() {
                 <Button
                   className="hidden md:flex items-center gap-2"
                   variant={"secondary"}
-                  onClick={handleBookingHistoryClick}
-                >
-                  <History size={20} />
-                  <span>Booking History</span>
-                </Button>
-                <Button
-                  className="hidden md:flex items-center gap-2"
-                  variant={"secondary"}
                   onClick={handleMyTicketsClick}
                 >
                   <Ticket size={20} />
-                  <span>My Tickets</span>
+                  <span>My Passes</span>
                 </Button>
               </>
             ) : !isLoginRoute ? (
@@ -136,7 +128,10 @@ function Navbar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleProfileClick}>
+                <DropdownMenuItem
+                  onClick={handleProfileClick}
+                  className="py-3 border-b-2"
+                >
                   <div className="flex items-center gap-2">
                     <UserCog size={16} />
                     <span>Profile</span>
@@ -157,7 +152,7 @@ function Navbar() {
                 >
                   <div className="flex items-center gap-2">
                     <Ticket size={16} />
-                    <span>My Tickets</span>
+                    <span>My Passes</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
