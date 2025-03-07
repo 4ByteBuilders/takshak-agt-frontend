@@ -320,21 +320,21 @@ export default function EventView() {
           className="absolute inset-0 flex flex-row text-start"
           style={backgroundStyle}
         >
-          <div className="flex flex-col justify-end text-start mb-16">
+          <div className="flex flex-col justify-end text-start">
             <h1
-              className="text-4xl font-bold mx-4 transition-transform duration-300"
+              className="text-7xl font-bold mx-4 transition-transform duration-300"
               style={titleStyle}
             >
               {event.title}
             </h1>
             <p
-              className="text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
+              className="text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
               style={subtitleStyle}
             >
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
             </p>
           </div>
-          <div className={scrollY > 0 ? "hidden" : "flex items-end mb-24"}>
+          <div className={scrollY > 0 ? "hidden" : "flex items-end"}>
             <Lottie
               animationData={scrolldown}
               style={{ width: 50, height: 50 }}

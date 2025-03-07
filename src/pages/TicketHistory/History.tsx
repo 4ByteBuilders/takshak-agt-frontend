@@ -246,10 +246,10 @@ const CombinedBookings = () => {
                 >
                   <div className="relative">
                     <div
-                      className={`absolute top-2 right-2 ${
+                      className={`absolute top-2 right-2 z-20 ${
                         booking.paymentStatus === "PAID"
-                          ? "bg-green-700/40 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
-                          : "bg-red-700/40 backdrop-blur-md border border-red-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold text-white drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
+                          ? "bg-green-700 backdrop-blur-md border border-green-400/50 rounded-xl px-2 py-1 text-sm font-semibold text-white"
+                          : "bg-red-700 backdrop-blur-md border border-red-400/50 rounded-xl px-2 py-1 text-sm font-semibold"
                       }`}
                     >
                       {booking.paymentStatus === "PAID" &&
@@ -264,7 +264,7 @@ const CombinedBookings = () => {
                     <div className="flex justify-center items-center">
                       <img
                         src={booking.event.photoUrls.eventPageUrl}
-                        className="rounded-t-lg w-full h-40 object-cover"
+                        className="rounded-t-lg w-full h-40 object-cover filter brightness-75 z-0"
                         alt={booking.event.title}
                       />
                     </div>
@@ -316,13 +316,18 @@ const CombinedBookings = () => {
                         </CardDescription>
                       </div>
                       {booking.paymentStatus !== "PAID" ? (
-                        <div className="flex justify-between items-center mt-4">
-                          <Button className="text-amber-300 p-0" variant="link">
-                            <BadgeAlert />
-                            Raise Concern
-                          </Button>
+                        <div className="flex flex-col md:flex-row justify-between items-end mt-4 gap-3">
+                          <div className="flex items-start w-full md:w-auto gap-2">
+                            <Button
+                              className="text-amber-300 p-0"
+                              variant="link"
+                            >
+                              <BadgeAlert />
+                              Raise Concern
+                            </Button>
+                          </div>
                           <div className="flex flex-col items-end gap-2">
-                            <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
+                            <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4 text-sm md:text-md">
                               {booking.priceDetails.map((priceDetail, idx) => (
                                 <li key={idx} className="text-muted-foreground">
                                   {priceDetail.quantity} x {priceDetail.name} (₹
@@ -342,7 +347,7 @@ const CombinedBookings = () => {
                           </div>
                         </div>
                       ) : (
-                        <div className="flex flex-col items-end gap-2 mb-4">
+                        <div className="flex flex-col items-end gap-2 mb-4 text-sm md:text-md">
                           <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
                             {booking.priceDetails.map((priceDetail, idx) => (
                               <li key={idx} className="text-muted-foreground">
