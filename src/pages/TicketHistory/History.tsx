@@ -1,6 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { ExtendedBooking, Booking } from "@/utils/interfaces";
-import { MapPin, Calendar, Watch, BadgeAlert } from "lucide-react";
+import {
+  MapPin,
+  Calendar,
+  Watch,
+  BadgeAlert,
+  RefreshCwIcon,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   Card,
@@ -171,18 +177,25 @@ const CombinedBookings = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-col items-end md:mt-4 sm:mt-1 gap-2">
+                  <div className="flex justify-between md:mt-4 sm:mt-1 gap-2">
+                    <div
+                      className="flex items-center rounded-lg px-1  border-2 hover:border-orange-400
+                    "
+                    >
+                      <RefreshCwIcon className="text-orange-400" />
+                      <Button
+                        onClick={() => refreshBookingStatus(order_id)}
+                        variant="ghost"
+                        className="text-orange-400 px-1 hover:bg-inherit hover:text-orange-400 "
+                      >
+                        Refresh Status
+                      </Button>
+                    </div>
                     <Button
                       onClick={() => doPayment(paymentSessionId!)}
-                      className="bg-amber-500 text-white transition duration-300 ease-in-out hover:bg-amber-600"
+                      className="bg-amber-500 text-white hover:bg-amber-600"
                     >
                       Checkout and pay ₹{amountPaid} →
-                    </Button>
-                    <Button
-                      onClick={() => refreshBookingStatus(order_id)}
-                      className="bg-blue-500 text-white transition duration-300 ease-in-out hover:bg-blue-600"
-                    >
-                      Refresh Booking Status
                     </Button>
                   </div>
                 </CardContent>
