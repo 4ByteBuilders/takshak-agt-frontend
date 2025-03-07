@@ -31,7 +31,7 @@ const Pending = () => {
   const [loading, setLoading] = useState(true);
   const cashfree = useRef<Cashfree | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  // const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
   const handleClick = () => {
     navigate("/");
@@ -85,7 +85,7 @@ const Pending = () => {
       if (response.data.payment_status === "SUCCESS") {
         navigate(`/payment-status?order_id=${order_id}`);
       } else {
-        setSelectedOrderId(order_id);
+        // setSelectedOrderId(order_id);
         setIsDialogOpen(true); // Open the dialog
       }
     } catch (error) {
