@@ -25,6 +25,7 @@ import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AddVerifiersPage from "./pages/admin/AddVerifiersPage";
 import ViewMessagesPage from "./pages/admin/ViewMessagesPage";
+import ViewConcernsPage from "./pages/admin/ViewConcernsPage";
 
 const getSubdomain = () => {
   const host = window.location.hostname;
@@ -76,6 +77,7 @@ function App() {
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
                     <Route path="/admin/add-verifiers" element={<AddVerifiersPage />} />
                     <Route path="/admin/view-messages" element={<ViewMessagesPage />} />
+                    <Route path="/admin/view-concerns" element={<ViewConcernsPage />} />
                     <Route path="*" element={<Page404 />} />
                   </Routes>
                 </div>
