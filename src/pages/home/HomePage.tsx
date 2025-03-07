@@ -72,11 +72,11 @@ export default function HomePage() {
 
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center pt-0 md:pt-14"
-      style={{
-        backgroundImage:
-          "url('https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg')",
-      }}
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center pt-0 md:pt-14 bg-gradient-to-br from-pink-500 via-purple-500 to-yellow-500"
+      // style={{
+      //   backgroundImage:
+      //     "url('https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg')",
+      // }}
     >
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black opacity-50"></div>
