@@ -76,14 +76,16 @@ export default function EventView() {
     updateAvailableTicketCount();
   }, [event]);
 
-  const calculateGrandTotal = () => {
+  const calculateAndSetGrandTotal = () => {
     let totalAmount = 0;
-    for(const [key, value] of Object.entries(selectedTickets)) {
-      const ticket = event?.priceOfferings.find((priceOffering) => priceOffering.id === key);
+    for (const [key, value] of Object.entries(selectedTickets)) {
+      const ticket = event?.priceOfferings.find(
+        (priceOffering) => priceOffering.id === key
+      );
       totalAmount += value * ticket!.price;
     }
-    return totalAmount;
-  }
+    setGrandTotal(totalAmount);
+  };
 
   const cancelLockedTickets = async () => {
     try {
@@ -138,11 +140,6 @@ export default function EventView() {
         }
       );
       if (response.status === 200) {
-
-        const totalAmount = calculateGrandTotal();
-
-        setGrandTotal(totalAmount);
-
         setBookingTime(response.data.data.created_at);
         setBookingId(response.data.data.order_id);
         toast("Tickets locked successfully.");
@@ -158,6 +155,9 @@ export default function EventView() {
       setShowLockLoader(false);
     }
   };
+  useEffect(() => {
+    calculateAndSetGrandTotal();
+  }, [selectedTickets, event]);
 
   useEffect(() => {
     const getBooking = async () => {
@@ -256,14 +256,14 @@ export default function EventView() {
 
   const titleStyle = isLargeScreen
     ? {
-      transform: `translateX(${Math.min(scrollY, 100)}px)`,
-    }
+        transform: `translateX(${Math.min(scrollY, 100)}px)`,
+      }
     : {};
 
   const subtitleStyle = isLargeScreen
     ? {
-      transform: `translateX(${Math.min(scrollY, 100)}px)`,
-    }
+        transform: `translateX(${Math.min(scrollY, 100)}px)`,
+      }
     : {};
 
   const backgroundStyle = {
@@ -357,30 +357,34 @@ export default function EventView() {
                 <span className="text-xs font-bold"> {capacity} person(s)</span>
               </div>
               <div className="flex items-center mx-3 md:mx-5">
-                {!ticketsLocked && <button
-                  className="px-2 md:px-3 py-1 bg-gray-700 rounded-l"
-                  onClick={() =>
-                    handleTicketChange(id, (selectedTickets[id] || 0) - 1)
-                  }
-                  disabled={selectedTickets[id] === 0 || ticketsLocked}
-                >
-                  -
-                </button>}
+                {!ticketsLocked && (
+                  <button
+                    className="px-2 md:px-3 py-1 bg-gray-700 rounded-l"
+                    onClick={() =>
+                      handleTicketChange(id, (selectedTickets[id] || 0) - 1)
+                    }
+                    disabled={selectedTickets[id] === 0 || ticketsLocked}
+                  >
+                    -
+                  </button>
+                )}
                 <span className="px-2 md:px-4 mx-2 bg-gray-800 text-white rounded">
                   {selectedTickets[id] || 0}
                 </span>
-                {!ticketsLocked && <button
-                  className="px-2 md:px-3 py-1 bg-gray-700 rounded-r"
-                  onClick={() =>
-                    handleTicketChange(id, (selectedTickets[id] || 0) + 1)
-                  }
-                  disabled={
-                    selectedTickets[id] === event.totalNumberOfTickets ||
-                    ticketsLocked
-                  }
-                >
-                  +
-                </button>}
+                {!ticketsLocked && (
+                  <button
+                    className="px-2 md:px-3 py-1 bg-gray-700 rounded-r"
+                    onClick={() =>
+                      handleTicketChange(id, (selectedTickets[id] || 0) + 1)
+                    }
+                    disabled={
+                      selectedTickets[id] === event.totalNumberOfTickets ||
+                      ticketsLocked
+                    }
+                  >
+                    +
+                  </button>
+                )}
               </div>
             </div>
           ))}
@@ -412,18 +416,35 @@ export default function EventView() {
                   Time Left: <span className="text-amber-500">{timeLeft}</span>
                 </p>
               </div>
-              <button
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all mt-4"
-                onClick={() => {
-                  navigate("/pending-booking");
-                }}
+              <motion.button
+                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all mt-4 flex items-center justify-center gap-2"
+                onClick={() => navigate("/pending-booking")}
+                initial="rest"
+                whileHover="hover"
+                animate="rest"
               >
-                Proceed to Payment → {
-                  <p className="text-lg font-semibold mt-2">
-                    Grand Total: <span className="text-amber-500">₹{grandTotal}</span>
-                  </p>
-                }
-              </button>
+                <span>Proceed to Pay: ₹{grandTotal}</span>
+                <motion.svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  variants={{
+                    rest: { x: 0 },
+                    hover: { x: 5 },
+                  }}
+                  transition={{ type: "tween", duration: 0.3 }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </motion.svg>
+              </motion.button>
+
               <button
                 className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
                 onClick={cancelLockedTickets}
