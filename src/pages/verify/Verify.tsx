@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
-import { Booking } from "@/utils/interfaces";
+// import { Booking } from "@/utils/interfaces";
 import QrScanner from "./QrScanner";
 import Dialog from "./Dialog";
 import Loader from "./Loader";
@@ -12,7 +12,7 @@ export default function Verify() {
     title: "",
     message: "",
   });
-  const [booking, setBooking] = useState<Booking | null>(null);
+  // const [booking, setBooking] = useState<Booking | null>(null);
   const [isScanning, setIsScanning] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -34,7 +34,6 @@ export default function Verify() {
         title: "Success",
         message: response.data.message || "Tickets Verified!",
       });
-      setBooking(response.data);
     } catch (err) {
       console.error(err);
       setShowDialog({
