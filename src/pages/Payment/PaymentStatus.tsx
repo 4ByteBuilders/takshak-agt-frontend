@@ -129,7 +129,7 @@ export default function PaymentStatus() {
             )}
             <div className="flex justify-center gap-2 ">
               <Button
-                className="mt-8 w-20 md:w-32 text-xs md:text-sm bg-blue-400"
+                className="mt-8 w-20 md:w-32 text-xs md:text-sm bg-cyan-500"
                 onClick={() => navigate("/")}
               >
                 Home
