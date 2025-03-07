@@ -335,34 +335,24 @@ const CombinedBookings = () => {
                                 </li>
                               ))}
                             </ul>
-                            <p
-                              className={
-                                booking.paymentStatus === "PAID"
-                                  ? "font-semibold text-green-400"
-                                  : "font-semibold text-red-400"
-                              }
-                            >
+                            <p className="font-semibold text-red-400">
                               {"Grand Total ₹" + booking.amountPaid}
                             </p>
                           </div>
                         </div>
                       ) : (
-                        <div className="flex flex-col items-end gap-2 mb-4 text-sm md:text-md">
-                          <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
-                            {booking.priceDetails.map((priceDetail, idx) => (
-                              <li key={idx} className="text-muted-foreground">
-                                {priceDetail.quantity} x {priceDetail.name} (₹
-                                {priceDetail.price})
-                              </li>
-                            ))}
-                          </ul>
-                          <p
-                            className={
-                              booking.paymentStatus === "PAID"
-                                ? "font-semibold text-green-400"
-                                : "font-semibold text-red-400"
-                            }
-                          >
+                        <div className="flex flex-col items-end justify-end gap-2 mb-5 text-sm md:text-md">
+                          <div>
+                            <ul className="flex flex-col sm:flex-row items-end gap-4 mt-4">
+                              {booking.priceDetails.map((priceDetail, idx) => (
+                                <li key={idx} className="text-muted-foreground">
+                                  {priceDetail.quantity} x {priceDetail.name} (₹
+                                  {priceDetail.price})
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          <p className="font-semibold text-green-400 text-md">
                             {"Grand Total ₹" + booking.amountPaid}
                           </p>
                         </div>

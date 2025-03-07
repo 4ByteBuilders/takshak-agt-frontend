@@ -309,7 +309,7 @@ export default function EventView() {
         className="relative w-full"
       >
         <div
-          className="w-full h-screen rounded-lg bg-cover bg-no-repeat"
+          className="w-full h-screen bg-cover bg-no-repeat"
           style={{
             backgroundImage: `url(${event.photoUrls.eventPageUrl})`,
             backgroundPosition: "bottom",
@@ -320,7 +320,7 @@ export default function EventView() {
           className="absolute inset-0 flex flex-row text-start"
           style={backgroundStyle}
         >
-          <div className="flex flex-col justify-end text-start">
+          <div className="flex flex-col justify-end text-start m-6">
             <h1
               className="text-7xl font-bold mx-4 transition-transform duration-300"
               style={titleStyle}
@@ -328,7 +328,7 @@ export default function EventView() {
               {event.title}
             </h1>
             <p
-              className="text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
+              className="text-lg md:text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
               style={subtitleStyle}
             >
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
@@ -349,11 +349,14 @@ export default function EventView() {
         transition={{ duration: 1, delay: 0.3 }}
         className="mx-10 mt-3 p-6 rounded-lg shadow-lg text-center"
       >
-        <p className="text-lg">{event.description}</p>
-        <div className="mt-2 flex items-center justify-center gap-4">
-          <p className="text-yellow-400">{availableTickets} passes available</p>
+        <p className="text-lg md:text-xl">{event.description}</p>
+        <div className="mt-2 mx-44 flex items-center justify-center">
+          <p className="text-lg md:text-xl text-amber-300">
+            {availableTickets} passes left
+          </p>
           <Button
             variant={"link"}
+            className="text-amber-300 font-bold"
             onClick={async () => {
               setShowLockLoader(true);
               await updateAvailableTicketCount();

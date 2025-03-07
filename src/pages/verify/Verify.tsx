@@ -53,14 +53,17 @@ export default function Verify() {
       setShowDialog({
         status: true,
         title: "Error",
-        message: axios.isAxiosError(err) && err.response?.data?.error ? err.response.data.error : "An error occurred.",
+        message:
+          axios.isAxiosError(err) && err.response?.data?.error
+            ? err.response.data.error
+            : "An error occurred.",
       });
     }
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center pt-16 bg-gray-900">
+    <div className="min-h-screen text-white flex flex-col items-center pt-16 bg-gray-950">
       <h1 className="text-4xl font-bold mb-6">Verify QR Code</h1>
 
       {/* Default Message */}
@@ -81,26 +84,29 @@ export default function Verify() {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`px-6 py-3 rounded-full ${isScanning ? "bg-red-500" : "bg-green-500"
-          } text-white font-semibold shadow-lg`}
-        onClick={() => handleButtonClick()}
+        className={`px-6 py-3 rounded-full ${
+          isScanning ? "bg-red-500" : "bg-green-500"
+        } text-white font-semibold shadow-lg`}
+        onClick={() => setIsScanning(!isScanning)}
       >
         {isScanning ? "Stop Scanning" : "Start Scanning"}
       </motion.button>
 
       {/* QR Scanner */}
-      <AnimatePresence>
-        {isScanning && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="mt-8 w-full max-w-md"
-          >
-            <QrScanner isScanning={isScanning} onScan={handleScan} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div>
+        <AnimatePresence>
+          {isScanning && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="mt-8 w-full max-w-md"
+            >
+              <QrScanner isScanning={isScanning} onScan={handleScan} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Loader */}
       <AnimatePresence>
@@ -125,7 +131,9 @@ export default function Verify() {
             exit={{ opacity: 0, y: 20 }}
             className="mt-8 w-full max-w-md"
           >
-            <BookingDetails booking={booking} onCheckInSuccess={handleCheckInSuccess}
+            <BookingDetails
+              booking={booking}
+              onCheckInSuccess={handleCheckInSuccess}
             />
           </motion.div>
         )}
