@@ -7,6 +7,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { load, Cashfree } from "@cashfreepayments/cashfree-js";
 import { supabase } from "@/supabaseClient";
 import { useEffect, useState, useRef } from "react";
@@ -23,6 +30,8 @@ const Pending = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const cashfree = useRef<Cashfree | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
   const handleClick = () => {
     navigate("/");
@@ -66,14 +75,19 @@ const Pending = () => {
       const auth = (await supabase.auth.getSession()).data.session
         ?.access_token;
       axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
+      console.log("fetching!!!");
+
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + "/booking/payment-status",
-        {
-          params: { order_id },
-        }
+        { params: { order_id } }
       );
-      console.log(response);
-      navigate(`/payment-status?order_id=${order_id}`);
+
+      if (response.data.payment_status === "SUCCESS") {
+        navigate(`/payment-status?order_id=${order_id}`);
+      } else {
+        setSelectedOrderId(order_id);
+        setIsDialogOpen(true); // Open the dialog
+      }
     } catch (error) {
       console.error("Error refreshing booking status:", error);
     } finally {
@@ -123,7 +137,6 @@ const Pending = () => {
       </div>
       {bookings.map((booking, index) => {
         const { event, amountPaid, paymentSessionId, id: order_id } = booking;
-        console.log(order_id);
         return (
           <Card
             key={index}
@@ -162,32 +175,16 @@ const Pending = () => {
                     </CardDescription>
                   </div>
                 </div>
-                <div className="flex flex-col md:flex-row items-end gap-2">
-                  {event?.priceOfferings.map((offering, idx) => (
-                    <div
-                      key={idx}
-                      className="w-fit flex flex-row items-center justify-end gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
-                    >
-                      <span>
-                        {offering.name} x {offering.capacity}
-                      </span>
-                      <span>₹{offering.price * offering.capacity}</span>
-                    </div>
-                  ))}
-                </div>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-between md:mt-4 sm:mt-1 gap-2">
-                <div
-                  className="flex items-center rounded-lg px-1  border-2 hover:border-orange-400
-                    "
-                >
+              <div className="flex flex-col md:flex-row justify-between md:mt-4 sm:mt-1 gap-2">
+                <div className="flex flex-row justify-center items-center rounded-lg px-1 border-2 hover:border-orange-400">
                   <RefreshCwIcon className="text-orange-400" />
                   <Button
                     onClick={() => refreshBookingStatus(order_id)}
                     variant="ghost"
-                    className="text-orange-400 px-1 hover:bg-inherit hover:text-orange-400 "
+                    className="text-orange-400  px-1 hover:bg-inherit hover:text-orange-400 "
                   >
                     Refresh Status
                   </Button>
@@ -203,6 +200,35 @@ const Pending = () => {
           </Card>
         );
       })}
+
+      {/* Payment Status Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Payment Status Unconfirmed</DialogTitle>
+          </DialogHeader>
+          <p>
+            It seems like we are unable to confirm your payment status right
+            now. If any amount has been deducted, please raise a concern.
+          </p>
+          <DialogFooter>
+            <div className="flex justify-end gap-2">
+              <Button
+                className="bg-orange-500 text-white hover:bg-orange-700 "
+                onClick={() => {
+                  setIsDialogOpen(false);
+                  navigate("/raise-concern");
+                }}
+              >
+                Raise Concern
+              </Button>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                OK
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
