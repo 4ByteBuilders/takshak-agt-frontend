@@ -36,14 +36,7 @@ export default function QrScanner({
     try {
       await scannerRef.current.start(
         { facingMode: "environment" },
-        {
-          fps: 10,
-          qrbox: { width: 250, height: 250 },
-          videoConstraints: {
-            width: { ideal: 720 },
-            height: { ideal: 720 },
-          },
-        },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => onScan(decodedText),
         () => {} // Ignore errors
       );
