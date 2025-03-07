@@ -12,6 +12,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate } from "@/utils/dateFormatter";
@@ -21,6 +22,7 @@ import Lottie from "lottie-react";
 import scrolldown from "@/assets/scroll_down.json";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getWithExpiry, removeLocalData, setWithExpiry } from "@/utils/fetchLocalStorage";
 
 interface SelectedTickets {
   [key: string]: number;
@@ -41,6 +43,8 @@ export default function EventView() {
   const [isLargeScreen, setIsLargeScreen] = useState<boolean>(false);
   const [availableTickets, setAvailableTickets] = useState<number>(0);
   const [grandTotal, setGrandTotal] = useState<number>(0);
+  const [showAlertDialog, setShowAlertDialog] = useState<boolean>(false);
+
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
       ...prev,
@@ -62,7 +66,6 @@ export default function EventView() {
       if (response.status === 200) {
         console.log(response.data);
         setAvailableTickets(response.data.availableTicketCount);
-        // toast("Tickets count updated successfully.");
       } else {
         toast("Failed to update tickets count. Please try again.");
       }
@@ -71,6 +74,18 @@ export default function EventView() {
       toast("Something went wrong.");
     }
   };
+
+  useEffect(() => {
+    let retrievedTickets = null;
+    try{
+      retrievedTickets = JSON.parse(getWithExpiry("selectedTickets"));
+    }
+    catch {
+      toast.error("Error retrieving selected tickets.");
+    }
+    if(!retrievedTickets) return;
+    setSelectedTickets(retrievedTickets);
+  }, []);
 
   useEffect(() => {
     updateAvailableTicketCount();
@@ -82,6 +97,8 @@ export default function EventView() {
       const ticket = event?.priceOfferings.find(
         (priceOffering) => priceOffering.id === key
       );
+      if(!ticket)
+          continue;
       totalAmount += value * ticket!.price;
     }
     setGrandTotal(totalAmount);
@@ -109,14 +126,22 @@ export default function EventView() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    const redirectUrl = "/view-event";
+    const redirectTo = `${window.location.origin}${redirectUrl}`;
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo,
+      },
+    });
+    if (error) toast.error(error.message);
+  };
+
   const lockTickets = async () => {
     if (!user) {
-      toast.custom(() => (
-        <div className="bg-red-600 text-white p-4 rounded-lg shadow-lg">
-          You are not logged in.
-        </div>
-      ));
-      navigate("/login");
+      setWithExpiry("selectedTickets", JSON.stringify(selectedTickets), 16 * 60 * 1000);
+      setShowAlertDialog(true);
       return;
     }
 
@@ -140,6 +165,7 @@ export default function EventView() {
         }
       );
       if (response.status === 200) {
+        removeLocalData("selectedTickets");
         setBookingTime(response.data.data.created_at);
         setBookingId(response.data.data.order_id);
         toast("Tickets locked successfully.");
@@ -256,14 +282,14 @@ export default function EventView() {
 
   const titleStyle = isLargeScreen
     ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
+      transform: `translateX(${Math.min(scrollY, 100)}px)`,
+    }
     : {};
 
   const subtitleStyle = isLargeScreen
     ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
+      transform: `translateX(${Math.min(scrollY, 100)}px)`,
+    }
     : {};
 
   const backgroundStyle = {
@@ -456,6 +482,26 @@ export default function EventView() {
         </motion.div>
       )}
 
+      {/* Alert Dialog for login */}
+      <AlertDialog open={showAlertDialog} onOpenChange={setShowAlertDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              You have to sign in with google to lock tickets.
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              This action will redirect you to the login page.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleGoogleLogin}>
+              Sign In with Google
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {/* Alert Dialog for no ticket selection */}
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent>
@@ -472,6 +518,8 @@ export default function EventView() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+
     </div>
   );
 }
