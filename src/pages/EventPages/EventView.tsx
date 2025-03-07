@@ -348,20 +348,20 @@ export default function EventView() {
               <div
                 className={
                   !ticketsLocked
-                    ? "flex flex-row items-center justify-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] w-64"
-                    : "flex flex-row items-center justify-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)] w-64"
+                    ? "flex flex-row items-center justify-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 md:mx-5 text-xs md:text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] w-40 md:w-64"
+                    : "flex flex-row items-center justify-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs md:text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)] w-40 md:w-64"
                 }
               >
                 <span className="text-white">{name}</span>
-                <span className="text-sm"> ₹{price}</span>
-                <span className="text-sm ">
+                <span className="text-xs md:text-sm"> ₹{price}</span>
+                <span className="text-xs md:text-sm ">
                   {`(${capacity} ${capacity == 1 ? "person" : "people"})`}
                 </span>
               </div>
               <div className="flex items-center mx-3 md:mx-5">
                 {!ticketsLocked && (
                   <button
-                    className="px-2 md:px-3 py-1 bg-gray-700 rounded-l"
+                    className="px-2 text-xs md:text-sm md:px-3 py-1 bg-gray-700 rounded-l"
                     onClick={() =>
                       handleTicketChange(id, (selectedTickets[id] || 0) - 1)
                     }
@@ -370,12 +370,12 @@ export default function EventView() {
                     -
                   </button>
                 )}
-                <span className="px-2 md:px-4 mx-2 bg-gray-800 text-white rounded">
+                <span className="px-2 text-xs md:text-sm md:px-4 mx-2 bg-gray-800 text-white rounded">
                   {selectedTickets[id] || 0}
                 </span>
                 {!ticketsLocked && (
                   <button
-                    className="px-2 md:px-3 py-1 bg-gray-700 rounded-r"
+                    className="px-2 text-xs md:text-sm md:px-3 py-1 bg-gray-700 rounded-r"
                     onClick={() =>
                       handleTicketChange(id, (selectedTickets[id] || 0) + 1)
                     }
@@ -395,7 +395,7 @@ export default function EventView() {
           {!ticketsLocked ? (
             <button
               onClick={lockTickets}
-              className="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
+              className="w-full text-xs md:text-sm bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
             >
               Lock Tickets
             </button>
