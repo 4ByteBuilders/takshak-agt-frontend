@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { FaCalendarAlt, FaPlusCircle } from "react-icons/fa";
+import { FaUserCheck, FaEnvelope, FaExclamationCircle } from "react-icons/fa";
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
@@ -38,20 +38,27 @@ export default function AdminDashboard() {
   return (
     <div className="flex flex-col items-center justify-center h-screen p-6">
       <h1 className="text-5xl font-bold mb-8 text-white-100">Admin Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+      <div className="flex flex-col gap-6 w-full max-w-2xl">
         <button
-          onClick={() => navigate("/admin/my-events")}
-          className="flex items-center justify-center p-6 bg-blue-500 hover:bg-blue-600 transition-all text-white font-semibold rounded-lg shadow-lg"
-        >
-          <FaCalendarAlt className="mr-3 text-2xl" />
-          My Events
-        </button>
-        <button
-          onClick={() => navigate("/admin/create-event")}
+          onClick={() => navigate("/admin/add-verifiers")}
           className="flex items-center justify-center p-6 bg-green-500 hover:bg-green-600 transition-all text-white font-semibold rounded-lg shadow-lg"
         >
-          <FaPlusCircle className="mr-3 text-2xl" />
-          Create Event
+          <FaUserCheck className="mr-3 text-2xl" />
+          Add Verifiers
+        </button>
+        <button
+          onClick={() => navigate("/admin/view-messages")}
+          className="flex items-center justify-center p-6 bg-blue-500 hover:bg-blue-600 transition-all text-white font-semibold rounded-lg shadow-lg"
+        >
+          <FaEnvelope className="mr-3 text-2xl" />
+          View Messages
+        </button>
+        <button
+          onClick={() => navigate("/admin/view-concerns")}
+          className="flex items-center justify-center p-6 bg-red-500 hover:bg-red-600 transition-all text-white font-semibold rounded-lg shadow-lg"
+        >
+          <FaExclamationCircle className="mr-3 text-2xl" />
+          View Concerns
         </button>
       </div>
     </div>

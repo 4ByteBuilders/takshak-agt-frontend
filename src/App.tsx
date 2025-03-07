@@ -22,8 +22,9 @@ import PaymentStatus from "./pages/Payment/PaymentStatus";
 import Profile from "./pages/Profile/Profile";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminLoginPage from "./pages/admin/AdminLoginPage";
-import CreateEventPage from "./pages/admin/CreateEventPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AddVerifiersPage from "./pages/admin/AddVerifiersPage";
+import ViewMessagesPage from "./pages/admin/ViewMessagesPage";
 
 const getSubdomain = () => {
   const host = window.location.hostname;
@@ -44,9 +45,9 @@ function App() {
             {subdomain === "admin" ? (
               <AdminLayout>
                 <Routes>
+                  <Route path="/" element={<AdminLoginPage />} />
                   <Route path="/dashboard" element={<AdminDashboard />} />
-                  <Route path="/login" element={<AdminLoginPage />} />
-                  <Route path="/create-event" element={<CreateEventPage />} />
+                  <Route path="/add-verifiers" element={<AddVerifiersPage />} />
                   <Route path="*" element={<Page404 />} />
                 </Routes>
               </AdminLayout>
@@ -71,9 +72,10 @@ function App() {
                     <Route path="/payment-status" element={<PaymentStatus />} />
                     <Route path="/booking-history" element={<History />} />
                     {/* Temporary : Need to remove */}
+                    <Route path="/admin" element={<AdminLoginPage />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/login" element={<AdminLoginPage />} />
-                    <Route path="/admin/create-event" element={<CreateEventPage />} />
+                    <Route path="/admin/add-verifiers" element={<AddVerifiersPage />} />
+                    <Route path="/admin/view-messages" element={<ViewMessagesPage />} />
                     <Route path="*" element={<Page404 />} />
                   </Routes>
                 </div>
