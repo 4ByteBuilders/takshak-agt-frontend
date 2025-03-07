@@ -11,6 +11,7 @@ import {
   LogIn,
   Home,
   CreditCard,
+  Mail,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -123,7 +124,7 @@ function Navbar() {
               <DropdownMenuContent>
                 <DropdownMenuLabel>
                   <div className="flex items-center">
-                    <UserCog size={16} />
+                    <Mail size={16} />
                     <span className="ml-2">{user.email}</span>
                   </div>
                 </DropdownMenuLabel>
