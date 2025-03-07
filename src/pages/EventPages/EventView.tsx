@@ -22,7 +22,11 @@ import Lottie from "lottie-react";
 import scrolldown from "@/assets/scroll_down.json";
 import { RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getWithExpiry, removeLocalData, setWithExpiry } from "@/utils/fetchLocalStorage";
+import {
+  getWithExpiry,
+  removeLocalData,
+  setWithExpiry,
+} from "@/utils/fetchLocalStorage";
 
 interface SelectedTickets {
   [key: string]: number;
@@ -67,7 +71,7 @@ export default function EventView() {
         console.log(response.data);
         setAvailableTickets(response.data.availableTicketCount);
       } else {
-        toast("Failed to update tickets count. Please try again.");
+        toast("Failed to update number of passes available. Please try again.");
       }
     } catch (err) {
       console.error("Error updating tickets count:", err);
@@ -77,13 +81,12 @@ export default function EventView() {
 
   useEffect(() => {
     let retrievedTickets = null;
-    try{
+    try {
       retrievedTickets = JSON.parse(getWithExpiry("selectedTickets"));
+    } catch {
+      toast.error("Error retrieving selected passes.");
     }
-    catch {
-      toast.error("Error retrieving selected tickets.");
-    }
-    if(!retrievedTickets) return;
+    if (!retrievedTickets) return;
     setSelectedTickets(retrievedTickets);
   }, []);
 
@@ -97,8 +100,7 @@ export default function EventView() {
       const ticket = event?.priceOfferings.find(
         (priceOffering) => priceOffering.id === key
       );
-      if(!ticket)
-          continue;
+      if (!ticket) continue;
       totalAmount += value * ticket!.price;
     }
     setGrandTotal(totalAmount);
@@ -113,15 +115,15 @@ export default function EventView() {
         }
       );
       if (response.status === 200) {
-        toast("Tickets cancelled successfully.");
+        toast("Passes cancelled successfully.");
         setTicketsLocked(false);
         setSelectedTickets({});
         setBookingTime(null);
       } else {
-        toast("Failed to cancel tickets. Please try again.");
+        toast("Failed to cancel passes. Please try again.");
       }
     } catch (err) {
-      console.error("Error cancelling tickets:", err);
+      console.error("Error cancelling passes:", err);
       toast("Something went wrong.");
     }
   };
@@ -140,7 +142,11 @@ export default function EventView() {
 
   const lockTickets = async () => {
     if (!user) {
-      setWithExpiry("selectedTickets", JSON.stringify(selectedTickets), 16 * 60 * 1000);
+      setWithExpiry(
+        "selectedTickets",
+        JSON.stringify(selectedTickets),
+        16 * 60 * 1000
+      );
       setShowAlertDialog(true);
       return;
     }
@@ -168,13 +174,12 @@ export default function EventView() {
         removeLocalData("selectedTickets");
         setBookingTime(response.data.data.created_at);
         setBookingId(response.data.data.order_id);
-        toast("Tickets locked successfully.");
+        toast("Passes confirmed successfully.");
       } else {
-        toast("Failed to lock tickets. Please try again.");
+        toast("Failed to confirm passes. Please try again.");
         setTicketsLocked(false);
       }
-    } catch (err) {
-      console.error("Error locking tickets:", err);
+    } catch {
       toast("Something went wrong.");
       setTicketsLocked(false);
     } finally {
@@ -282,14 +287,14 @@ export default function EventView() {
 
   const titleStyle = isLargeScreen
     ? {
-      transform: `translateX(${Math.min(scrollY, 100)}px)`,
-    }
+        transform: `translateX(${Math.min(scrollY, 100)}px)`,
+      }
     : {};
 
   const subtitleStyle = isLargeScreen
     ? {
-      transform: `translateX(${Math.min(scrollY, 100)}px)`,
-    }
+        transform: `translateX(${Math.min(scrollY, 100)}px)`,
+      }
     : {};
 
   const backgroundStyle = {
@@ -347,11 +352,18 @@ export default function EventView() {
       >
         <p className="text-lg">{event.description}</p>
         <div className="mt-2 flex items-center justify-center gap-4">
-          <p className="text-yellow-400">
-            {availableTickets} tickets available
-          </p>
-          <Button variant={"link"} onClick={updateAvailableTicketCount}>
-            <RefreshCw className="w-5 h-5" />
+          <p className="text-yellow-400">{availableTickets} passes available</p>
+          <Button
+            variant={"link"}
+            onClick={async () => {
+              setShowLockLoader(true);
+              await updateAvailableTicketCount();
+              setShowLockLoader(false);
+            }}
+          >
+            <RefreshCw
+              className={`w-5 h-5 ${showLockLoader ? "animate-spin" : ""}`}
+            />
           </Button>
         </div>
       </motion.div>
@@ -367,7 +379,7 @@ export default function EventView() {
           className="max-w-3xl my-6 p-4 md:p-6 bg-gray-900 rounded-lg shadow-lg mx-auto"
         >
           <h2 className="text-2xl font-semibold mb-4 text-center">
-            {!ticketsLocked ? "Select Your Tickets" : "You Have Selected"}
+            {!ticketsLocked ? "Select Your Passes" : "You Have Selected"}
           </h2>
           {event.priceOfferings.map(({ id, name, price, capacity }) => (
             <div key={id} className="flex justify-between items-center mb-4">
@@ -423,7 +435,7 @@ export default function EventView() {
               onClick={lockTickets}
               className="w-full text-xs md:text-sm bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
             >
-              Lock Tickets
+              Confirm Passes
             </button>
           ) : (
             <motion.div
@@ -433,12 +445,9 @@ export default function EventView() {
               className="text-center mt-4"
             >
               <p className="text-green-400 text-lg font-semibold">
-                Tickets Locked!
+                Passes Confirmed!
               </p>
-              <p>
-                If you change your mind, you can cancel your booking and select
-                new tickets.
-              </p>
+              <p>Cancel to change selections</p>
               <div className="mt-4 p-4 bg-gray-800 rounded-lg">
                 <p className="text-lg font-semibold">
                   Time Left: <span className="text-amber-500">{timeLeft}</span>
@@ -508,7 +517,7 @@ export default function EventView() {
           <AlertDialogHeader>
             <AlertDialogTitle>Warning</AlertDialogTitle>
             <AlertDialogDescription>
-              Please select at least one ticket.
+              You haven't selected any passes.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -518,8 +527,6 @@ export default function EventView() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-
     </div>
   );
 }
