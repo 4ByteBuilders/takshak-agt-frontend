@@ -46,6 +46,11 @@ export default function ViewConcernsPage() {
 
   const filteredConcerns = concerns.filter((concern) => concern.status === filter);
 
+  const openGmailCompose = (email: string) => {
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=Reply to your concern on takshakagt.in`;
+    window.open(gmailUrl, '_blank');
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">View Concerns</h1>
@@ -77,6 +82,12 @@ export default function ViewConcernsPage() {
                 className={`py-2 px-4 rounded-lg ${concern.status === "UNRESOLVED" ? "bg-green-500 hover:bg-green-600" : "bg-yellow-500 hover:bg-yellow-600"} text-white`}
               >
                 {concern.status === "UNRESOLVED" ? "Mark as Resolved" : "Mark as Unresolved"}
+              </button>
+              <button
+                onClick={() => openGmailCompose(concern.email)}
+                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg ml-2"
+              >
+                Reply via Gmail
               </button>
             </div>
           </div>
