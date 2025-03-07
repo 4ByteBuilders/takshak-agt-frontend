@@ -83,9 +83,9 @@ function Navbar() {
                 <Button
                   className="hidden md:block"
                   variant={"secondary"}
-                  onClick={handlePendingTicketsClick}
+                  onClick={handleBookingHistoryClick}
                 >
-                  Pending Payments
+                  Booking History
                 </Button>
                 <Button
                   className="hidden md:block"
@@ -133,7 +133,7 @@ function Navbar() {
                 >
                   <div className="flex items-center gap-2">
                     <BadgeIndianRupee />
-                    <span>Pending Payments</span>
+                    <span>Booking History</span>
                   </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem
