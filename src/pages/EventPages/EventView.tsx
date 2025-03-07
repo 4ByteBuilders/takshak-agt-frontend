@@ -353,8 +353,10 @@ export default function EventView() {
                 }
               >
                 <span className="text-white">{name}</span>
-                <span className="text-xs font-bold"> ₹{price}</span>
-                <span className="text-xs font-bold"> {capacity} person(s)</span>
+                <span className="text-sm"> ₹{price}</span>
+                <span className="text-sm ">
+                  {`(${capacity} ${capacity == 1 ? "person" : "people"})`}
+                </span>
               </div>
               <div className="flex items-center mx-3 md:mx-5">
                 {!ticketsLocked && (
