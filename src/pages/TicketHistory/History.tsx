@@ -77,6 +77,26 @@ const CombinedBookings = () => {
       cashfree.current.checkout({ paymentSessionId, redirectTarget: "_self" });
     }
   };
+  const refreshBookingStatus = async (order_id: string) => {
+    try {
+      setLoading(true);
+      const auth = (await supabase.auth.getSession()).data.session
+        ?.access_token;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
+      const response = await axios.get(
+        import.meta.env.VITE_BACKEND_URL + "/booking/payment-status",
+        {
+          params: { order_id },
+        }
+      );
+      console.log(response);
+      navigate(`/payment-status?order_id=${order_id}`);
+    } catch (error) {
+      console.error("Error refreshing booking status:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return <Loader />;
@@ -91,7 +111,12 @@ const CombinedBookings = () => {
             <h1>Pending Bookings</h1>
           </div>
           {pendingBookings.map((booking, index) => {
-            const { event, amountPaid, paymentSessionId } = booking;
+            const {
+              event,
+              amountPaid,
+              paymentSessionId,
+              id: order_id,
+            } = booking;
             return (
               <Card
                 key={index}
@@ -146,12 +171,18 @@ const CombinedBookings = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-col items-end md:mt-4 sm:mt-1">
+                  <div className="flex flex-col items-end md:mt-4 sm:mt-1 gap-2">
                     <Button
                       onClick={() => doPayment(paymentSessionId!)}
                       className="bg-amber-500 text-white transition duration-300 ease-in-out hover:bg-amber-600"
                     >
                       Checkout and pay ₹{amountPaid} →
+                    </Button>
+                    <Button
+                      onClick={() => refreshBookingStatus(order_id)}
+                      className="bg-blue-500 text-white transition duration-300 ease-in-out hover:bg-blue-600"
+                    >
+                      Refresh Booking Status
                     </Button>
                   </div>
                 </CardContent>
