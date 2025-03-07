@@ -19,44 +19,67 @@ import MyTickets from "./pages/ConfirmedTickets/MyTickets";
 import History from "./pages/TicketHistory/History";
 import { EventProvider } from "./lib/Providers/EventProvider";
 import PaymentStatus from "./pages/Payment/PaymentStatus";
-// import ProtectedRoute from "./components/Wrapper/ProtectedRoute";
 import Profile from "./pages/Profile/Profile";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminLoginPage from "./pages/admin/AdminLoginPage";
+import CreateEventPage from "./pages/admin/CreateEventPage";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+
+const getSubdomain = () => {
+  const host = window.location.hostname;
+  const parts = host.split(".");
+  return parts.length > 2 ? parts[0] : null; // Assumes format like "admin.mywebsite.com"
+};
 
 function App() {
+  const subdomain = getSubdomain();
+  const isAdminRoute = location.pathname.includes("admin"); //remove once subdomain added
+
   return (
     <BrowserRouter>
       <EventProvider>
         <AuthProvider>
           <div className="flex flex-col min-h-screen font-poppins">
-            <Navbar />
             <Toaster />
-            <div className="flex-grow">
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/events" element={<EventPage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/view-event" element={ <EventView /> } />
-                <Route path="/verify" element={<Verify />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route
-                  path="/terms-and-conditions"
-                  element={<TermsAndCondition />}
-                />
-                <Route path="/about" element={<AboutUs />} />
-                <Route
-                  path="/cancellation-and-refund"
-                  element={<CancellationAndRefund />}
-                />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/pending-booking" element={<Pending />} />
-                <Route path="/tickets" element={<MyTickets />} />
-                <Route path="/payment-status" element={<PaymentStatus />} />
-                <Route path="/booking-history" element={<History />} />
-                <Route path="*" element={<Page404 />} />
-              </Routes>
-            </div>
-            <Footer />
+            {subdomain === "admin" ? (
+              <AdminLayout>
+                <Routes>
+                  <Route path="/dashboard" element={<AdminDashboard />} />
+                  <Route path="/login" element={<AdminLoginPage />} />
+                  <Route path="/create-event" element={<CreateEventPage />} />
+                  <Route path="*" element={<Page404 />} />
+                </Routes>
+              </AdminLayout>
+            ) : (
+              <>
+                {!isAdminRoute && <Navbar />}
+                <div className="flex-grow">
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/events" element={<EventPage />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/view-event" element={<EventView />} />
+                    <Route path="/verify" element={<Verify />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
+                    <Route path="/about" element={<AboutUs />} />
+                    <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
+                    <Route path="/contact" element={<Contact />} />
+                    <Route path="/pending-booking" element={<Pending />} />
+                    <Route path="/tickets" element={<MyTickets />} />
+                    <Route path="/payment-status" element={<PaymentStatus />} />
+                    <Route path="/booking-history" element={<History />} />
+                    {/* Temporary : Need to remove */}
+                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                    <Route path="/admin/login" element={<AdminLoginPage />} />
+                    <Route path="/admin/create-event" element={<CreateEventPage />} />
+                    <Route path="*" element={<Page404 />} />
+                  </Routes>
+                </div>
+                {!isAdminRoute && <Footer />}
+              </>
+            )}
           </div>
         </AuthProvider>
       </EventProvider>

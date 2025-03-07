@@ -18,6 +18,15 @@ export default function Verify() {
   const [loading, setLoading] = useState<boolean>(false);
   const [booking, setBooking] = useState<Booking | null>(null);
 
+  const handleCheckInSuccess = (numCheckedIn: number) => {
+    if (booking) {
+      setBooking({
+        ...booking,
+        numVerifiedAtVenue: booking.numVerifiedAtVenue! + numCheckedIn,
+      });
+    }
+  };
+
   const handleScan = async (data: string) => {
     setBooking(null);
     setLoading(true);
@@ -111,7 +120,8 @@ export default function Verify() {
             exit={{ opacity: 0, y: 20 }}
             className="mt-8 w-full max-w-md"
           >
-            <BookingDetails booking={booking} />
+            <BookingDetails booking={booking} onCheckInSuccess={handleCheckInSuccess}
+            />
           </motion.div>
         )}
       </AnimatePresence>
