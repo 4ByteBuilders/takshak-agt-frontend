@@ -40,6 +40,7 @@ export default function EventView() {
   const [scrollY, setScrollY] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState<boolean>(false);
   const [availableTickets, setAvailableTickets] = useState<number>(0);
+  const [grandTotal, setGrandTotal] = useState<number>(0);
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
       ...prev,
@@ -61,7 +62,7 @@ export default function EventView() {
       if (response.status === 200) {
         console.log(response.data);
         setAvailableTickets(response.data.availableTicketCount);
-        toast("Tickets count updated successfully.");
+        // toast("Tickets count updated successfully.");
       } else {
         toast("Failed to update tickets count. Please try again.");
       }
@@ -75,6 +76,15 @@ export default function EventView() {
     updateAvailableTicketCount();
   }, [event]);
 
+  const calculateGrandTotal = () => {
+    let totalAmount = 0;
+    for(const [key, value] of Object.entries(selectedTickets)) {
+      const ticket = event?.priceOfferings.find((priceOffering) => priceOffering.id === key);
+      totalAmount += value * ticket!.price;
+    }
+    return totalAmount;
+  }
+
   const cancelLockedTickets = async () => {
     try {
       const response = await axios.post(
@@ -85,7 +95,6 @@ export default function EventView() {
       );
       if (response.status === 200) {
         toast("Tickets cancelled successfully.");
-        
         setTicketsLocked(false);
         setSelectedTickets({});
         setBookingTime(null);
@@ -129,6 +138,11 @@ export default function EventView() {
         }
       );
       if (response.status === 200) {
+
+        const totalAmount = calculateGrandTotal();
+
+        setGrandTotal(totalAmount);
+
         setBookingTime(response.data.data.created_at);
         setBookingId(response.data.data.order_id);
         toast("Tickets locked successfully.");
@@ -242,14 +256,14 @@ export default function EventView() {
 
   const titleStyle = isLargeScreen
     ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
+      transform: `translateX(${Math.min(scrollY, 100)}px)`,
+    }
     : {};
 
   const subtitleStyle = isLargeScreen
     ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
+      transform: `translateX(${Math.min(scrollY, 100)}px)`,
+    }
     : {};
 
   const backgroundStyle = {
@@ -327,15 +341,15 @@ export default function EventView() {
           className="max-w-3xl my-6 p-4 md:p-6 bg-gray-900 rounded-lg shadow-lg mx-auto"
         >
           <h2 className="text-2xl font-semibold mb-4 text-center">
-            Select Your Tickets
+            {!ticketsLocked ? "Select Your Tickets" : "You Have Selected"}
           </h2>
           {event.priceOfferings.map(({ id, name, price, capacity }) => (
             <div key={id} className="flex justify-between items-center mb-4">
               <div
                 className={
                   !ticketsLocked
-                    ? "flex flex-row items-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
-                    : "flex flex-row items-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
+                    ? "flex flex-row items-center justify-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 mx-5 text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] w-64"
+                    : "flex flex-row items-center justify-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)] w-64"
                 }
               >
                 <span className="text-white">{name}</span>
@@ -343,7 +357,7 @@ export default function EventView() {
                 <span className="text-xs font-bold"> {capacity} person(s)</span>
               </div>
               <div className="flex items-center mx-3 md:mx-5">
-                <button
+                {!ticketsLocked && <button
                   className="px-2 md:px-3 py-1 bg-gray-700 rounded-l"
                   onClick={() =>
                     handleTicketChange(id, (selectedTickets[id] || 0) - 1)
@@ -351,9 +365,11 @@ export default function EventView() {
                   disabled={selectedTickets[id] === 0 || ticketsLocked}
                 >
                   -
-                </button>
-                <span className="px-2 md:px-4">{selectedTickets[id] || 0}</span>
-                <button
+                </button>}
+                <span className="px-2 md:px-4 mx-2 bg-gray-800 text-white rounded">
+                  {selectedTickets[id] || 0}
+                </span>
+                {!ticketsLocked && <button
                   className="px-2 md:px-3 py-1 bg-gray-700 rounded-r"
                   onClick={() =>
                     handleTicketChange(id, (selectedTickets[id] || 0) + 1)
@@ -364,7 +380,7 @@ export default function EventView() {
                   }
                 >
                   +
-                </button>
+                </button>}
               </div>
             </div>
           ))}
@@ -387,6 +403,10 @@ export default function EventView() {
               <p className="text-green-400 text-lg font-semibold">
                 Tickets Locked!
               </p>
+              <p>
+                If you change your mind, you can cancel your booking and select
+                new tickets.
+              </p>
               <div className="mt-4 p-4 bg-gray-800 rounded-lg">
                 <p className="text-lg font-semibold">
                   Time Left: <span className="text-amber-500">{timeLeft}</span>
@@ -398,7 +418,11 @@ export default function EventView() {
                   navigate("/pending-booking");
                 }}
               >
-                Proceed to Payment →
+                Proceed to Payment → {
+                  <p className="text-lg font-semibold mt-2">
+                    Grand Total: <span className="text-amber-500">₹{grandTotal}</span>
+                  </p>
+                }
               </button>
               <button
                 className="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
