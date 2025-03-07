@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { PaymentResponse } from "@/utils/interfaces";
 import Lottie from "lottie-react";
 import sucessAnimation from "@/assets/payment/success.json";
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 export default function PaymentStatus() {
   const [searchParams] = useSearchParams();
   const order_id = searchParams.get("order_id");
+  const navigate = useNavigate();
 
   const [status, setStatus] = useState<
     PaymentResponse["payment_status"] | null
@@ -126,12 +127,20 @@ export default function PaymentStatus() {
                 </p>
               </div>
             )}
-            <Button
-              className="mt-8"
-              onClick={() => window.location.replace("/")}
-            >
-              Back to Home
-            </Button>
+            <div className="flex justify-center gap-2 ">
+              <Button
+                className="mt-8 w-20 md:w-32 text-xs md:text-sm"
+                onClick={() => navigate("/")}
+              >
+                Home
+              </Button>
+              <Button
+                className="mt-8 w-20 md:w-32 text-xs md:text-sm"
+                onClick={() => navigate("/tickets")}
+              >
+                My Tickets
+              </Button>
+            </div>
           </>
         )}
       </div>
