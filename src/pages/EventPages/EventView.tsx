@@ -40,7 +40,6 @@ export default function EventView() {
   const [scrollY, setScrollY] = useState(0);
   const [isLargeScreen, setIsLargeScreen] = useState<boolean>(false);
   const [availableTickets, setAvailableTickets] = useState<number>(0);
-
   const handleTicketChange = (type: string, value: number) => {
     setSelectedTickets((prev) => ({
       ...prev,
@@ -84,9 +83,9 @@ export default function EventView() {
           bookingId: bookingid,
         }
       );
-
       if (response.status === 200) {
         toast("Tickets cancelled successfully.");
+        
         setTicketsLocked(false);
         setSelectedTickets({});
         setBookingTime(null);
@@ -205,10 +204,11 @@ export default function EventView() {
 
       const interval = setInterval(updateTimer, 1000);
       updateTimer();
-
-      return () => clearInterval(interval);
+      const timerCleanUp = () => clearInterval(interval);
+      return timerCleanUp;
     };
-    timer();
+    const cleanupFunction = timer();
+    return cleanupFunction;
   }, [bookingTime]);
 
   useEffect(() => {
