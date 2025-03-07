@@ -309,7 +309,7 @@ export default function EventView() {
         className="relative w-full"
       >
         <div
-          className="w-full h-96 rounded-lg bg-cover bg-no-repeat"
+          className="w-full h-screen rounded-lg bg-cover bg-no-repeat"
           style={{
             backgroundImage: `url(${event.photoUrls.eventPageUrl})`,
             backgroundPosition: "bottom",
@@ -322,24 +322,24 @@ export default function EventView() {
         >
           <div className="flex flex-col justify-end text-start">
             <h1
-              className="text-4xl font-bold mx-4 transition-transform duration-300"
+              className="text-7xl font-bold mx-4 transition-transform duration-300"
               style={titleStyle}
             >
               {event.title}
             </h1>
             <p
-              className="text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
+              className="text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
               style={subtitleStyle}
             >
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
             </p>
           </div>
-          {/* <div className={scrollY > 0 ? "hidden" : "flex items-end"}>
+          <div className={scrollY > 0 ? "hidden" : "flex items-end"}>
             <Lottie
               animationData={scrolldown}
               style={{ width: 50, height: 50 }}
             />
-          </div> */}
+          </div>
         </div>
       </motion.div>
       {/* Event Details */}
