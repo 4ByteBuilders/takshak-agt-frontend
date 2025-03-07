@@ -44,9 +44,9 @@ function App() {
             {subdomain === "admin" ? (
               <AdminLayout>
                 <Routes>
-                  <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                  <Route path="/admin/login" element={<AdminLoginPage />} />
-                  <Route path="/admin/create-event" element={<CreateEventPage />} />
+                  <Route path="/dashboard" element={<AdminDashboard />} />
+                  <Route path="/login" element={<AdminLoginPage />} />
+                  <Route path="/create-event" element={<CreateEventPage />} />
                   <Route path="*" element={<Page404 />} />
                 </Routes>
               </AdminLayout>
