@@ -33,7 +33,6 @@ export default function Verify() {
   };
 
   const handleScan = async (data: string) => {
-
     setLoading(true);
     setIsScanning(false);
     try {
@@ -87,7 +86,7 @@ export default function Verify() {
         className={`px-6 py-3 rounded-full ${
           isScanning ? "bg-red-500" : "bg-green-500"
         } text-white font-semibold shadow-lg`}
-        onClick={() => setIsScanning(!isScanning)}
+        onClick={handleButtonClick}
       >
         {isScanning ? "Stop Scanning" : "Start Scanning"}
       </motion.button>
