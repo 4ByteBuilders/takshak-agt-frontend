@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
-// import { Booking } from "@/utils/interfaces";
 import QrScanner from "./QrScanner";
 import Dialog from "./Dialog";
 import Loader from "./Loader";
+import { Booking } from "@/utils/interfaces";
+import BookingDetails from "./BookingDetails";
 
 export default function Verify() {
   const [showDialog, setShowDialog] = useState({
@@ -12,10 +13,9 @@ export default function Verify() {
     title: "",
     message: "",
   });
-  // const [booking, setBooking] = useState<Booking | null>(null);
   const [isScanning, setIsScanning] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [booking, setBooking] = useState<Booking | null>(null);
   const handleScan = async (data: string) => {
     setLoading(true);
     setIsScanning(false);
@@ -28,12 +28,13 @@ export default function Verify() {
         `${import.meta.env.VITE_BACKEND_URL}/booking/verify-booking`,
         { qr: data }
       );
-
+      console.log(response.data);
       setShowDialog({
         status: true,
         title: "Success",
         message: response.data.message || "Tickets Verified!",
       });
+      setBooking(response.data);
     } catch (err) {
       console.error(err);
       setShowDialog({
@@ -70,8 +71,6 @@ export default function Verify() {
       {/* Loader */}
       {loading && <Loader />}
 
-
-
       {/* Dialog */}
       {showDialog.status && (
         <Dialog
@@ -80,6 +79,9 @@ export default function Verify() {
           onClose={() => setShowDialog({ status: false, title: "", message: "" })}
         />
       )}
+
+      {/* Booking Details */}
+      {booking && <BookingDetails booking={booking} />}
     </div>
   );
 }
