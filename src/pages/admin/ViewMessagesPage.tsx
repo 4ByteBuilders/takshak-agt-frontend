@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UserMessageCard from "@/components/UserMessageCard/UserMessageCard";
+import { supabase } from "@/supabaseClient";
 
 interface Message {
   id: string;
@@ -19,6 +20,8 @@ export default function ViewMessagesPage() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
+        const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/all-messages`);
         setMessages(response.data);
       } catch (error) {
@@ -68,6 +71,7 @@ export default function ViewMessagesPage() {
             name={message.name}
             email={message.email}
             message={message.message}
+            status={message.status}
             onMarkAsRead={() => handleToggleReadStatus(message.id, message.status)}
           />
         ))}

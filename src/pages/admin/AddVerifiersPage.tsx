@@ -1,23 +1,71 @@
 import { useEffect, useState } from "react";
 import { Plus, Trash } from "lucide-react";
+import { supabase } from "@/supabaseClient";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
+interface Verifier {
+  id: string;
+  email: string;
+}
 
 export default function AddVerifiersPage() {
   const [email, setEmail] = useState("");
-  const [verifiers, setVerifiers] = useState<string[]>([]);
+  const [verifiers, setVerifiers] = useState<Verifier[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch existing verifiers from the database and update states
-  }, []);
+    const fetchVerifiers = async () => {
+      const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/verify`);
+      if (res.status === 200) {
+        setVerifiers([...res.data]);
+      } else {
+        toast.error("An error occurred. Please try again later.");
+        navigate("/admin/dashboard");
+      }
+    };
+    fetchVerifiers();
+  }, [navigate]);
 
-  const handleAddVerifier = () => {
-    if (email && !verifiers.includes(email)) {
-      setVerifiers([...verifiers, email]);
-      setEmail("");
+  const handleAddVerifier = async () => {
+    if (email && verifiers && !verifiers.some((verifier) => verifier.email === email)) {
+      const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      axios.post(`${import.meta.env.VITE_BACKEND_URL}/verify/add`, { email })
+        .then((response) => {
+          if (response.status === 200) {
+            setVerifiers([...verifiers, response.data]);
+            toast.success("Verifier added successfully.");
+            setEmail("");
+          } else {
+            toast.error("Failed to add verifier.");
+          }
+        })
+        .catch(() => {
+          toast.error("An error occurred. Please try again later.");
+        });
     }
   };
 
-  const handleDeleteVerifier = (emailToDelete: string) => {
-    setVerifiers(verifiers.filter((verifier) => verifier !== emailToDelete));
+  const handleDeleteVerifier = async (id: string) => {
+    const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    axios.delete(`${import.meta.env.VITE_BACKEND_URL}/verify/remove`, { data: { id } })
+      .then((response) => {
+        if (response.status === 200) {
+          setVerifiers(verifiers.filter((verifier) => verifier.id !== id));
+          toast.success("Verifier removed successfully.");
+        } else {
+          toast.error("Failed to remove verifier.");
+        }
+      })
+      .catch(() => {
+        toast.error("An error occurred. Please try again later.");
+      });
   };
 
   return (
@@ -42,14 +90,14 @@ export default function AddVerifiersPage() {
       </div>
       <div className="flex flex-col items-start">
         <ul className="w-full max-w-md p-4">
-          {verifiers.map((verifier) => (
+          {verifiers && verifiers.map((verifier) => (
             <li
-              key={verifier}
+              key={verifier.id}
               className="flex items-center justify-between p-2 border-b border-gray-300 mb-2"
             >
-              <span>{verifier}</span>
+              <span>{verifier.email}</span>
               <button
-                onClick={() => handleDeleteVerifier(verifier)}
+                onClick={() => handleDeleteVerifier(verifier.id)}
                 className="p-2 bg-red-500 hover:bg-red-600 text-white rounded-lg"
               >
                 <Trash />
