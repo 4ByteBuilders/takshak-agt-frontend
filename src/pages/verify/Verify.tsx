@@ -72,8 +72,6 @@ export default function Verify() {
         message: response.data.message || "Tickets Verified!",
       });
       setBooking(response.data);
-
-
     } catch (error) {
       if (error instanceof Error) {
         setShowDialog({
@@ -88,7 +86,6 @@ export default function Verify() {
           message: "An unknown error occurred while verifying the booking.",
         });
       }
-
     }
   };
 
@@ -97,16 +94,15 @@ export default function Verify() {
       const { data: sessionData } = await supabase.auth.getSession();
       const auth = sessionData.session?.access_token;
       axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/booking/check-in`,
-        { booking_id, checkedInCount }
-      );
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/booking/check-in`, {
+        booking_id,
+        checkedInCount,
+      });
       setShowDialog({
         status: true,
         title: "Complete",
         message: `Check in successful for ${checkedInCount} people`,
       });
-
     } catch (error) {
       if (error instanceof Error) {
         setShowDialog({
