@@ -19,8 +19,9 @@ import MyTickets from "./pages/ConfirmedTickets/MyTickets";
 import History from "./pages/TicketHistory/History";
 import { EventProvider } from "./lib/Providers/EventProvider";
 import PaymentStatus from "./pages/Payment/PaymentStatus";
-import ProtectedRoute from "./components/Wrapper/ProtectedRoute";
+// import ProtectedRoute from "./components/Wrapper/ProtectedRoute";
 import Profile from "./pages/Profile/Profile";
+import CallBack from "./pages/auth/Callback";
 
 function App() {
   return (
@@ -34,16 +35,10 @@ function App() {
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/auth-callback" element={<CallBack />} />
                 <Route path="/events" element={<EventPage />} />
                 <Route path="/profile" element={<Profile />} />
-                <Route
-                  path="/view/event"
-                  element={
-                    <ProtectedRoute>
-                      <EventView />
-                    </ProtectedRoute>
-                  }
-                />
+                <Route path="/view/event" element={ <EventView /> } />
                 <Route path="/verify" element={<Verify />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route
