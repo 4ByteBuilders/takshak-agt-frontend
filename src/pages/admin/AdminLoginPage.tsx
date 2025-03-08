@@ -22,7 +22,7 @@ const AdminLoginPage = () => {
                         window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}/dashboard`; // Redirect to the correct subdomain
                     } else {
                         toast.error("You are not authorized to access this page.");
-                        window.location.href = '/'; // Redirect to home or another non-admin route
+                        // window.location.href = '/'; // Redirect to home or another non-admin route
                     }
                 } catch {
                     toast.error("An error occurred. Please try again later.");
