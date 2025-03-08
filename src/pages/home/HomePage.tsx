@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useEvent } from "../../lib/Providers/EventProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/supabaseClient";
+import DjLineup from "./Djlineup";
+import Services from "./Services";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -71,92 +73,97 @@ export default function HomePage() {
   const loading = !event;
 
   return (
-    <div
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center pt-0 md:pt-14 bg-gradient-to-br from-pink-500 via-purple-500 to-yellow-500"
-      // style={{
-      //   backgroundImage:
-      //     "url('https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg')",
-      // }}
-    >
-      {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      {/* Blurred Background */}
-      <div className="absolute inset-0 backdrop-blur-md"></div>
-
-      <motion.div
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2 }}
-        className="relative z-10 text-center text-white max-w-4xl p-5"
+    <>
+      <div
+        className="relative min-h-screen w-full flex flex-col items-center justify-center bg-cover bg-center bg-fixed pt-0 md:pt-14"
+        style={{
+          backgroundImage: 'url("/bgl.jpg")',
+        }}
       >
-        {/* Title */}
-        <motion.h1
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.5 }}
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight drop-shadow-lg"
-        >
-          Get Ready to Witness the <br />
-          <span className="text-amber-400">Grandeur of Agartala!</span>
-        </motion.h1>
+        <div className="h-screen w-full flex flex-col items-center justify-center">
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black opacity-10"></div>
+          {/* Blurred Background */}
+          {/* <div className="absolute inset-0 backdrop-blur-sm"></div> */}
 
-        {/* Event Name */}
-        {loading ? (
-          <Skeleton className="w-48 h-6 mt-4 mx-auto" />
-        ) : (
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="text-lg sm:text-xl md:text-2xl font-light mt-4"
-          >
-            {event?.title || "Unknown Event"}
-          </motion.p>
-        )}
-
-        {/* Countdown Timer */}
-        {loading ? (
-          <div className="flex gap-3 justify-center mt-8">
-            <Skeleton className="w-12 h-12 rounded-md" />
-            <Skeleton className="w-12 h-12 rounded-md" />
-            <Skeleton className="w-12 h-12 rounded-md" />
-            <Skeleton className="w-12 h-12 rounded-md" />
-          </div>
-        ) : (
-          timeLeft && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-8 flex justify-center gap-2 sm:gap-3 bg-white/20 px-3 py-2 sm:px-4 sm:py-3 rounded-lg shadow-lg backdrop-blur-md"
-            >
-              <span className="text-amber-400">{timeLeft.days}</span>d :
-              <span className="text-green-400">{timeLeft.hours}</span>h :
-              <span className="text-blue-400">{timeLeft.minutes}</span>m :
-              <span className="text-red-400">{timeLeft.seconds}</span>s
-            </motion.div>
-          )
-        )}
-
-        {/* Call-to-Action Button */}
-        {loading ? (
-          <Skeleton className="w-48 h-12 mt-6 mx-auto rounded-full" />
-        ) : (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.7 }}
-            className="mt-6 sm:mt-8"
+            transition={{ duration: 1.2 }}
+            className="relative z-10 text-center text-white max-w-4xl p-5"
           >
-            <button
-              onClick={() => navigate("/view-event")}
-              className="relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-sm sm:text-base md:text-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+            {/* Title */}
+            <motion.h1
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5 }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight drop-shadow-lg"
             >
-              Grab Your Passes Now →
-            </button>
+              Takshak Presents
+            </motion.h1>
+
+            {/* Event Name */}
+            {loading ? (
+              <Skeleton className="w-48 h-6 mt-4 mx-auto" />
+            ) : (
+              <motion.img
+                src="/rangbarselogo2.png"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.3 }}
+                className="w-1/2 mx-auto my-5"
+              >
+              </motion.img>
+            )}
+
+            {/* Countdown Timer */}
+            {loading ? (
+              <div className="flex gap-3 justify-center mt-8">
+                <Skeleton className="w-12 h-12 rounded-md" />
+                <Skeleton className="w-12 h-12 rounded-md" />
+                <Skeleton className="w-12 h-12 rounded-md" />
+                <Skeleton className="w-12 h-12 rounded-md" />
+              </div>
+            ) : (
+              timeLeft && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-8 flex justify-center gap-2 sm:gap-3 bg-white/20 px-3 py-2 sm:px-4 sm:py-3 rounded-lg shadow-lg backdrop-blur-md"
+                >
+                  <span className="text-amber-400">{timeLeft.days}</span>d :
+                  <span className="text-green-400">{timeLeft.hours}</span>h :
+                  <span className="text-blue-400">{timeLeft.minutes}</span>m :
+                  <span className="text-red-400">{timeLeft.seconds}</span>s
+                </motion.div>
+              )
+            )}
+
+            {/* Call-to-Action Button */}
+            {loading ? (
+              <Skeleton className="w-48 h-12 mt-6 mx-auto rounded-full" />
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.7 }}
+                className="mt-6 sm:mt-8"
+              >
+                <button
+                  onClick={() => navigate("/view-event")}
+                  className="relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-sm sm:text-base md:text-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+                >
+                  Grab Your Passes Now →
+                </button>
+              </motion.div>
+            )}
           </motion.div>
-        )}
-      </motion.div>
-    </div>
+        </div>
+        <DjLineup />
+
+        <Services />
+      </div>
+    </>
   );
 }

@@ -41,7 +41,7 @@ function App() {
     <BrowserRouter>
       <EventProvider>
         <AuthProvider>
-          <div className="flex flex-col min-h-screen font-poppins">
+          <div className="flex flex-col w-full min-h-screen font-poppins">
             <Toaster />
             {subdomain === "admin" ? (
               <AdminLayout>
@@ -55,7 +55,7 @@ function App() {
             ) : (
               <>
                 {!isAdminRoute && <Navbar />}
-                <div className="flex-grow">
+                <div className="flex-grow w-full">
                   <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<Login />} />
