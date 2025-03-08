@@ -44,7 +44,6 @@ export default function EventView() {
   const [bookingTime, setBookingTime] = useState<string | null>(null);
   const [bookingid, setBookingId] = useState<string | null>(null);
   const [scrollY, setScrollY] = useState(0);
-  const [isLargeScreen, setIsLargeScreen] = useState<boolean>(false);
   const [availableTickets, setAvailableTickets] = useState<number>(0);
   const [grandTotal, setGrandTotal] = useState<number>(0);
   const [showAlertDialog, setShowAlertDialog] = useState<boolean>(false);
@@ -267,34 +266,9 @@ export default function EventView() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 1024); // Adjust the breakpoint as needed
-    };
-
-    handleResize(); // Set initial value
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
-
   if (!event) {
     return <Skeleton className="w-full h-screen" />;
   }
-
-  const titleStyle = isLargeScreen
-    ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
-    : {};
-
-  const subtitleStyle = isLargeScreen
-    ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
-    : {};
 
   const backgroundStyle = {
     backgroundColor: `rgba(3, 7, 18, ${Math.max(scrollY / 300, 0.5)})`,
@@ -321,16 +295,10 @@ export default function EventView() {
           style={backgroundStyle}
         >
           <div className="flex flex-col justify-end text-start m-6">
-            <h1
-              className="text-7xl font-bold mx-4 transition-transform duration-300"
-              style={titleStyle}
-            >
+            <h1 className="text-7xl font-bold mx-4 transition-transform duration-300">
               {event.title}
             </h1>
-            <p
-              className="text-lg md:text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
-              style={subtitleStyle}
-            >
+            <p className="text-lg md:text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300">
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
             </p>
           </div>
@@ -388,7 +356,7 @@ export default function EventView() {
               <div
                 className={
                   !ticketsLocked
-                    ? "flex flex-row items-center justify-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 md:mx-5 text-xs md:text-sm font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)] w-40 md:w-64"
+                    ? "flex flex-row items-center justify-center gap-2 bg-amber-500/20 backdrop-blur-md border border-amber-400/50 shadow-xl rounded-xl px-2 py-1 md:mx-5 text-xs md:text-base font-semibold drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]"
                     : "flex flex-row items-center justify-center gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs md:text-sm font-semibold drop-shadow-[0_0_10px_rgba(34,197,94,0.8)] w-40 md:w-64"
                 }
               >
