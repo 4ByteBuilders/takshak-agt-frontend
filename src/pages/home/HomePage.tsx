@@ -7,7 +7,8 @@ import { supabase } from "@/supabaseClient";
 import DjLineup from "./Djlineup";
 import Services from "./Services";
 import ServicesSmall from "./ServicesSmall";
-
+import Lottie from "lottie-react";
+import scrolldown from "@/assets/scroll_down.json";
 export default function HomePage() {
   const navigate = useNavigate();
   const { event } = useEvent(); // Get event data from the provider
@@ -113,8 +114,7 @@ export default function HomePage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.3 }}
                 className="w-1/2 mx-auto my-5"
-              >
-              </motion.img>
+              ></motion.img>
             )}
 
             {/* Countdown Timer */}
@@ -145,21 +145,33 @@ export default function HomePage() {
             {loading ? (
               <Skeleton className="w-48 h-12 mt-6 mx-auto rounded-full" />
             ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.7 }}
-                className="mt-6 sm:mt-8"
-              >
-                <button
-                  onClick={() => navigate("/view-event")}
-                  className="relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-sm sm:text-base md:text-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+              <>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.7 }}
+                  className="mt-6 sm:mt-8"
                 >
-                  Grab Your Passes Now →
-                </button>
-              </motion.div>
+                  <button
+                    onClick={() => navigate("/view-event")}
+                    className="relative px-4 py-2 sm:px-6 sm:py-3 md:px-8 md:py-4 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-full text-sm sm:text-base md:text-lg shadow-lg transition-all duration-300 transform hover:scale-105"
+                  >
+                    Grab Your Passes Now →
+                  </button>
+                </motion.div>
+              </>
             )}
           </motion.div>
+          <div className={scrollY > 0 ? "w-0 p-10" : "flex items-end p-10"}>
+            <Lottie
+              animationData={scrolldown}
+              style={
+                scrollY == 0
+                  ? { width: 50, height: 50 }
+                  : { width: 0, height: 50 }
+              }
+            />
+          </div>
         </div>
         <DjLineup />
         <ServicesSmall />
