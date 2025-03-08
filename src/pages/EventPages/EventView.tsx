@@ -90,7 +90,8 @@ export default function EventView() {
   }, []);
 
   useEffect(() => {
-    updateAvailableTicketCount();
+    if(event)
+      updateAvailableTicketCount();
   }, [event]);
 
   const calculateAndSetGrandTotal = () => {
