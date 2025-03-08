@@ -286,14 +286,14 @@ export default function EventView() {
 
   const titleStyle = isLargeScreen
     ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
+      transform: `translateX(${Math.min(scrollY, 100)}px)`,
+    }
     : {};
 
   const subtitleStyle = isLargeScreen
     ? {
-        transform: `translateX(${Math.min(scrollY, 100)}px)`,
-      }
+      transform: `translateX(${Math.min(scrollY, 100)}px)`,
+    }
     : {};
 
   const backgroundStyle = {
@@ -320,15 +320,15 @@ export default function EventView() {
           className="absolute inset-0 flex flex-row text-start"
           style={backgroundStyle}
         >
-          <div className="flex flex-col justify-end text-start m-6">
+          <div className="flex flex-col justify-end text-start">
             <h1
-              className="text-7xl font-bold mx-4 transition-transform duration-300"
+              className="text-7xl font-bold transition-transform duration-300"
               style={titleStyle}
             >
               {event.title}
             </h1>
             <p
-              className="text-lg md:text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300"
+              className="text-lg md:text-xl text-pretty font-sans text-muted-foreground transition-transform duration-300"
               style={subtitleStyle}
             >
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
@@ -347,10 +347,10 @@ export default function EventView() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="mx-10 mt-3 p-6 rounded-lg shadow-lg text-center"
+        className="rounded-lg shadow-lg text-center"
       >
         <p className="text-lg md:text-xl">{event.description}</p>
-        <div className="mt-2 mx-44 flex items-center justify-center">
+        <div className="flex items-center justify-center">
           <p className="text-lg md:text-xl text-amber-300">
             {availableTickets} passes left
           </p>

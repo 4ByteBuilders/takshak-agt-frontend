@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/supabaseClient";
 import DjLineup from "./Djlineup";
 import Services from "./Services";
+import ServicesSmall from "./ServicesSmall";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -161,7 +162,7 @@ export default function HomePage() {
           </motion.div>
         </div>
         <DjLineup />
-
+        <ServicesSmall />
         <Services />
       </div>
     </>
