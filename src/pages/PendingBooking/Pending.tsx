@@ -24,6 +24,7 @@ import Lottie from "lottie-react";
 import noPendingAnimation from "@/assets/no_payments.json";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "@/utils/dateFormatter";
+import { setWithExpiry } from "@/utils/fetchLocalStorage";
 
 const Pending = () => {
   const navigate = useNavigate();
@@ -31,12 +32,17 @@ const Pending = () => {
   const [loading, setLoading] = useState(true);
   const cashfree = useRef<Cashfree | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  // const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
 
   const handleClick = () => {
     navigate("/");
   };
-
+  const handleRaiseConcern = (order_id: string) => {
+    const TTL = 10 * 60 * 1000; // 10 minutes expiry
+    setWithExpiry("booking_id", order_id, TTL);
+    console.log("set successfully!!");
+    window.location.href = "/raise-concern"; // Redirect to the page
+  };
   useEffect(() => {
     const initializeSDK = async () => {
       cashfree.current = await load({ mode: "sandbox" });
@@ -85,8 +91,8 @@ const Pending = () => {
       if (response.data.payment_status === "SUCCESS") {
         navigate(`/payment-status?order_id=${order_id}`);
       } else {
-        // setSelectedOrderId(order_id);
-        setIsDialogOpen(true); // Open the dialog
+        setCurrentOrderId(order_id); // Set the current order_id
+        setIsDialogOpen(true); // Open the dialog if status is not "SUCCESS"
       }
     } catch (error) {
       console.error("Error refreshing booking status:", error);
@@ -217,7 +223,9 @@ const Pending = () => {
                 className="bg-orange-500 text-white hover:bg-orange-700 "
                 onClick={() => {
                   setIsDialogOpen(false);
-                  navigate("/raise-concern");
+                  if (currentOrderId) {
+                    handleRaiseConcern(currentOrderId);
+                  }
                 }}
               >
                 Raise Concern
