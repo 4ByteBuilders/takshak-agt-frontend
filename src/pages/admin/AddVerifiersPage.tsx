@@ -69,7 +69,7 @@ export default function AddVerifiersPage() {
   };
 
   return (
-    <div className="flex flex-col h-screen p-6">
+    <div className="flex flex-col h-screen p-6 mt-12">
       <div className="flex flex-col items-start mb-6">
         <h1 className="text-3xl font-bold mb-4">Add Verifiers</h1>
         <div className="flex items-center mb-4">

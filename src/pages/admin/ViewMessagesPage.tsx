@@ -48,7 +48,7 @@ export default function ViewMessagesPage() {
   const filteredMessages = messages.filter((message) => message.status === filter);
 
   return (
-    <div className="p-6">
+    <div className="p-6 mt-12">
       <h1 className="text-3xl font-bold mb-6">View Messages</h1>
       <div className="mb-4">
         <button

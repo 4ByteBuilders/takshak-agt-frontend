@@ -26,6 +26,8 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AddVerifiersPage from "./pages/admin/AddVerifiersPage";
 import ViewMessagesPage from "./pages/admin/ViewMessagesPage";
 import ViewConcernsPage from "./pages/admin/ViewConcernsPage";
+import AdminNavbar from "./pages/admin/AdminNavbar";
+import AdminProtectedRoute from "./components/Wrapper/AdminProtectedRoute";
 
 const getSubdomain = () => {
   const host = window.location.hostname;
@@ -45,16 +47,34 @@ function App() {
             <Toaster />
             {subdomain === "admin" ? (
               <AdminLayout>
+                <AdminNavbar />
                 <Routes>
                   <Route path="/" element={<AdminLoginPage />} />
-                  <Route path="/dashboard" element={<AdminDashboard />} />
-                  <Route path="/add-verifiers" element={<AddVerifiersPage />} />
+
+                  <Route path="/dashboard" element={
+                    <AdminProtectedRoute>
+                      <AdminDashboard />
+                    </AdminProtectedRoute>} />
+                  <Route path="/add-verifiers" element={
+                    <AdminProtectedRoute>
+                      <AddVerifiersPage />
+                    </AdminProtectedRoute>} />
+                  <Route path="/view-messages" element={
+                    <AdminProtectedRoute>
+                      <ViewMessagesPage />
+                    </AdminProtectedRoute>} />
+                  <Route path="/view-concerns" element={
+                    <AdminProtectedRoute>
+                      <ViewConcernsPage />
+                    </AdminProtectedRoute>
+                  } />
+
                   <Route path="*" element={<Page404 />} />
                 </Routes>
               </AdminLayout>
             ) : (
               <>
-                {!isAdminRoute && <Navbar />}
+                {!isAdminRoute ? <Navbar /> : <AdminNavbar />}
                 <div className="flex-grow">
                   <Routes>
                     <Route path="/" element={<HomePage />} />
@@ -74,10 +94,26 @@ function App() {
                     <Route path="/booking-history" element={<History />} />
                     {/* Temporary : Need to remove */}
                     <Route path="/admin" element={<AdminLoginPage />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/add-verifiers" element={<AddVerifiersPage />} />
-                    <Route path="/admin/view-messages" element={<ViewMessagesPage />} />
-                    <Route path="/admin/view-concerns" element={<ViewConcernsPage />} />
+                    <Route path="/admin/dashboard" element={
+                      <AdminProtectedRoute>
+                        <AdminDashboard />
+                      </AdminProtectedRoute>
+                    } />
+                    <Route path="/admin/add-verifiers" element={
+                      <AdminProtectedRoute>
+                        <AddVerifiersPage />
+                      </AdminProtectedRoute>
+                    } />
+                    <Route path="/admin/view-messages" element={
+                      <AdminProtectedRoute>
+                        <ViewMessagesPage />
+                      </AdminProtectedRoute>
+                    } />
+                    <Route path="/admin/view-concerns" element={
+                      <AdminProtectedRoute>
+                        <ViewConcernsPage />
+                      </AdminProtectedRoute>
+                    } />
                     <Route path="*" element={<Page404 />} />
                   </Routes>
                 </div>
