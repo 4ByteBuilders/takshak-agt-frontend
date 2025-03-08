@@ -285,7 +285,7 @@ export default function EventView() {
         <div
           className="w-full h-screen bg-cover bg-no-repeat"
           style={{
-            backgroundImage: `url(${event.photoUrls.eventPageUrl})`,
+            backgroundImage: "url(/public/rangbarse.png)",
             backgroundPosition: "bottom",
             backgroundAttachment: "fixed",
           }}
@@ -294,15 +294,15 @@ export default function EventView() {
           className="absolute inset-0 flex flex-row text-start"
           style={backgroundStyle}
         >
-          <div className="flex flex-col justify-end text-start m-6">
-            <h1 className="text-7xl font-bold mx-4 transition-transform duration-300">
+          <div className="flex flex-col justify-end text-start p-10">
+            <h1 className="text-7xl font-bold transition-transform duration-300">
               {event.title}
             </h1>
-            <p className="text-lg md:text-xl text-pretty font-sans mx-4 my-2 text-muted-foreground transition-transform duration-300">
+            <p className="text-lg md:text-xl text-pretty font-sans text-muted-foreground transition-transform duration-300">
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
             </p>
           </div>
-          <div className={scrollY > 0 ? "hidden" : "flex items-end"}>
+          <div className={scrollY > 0 ? "hidden p-10" : "flex items-end p-10"}>
             <Lottie
               animationData={scrolldown}
               style={{ width: 50, height: 50 }}
@@ -315,10 +315,10 @@ export default function EventView() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
-        className="mx-10 mt-3 p-6 rounded-lg shadow-lg text-center"
+        className="rounded-lg shadow-lg text-center"
       >
-        <p className="text-lg md:text-xl">{event.description}</p>
-        <div className="mt-2 mx-44 flex items-center justify-center">
+        <p className="text-lg md:text-xl px-4">{event.description}</p>
+        <div className="flex items-center justify-center">
           <p className="text-lg md:text-xl text-amber-300">
             {availableTickets} passes left
           </p>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import UserMessageCard from "@/components/UserMessageCard/UserMessageCard";
 import { supabase } from "@/supabaseClient";
+import { toast } from "sonner";
 
 interface Message {
   id: string;
@@ -16,6 +17,7 @@ interface Message {
 export default function ViewMessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [filter, setFilter] = useState<"UNREAD" | "READ">("UNREAD");
+  const adminUrl = import.meta.env.VITE_FRONTEND_ADMIN_URL;
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -24,12 +26,13 @@ export default function ViewMessagesPage() {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/admin/all-messages`);
         setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
+      } catch {
+        toast.error("An error occurred while fetching messages. Redirecting to dashboard...");
+        window.location.href = `${adminUrl}/dashboard`;
       }
     };
     fetchMessages();
-  }, []);
+  }, [adminUrl]);
 
   const handleToggleReadStatus = async (id: string, currentStatus: "UNREAD" | "READ") => {
     const newStatus = currentStatus === "UNREAD" ? "READ" : "UNREAD";
@@ -40,15 +43,16 @@ export default function ViewMessagesPage() {
           message.id === id ? { ...message, status: newStatus } : message
         )
       );
-    } catch (error) {
-      console.error(`Error changing message status to ${newStatus}:`, error);
+      toast.success(`Message marked as ${newStatus}.`);
+    } catch {
+      toast.error(`Error changing message status to ${newStatus}. Please try again.`);
     }
   };
 
   const filteredMessages = messages.filter((message) => message.status === filter);
 
   return (
-    <div className="p-6">
+    <div className="p-6 mt-12">
       <h1 className="text-3xl font-bold mb-6">View Messages</h1>
       <div className="mb-4">
         <button
@@ -65,16 +69,20 @@ export default function ViewMessagesPage() {
         </button>
       </div>
       <div>
-        {filteredMessages.map((message) => (
-          <UserMessageCard
-            key={message.id}
-            name={message.name}
-            email={message.email}
-            message={message.message}
-            status={message.status}
-            onMarkAsRead={() => handleToggleReadStatus(message.id, message.status)}
-          />
-        ))}
+        {filteredMessages.length > 0 ? (
+          filteredMessages.map((message) => (
+            <UserMessageCard
+              key={message.id}
+              name={message.name}
+              email={message.email}
+              message={message.message}
+              status={message.status}
+              onMarkAsRead={() => handleToggleReadStatus(message.id, message.status)}
+            />
+          ))
+        ) : (
+          <p className="text-gray-500">No messages found.</p>
+        )}
       </div>
     </div>
   );

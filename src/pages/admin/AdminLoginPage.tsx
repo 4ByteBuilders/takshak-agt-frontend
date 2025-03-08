@@ -1,10 +1,12 @@
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import Loader from "@/components/Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 const AdminLoginPage = () => {
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -19,19 +21,17 @@ const AdminLoginPage = () => {
                     axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
                     const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                     if (res.status === 200 && res.data.isAdmin) {
-                        // Redirect to admin dashboard or any other admin route
-                        navigate("/admin/dashboard");
-                    }
-                    else {
+                        navigate("/dashboard", { replace: true }); // Redirect to the correct subdomain
+                    } else {
                         toast.error("You are not authorized to access this page.");
-                        navigate("/admin/login"); // Redirect to home or any other non-admin route
+                        navigate("/", { replace: true }); // Redirect to home or another non-admin route
                     }
-                }
-                catch {
+                } catch {
                     toast.error("An error occurred. Please try again later.");
-                    navigate("/admin/login"); // Redirect to home or any other non-admin route
+                    navigate("/", { replace: true }); // Redirect to home
                 }
             }
+            setLoading(false);
         };
         checkUser();
     }, [navigate]);
@@ -40,7 +40,7 @@ const AdminLoginPage = () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: window.location.origin + "/admin/dashboard"
+                redirectTo: `${import.meta.env.VITE_FRONTEND_ADMIN_URL}/dashboard`
             }
         });
         if (error) {
@@ -52,14 +52,18 @@ const AdminLoginPage = () => {
             if (user) {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                 if (res.data.isAdmin) {
-                    navigate("/admin/dashboard");
+                    navigate("/dashboard", { replace: true });
                 } else {
                     toast.error("You are not authorized to access this page.");
-                    navigate("/"); // Redirect to home or any other non-admin route
+                    navigate("/", { replace: true }); // Redirect to home or another non-admin route
                 }
             }
         }
     };
+
+    if (loading) {
+        return <Loader />;
+    }
 
     return (
         <div className="flex flex-col items-center justify-center h-screen p-3">

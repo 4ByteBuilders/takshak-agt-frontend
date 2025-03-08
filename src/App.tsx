@@ -26,6 +26,9 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AddVerifiersPage from "./pages/admin/AddVerifiersPage";
 import ViewMessagesPage from "./pages/admin/ViewMessagesPage";
 import ViewConcernsPage from "./pages/admin/ViewConcernsPage";
+import AdminNavbar from "./pages/admin/AdminNavbar";
+import AdminProtectedRoute from "./components/Wrapper/AdminProtectedRoute";
+import RaiseConcern from "./pages/RaiseConcern/RaiseConcern";
 
 const getSubdomain = () => {
   const host = window.location.hostname;
@@ -35,26 +38,58 @@ const getSubdomain = () => {
 
 function App() {
   const subdomain = getSubdomain();
-  const isAdminRoute = location.pathname.includes("admin"); //remove once subdomain added
 
   return (
     <BrowserRouter>
       <EventProvider>
         <AuthProvider>
-          <div className="flex flex-col min-h-screen font-poppins">
+          <div className="flex flex-col w-full min-h-screen font-poppins">
             <Toaster />
             {subdomain === "admin" ? (
               <AdminLayout>
+                <AdminNavbar />
                 <Routes>
                   <Route path="/" element={<AdminLoginPage />} />
-                  <Route path="/dashboard" element={<AdminDashboard />} />
-                  <Route path="/add-verifiers" element={<AddVerifiersPage />} />
+
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <AdminProtectedRoute>
+                        <AdminDashboard />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/add-verifiers"
+                    element={
+                      <AdminProtectedRoute>
+                        <AddVerifiersPage />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/view-messages"
+                    element={
+                      <AdminProtectedRoute>
+                        <ViewMessagesPage />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/view-concerns"
+                    element={
+                      <AdminProtectedRoute>
+                        <ViewConcernsPage />
+                      </AdminProtectedRoute>
+                    }
+                  />
+
                   <Route path="*" element={<Page404 />} />
                 </Routes>
               </AdminLayout>
             ) : (
               <>
-                {!isAdminRoute && <Navbar />}
+                <Navbar />
                 <div className="flex-grow">
                   <Routes>
                     <Route path="/" element={<HomePage />} />
@@ -64,24 +99,26 @@ function App() {
                     <Route path="/view-event" element={<EventView />} />
                     <Route path="/verify" element={<Verify />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
+                    <Route
+                      path="/terms-and-conditions"
+                      element={<TermsAndCondition />}
+                    />
                     <Route path="/about" element={<AboutUs />} />
-                    <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
+                    <Route
+                      path="/cancellation-and-refund"
+                      element={<CancellationAndRefund />}
+                    />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/pending-booking" element={<Pending />} />
                     <Route path="/tickets" element={<MyTickets />} />
                     <Route path="/payment-status" element={<PaymentStatus />} />
+                    <Route path="/raise-concern" element={<RaiseConcern />} />
+
                     <Route path="/booking-history" element={<History />} />
-                    {/* Temporary : Need to remove */}
-                    <Route path="/admin" element={<AdminLoginPage />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/add-verifiers" element={<AddVerifiersPage />} />
-                    <Route path="/admin/view-messages" element={<ViewMessagesPage />} />
-                    <Route path="/admin/view-concerns" element={<ViewConcernsPage />} />
                     <Route path="*" element={<Page404 />} />
                   </Routes>
                 </div>
-                {!isAdminRoute && <Footer />}
+                <Footer />
               </>
             )}
           </div>
