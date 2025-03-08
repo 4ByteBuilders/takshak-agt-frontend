@@ -37,7 +37,7 @@ function AdminNavbar() {
       console.error("Error logging out:", error.message);
     }
     localStorage.clear();
-    navigate(`${import.meta.env.VITE_FRONTEND_ADMIN_URL}/`);
+    window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}`;
   };
 
   return (
