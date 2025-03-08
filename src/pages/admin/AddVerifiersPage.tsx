@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Plus, Trash } from "lucide-react";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 interface Verifier {
@@ -14,58 +13,61 @@ export default function AddVerifiersPage() {
   const [email, setEmail] = useState("");
   const [verifiers, setVerifiers] = useState<Verifier[]>([]);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
     const fetchVerifiers = async () => {
-      const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/verify`);
-      if (res.status === 200) {
-        setVerifiers([...res.data]);
-      } else {
-        toast.error("An error occurred. Please try again later.");
-        navigate("/admin/dashboard");
+      try {
+        const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/verify`);
+        if (res.status === 200) {
+          setVerifiers([...res.data]);
+        } else {
+          toast.error("An error occurred. Redirecting to dashboard...");
+          window.location.href = "/dashboard";
+        }
+      } catch {
+        toast.error("An error occurred. Redirecting to dashboard...");
+        window.location.href = "/dashboard";
       }
     };
     fetchVerifiers();
-  }, [navigate]);
+  }, []);
 
   const handleAddVerifier = async () => {
     if (email && verifiers && !verifiers.some((verifier) => verifier.email === email)) {
-      const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      axios.post(`${import.meta.env.VITE_BACKEND_URL}/verify/add`, { email })
-        .then((response) => {
-          if (response.status === 200) {
-            setVerifiers([...verifiers, response.data]);
-            toast.success("Verifier added successfully.");
-            setEmail("");
-          } else {
-            toast.error("Failed to add verifier.");
-          }
-        })
-        .catch(() => {
-          toast.error("An error occurred. Please try again later.");
-        });
+      try {
+        const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/verify/add`, { email });
+        
+        if (response.status === 200) {
+          setVerifiers([...verifiers, response.data]);
+          toast.success("Verifier added successfully.");
+          setEmail("");
+        } else {
+          toast.error("Failed to add verifier.");
+        }
+      } catch {
+        toast.error("An error occurred. Please try again later.");
+      }
     }
   };
 
   const handleDeleteVerifier = async (id: string) => {
-    const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    axios.delete(`${import.meta.env.VITE_BACKEND_URL}/verify/remove`, { data: { id } })
-      .then((response) => {
-        if (response.status === 200) {
-          setVerifiers(verifiers.filter((verifier) => verifier.id !== id));
-          toast.success("Verifier removed successfully.");
-        } else {
-          toast.error("Failed to remove verifier.");
-        }
-      })
-      .catch(() => {
-        toast.error("An error occurred. Please try again later.");
-      });
+    try {
+      const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      const response = await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/verify/remove`, { data: { id } });
+
+      if (response.status === 200) {
+        setVerifiers(verifiers.filter((verifier) => verifier.id !== id));
+        toast.success("Verifier removed successfully.");
+      } else {
+        toast.error("Failed to remove verifier.");
+      }
+    } catch {
+      toast.error("An error occurred. Please try again later.");
+    }
   };
 
   return (
