@@ -22,14 +22,14 @@ const AdminLoginPage = () => {
                     const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                     if (res.status === 200 && res.data.isAdmin) {
                         // Redirect to admin dashboard or any other admin route
-                        navigate("/admin/dashboard");
+                        navigate("/dashboard");
                     } else {
                         toast.error("You are not authorized to access this page.");
-                        navigate("/admin"); // Redirect to home or any other non-admin route
+                        navigate("/"); // Redirect to home or any other non-admin route
                     }
                 } catch {
                     toast.error("An error occurred. Please try again later.");
-                    navigate("/admin"); // Redirect to home or any other non-admin route
+                    navigate("/"); // Redirect to home or any other non-admin route
                 }
             }
             setLoading(false);
@@ -41,7 +41,7 @@ const AdminLoginPage = () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: window.location.origin + "/admin/dashboard"
+                redirectTo: window.location.origin + "/dashboard"
             }
         });
         if (error) {
@@ -53,7 +53,7 @@ const AdminLoginPage = () => {
             if (user) {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                 if (res.data.isAdmin) {
-                    navigate("/admin/dashboard");
+                    navigate("/dashboard");
                 } else {
                     toast.error("You are not authorized to access this page.");
                     navigate("/"); // Redirect to home or any other non-admin route

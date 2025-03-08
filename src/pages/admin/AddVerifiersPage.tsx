@@ -25,7 +25,7 @@ export default function AddVerifiersPage() {
         setVerifiers([...res.data]);
       } else {
         toast.error("An error occurred. Please try again later.");
-        navigate("/admin/dashboard");
+        navigate("/dashboard");
       }
     };
     fetchVerifiers();
