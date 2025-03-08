@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
@@ -6,7 +5,6 @@ import axios from "axios";
 import Loader from "@/components/Loader/Loader";
 
 const AdminLoginPage = () => {
-    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -21,21 +19,20 @@ const AdminLoginPage = () => {
                     axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
                     const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                     if (res.status === 200 && res.data.isAdmin) {
-                        // Redirect to admin dashboard or any other admin route
-                        navigate("/dashboard");
+                        window.location.href = "/dashboard"; // Redirect to the correct subdomain
                     } else {
                         toast.error("You are not authorized to access this page.");
-                        navigate("/"); // Redirect to home or any other non-admin route
+                        window.location.href = "/"; // Redirect to home or another non-admin route
                     }
                 } catch {
                     toast.error("An error occurred. Please try again later.");
-                    navigate("/"); // Redirect to home or any other non-admin route
+                    window.location.href = "/"; // Redirect to home
                 }
             }
             setLoading(false);
         };
         checkUser();
-    }, [navigate]);
+    }, []);
 
     const handleGoogleLogin = async () => {
         const { error } = await supabase.auth.signInWithOAuth({
@@ -53,19 +50,17 @@ const AdminLoginPage = () => {
             if (user) {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                 if (res.data.isAdmin) {
-                    navigate("/dashboard");
+                    window.location.href = "/dashboard";
                 } else {
                     toast.error("You are not authorized to access this page.");
-                    navigate("/"); // Redirect to home or any other non-admin route
+                    window.location.href = "/"; // Redirect to home or another non-admin route
                 }
             }
         }
     };
 
     if (loading) {
-        return (
-            <Loader/>
-        );
+        return <Loader />;
     }
 
     return (
