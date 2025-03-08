@@ -16,6 +16,7 @@ interface Concern {
 export default function ViewConcernsPage() {
   const [concerns, setConcerns] = useState<Concern[]>([]);
   const [filter, setFilter] = useState<"RESOLVED" | "UNRESOLVED">("UNRESOLVED");
+  const adminUrl = import.meta.env.VITE_FRONTEND_ADMIN_URL;
 
   useEffect(() => {
     const fetchConcerns = async () => {
@@ -26,11 +27,11 @@ export default function ViewConcernsPage() {
         setConcerns(response.data);
       } catch {
         toast.error("An error occurred while fetching concerns. Redirecting to dashboard...");
-        window.location.href = "/dashboard";
+        window.location.href = `${adminUrl}/dashboard`;
       }
     };
     fetchConcerns();
-  }, []);
+  }, [adminUrl]);
 
   const handleToggleConcernStatus = async (id: string, currentStatus: "RESOLVED" | "UNRESOLVED") => {
     const newStatus = currentStatus === "UNRESOLVED" ? "RESOLVED" : "UNRESOLVED";

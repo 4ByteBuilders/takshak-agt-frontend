@@ -12,6 +12,7 @@ interface Verifier {
 export default function AddVerifiersPage() {
   const [email, setEmail] = useState("");
   const [verifiers, setVerifiers] = useState<Verifier[]>([]);
+  const adminUrl = import.meta.env.VITE_FRONTEND_ADMIN_URL;
 
   useEffect(() => {
     const fetchVerifiers = async () => {
@@ -23,15 +24,15 @@ export default function AddVerifiersPage() {
           setVerifiers([...res.data]);
         } else {
           toast.error("An error occurred. Redirecting to dashboard...");
-          window.location.href = "/dashboard";
+          window.location.href = `${adminUrl}/dashboard`;
         }
       } catch {
         toast.error("An error occurred. Redirecting to dashboard...");
-        window.location.href = "/dashboard";
+        window.location.href = `${adminUrl}/dashboard`;
       }
     };
     fetchVerifiers();
-  }, []);
+  }, [adminUrl]);
 
   const handleAddVerifier = async () => {
     if (email && verifiers && !verifiers.some((verifier) => verifier.email === email)) {
