@@ -31,6 +31,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { setWithExpiry } from "@/utils/fetchLocalStorage";
 
 const CombinedBookings = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const CombinedBookings = () => {
   const [historyBookings, setHistoryBookings] = useState<ExtendedBooking[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentOrderId, setCurrentOrderId] = useState<string | null>(null);
   const cashfree = useRef<Cashfree | null>(null);
   const dateNow = new Date();
 
@@ -109,6 +111,7 @@ const CombinedBookings = () => {
       if (response.data.payment_status === "SUCCESS") {
         navigate(`/payment-status?order_id=${order_id}`);
       } else {
+        setCurrentOrderId(order_id); // Set the current order_id
         setIsDialogOpen(true); // Open the dialog if status is not "SUCCESS"
       }
     } catch (error) {
@@ -123,6 +126,13 @@ const CombinedBookings = () => {
   }
   console.log(pendingBookings);
   console.log(historyBookings);
+  const handleRaiseConcern = (order_id: string) => {
+    const TTL = 10 * 60 * 1000; // 10 minutes expiry
+    setWithExpiry("booking_id", order_id, TTL);
+    console.log("set successfully!!");
+    window.location.href = "/raise-concern"; // Redirect to the page
+  };
+
   return (
     <div className="min-h-full bg-grey-950 pt-12">
       {pendingBookings.length > 0 && (
@@ -335,6 +345,11 @@ const CombinedBookings = () => {
                             <Button
                               className="text-amber-300 p-0"
                               variant="link"
+                              onClick={() => {
+                                console.log("click raise concern");
+                                console.log(booking.id);
+                                handleRaiseConcern(booking.id);
+                              }}
                             >
                               <BadgeAlert />
                               Raise Concern
@@ -395,7 +410,9 @@ const CombinedBookings = () => {
                 className="bg-orange-500 text-white hover:bg-orange-700 "
                 onClick={() => {
                   setIsDialogOpen(false);
-                  navigate("/raise-concern");
+                  if (currentOrderId) {
+                    handleRaiseConcern(currentOrderId);
+                  }
                 }}
               >
                 Raise Concern

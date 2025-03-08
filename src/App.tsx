@@ -28,6 +28,7 @@ import ViewMessagesPage from "./pages/admin/ViewMessagesPage";
 import ViewConcernsPage from "./pages/admin/ViewConcernsPage";
 import AdminNavbar from "./pages/admin/AdminNavbar";
 import AdminProtectedRoute from "./components/Wrapper/AdminProtectedRoute";
+import RaiseConcern from "./pages/RaiseConcern/RaiseConcern";
 
 const getSubdomain = () => {
   const host = window.location.hostname;
@@ -51,23 +52,38 @@ function App() {
                 <Routes>
                   <Route path="/" element={<AdminLoginPage />} />
 
-                  <Route path="/dashboard" element={
-                    <AdminProtectedRoute>
-                      <AdminDashboard />
-                    </AdminProtectedRoute>} />
-                  <Route path="/add-verifiers" element={
-                    <AdminProtectedRoute>
-                      <AddVerifiersPage />
-                    </AdminProtectedRoute>} />
-                  <Route path="/view-messages" element={
-                    <AdminProtectedRoute>
-                      <ViewMessagesPage />
-                    </AdminProtectedRoute>} />
-                  <Route path="/view-concerns" element={
-                    <AdminProtectedRoute>
-                      <ViewConcernsPage />
-                    </AdminProtectedRoute>
-                  } />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <AdminProtectedRoute>
+                        <AdminDashboard />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/add-verifiers"
+                    element={
+                      <AdminProtectedRoute>
+                        <AddVerifiersPage />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/view-messages"
+                    element={
+                      <AdminProtectedRoute>
+                        <ViewMessagesPage />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/view-concerns"
+                    element={
+                      <AdminProtectedRoute>
+                        <ViewConcernsPage />
+                      </AdminProtectedRoute>
+                    }
+                  />
 
                   <Route path="*" element={<Page404 />} />
                 </Routes>
@@ -84,36 +100,56 @@ function App() {
                     <Route path="/view-event" element={<EventView />} />
                     <Route path="/verify" element={<Verify />} />
                     <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                    <Route path="/terms-and-conditions" element={<TermsAndCondition />} />
+                    <Route
+                      path="/terms-and-conditions"
+                      element={<TermsAndCondition />}
+                    />
                     <Route path="/about" element={<AboutUs />} />
-                    <Route path="/cancellation-and-refund" element={<CancellationAndRefund />} />
+                    <Route
+                      path="/cancellation-and-refund"
+                      element={<CancellationAndRefund />}
+                    />
                     <Route path="/contact" element={<Contact />} />
                     <Route path="/pending-booking" element={<Pending />} />
                     <Route path="/tickets" element={<MyTickets />} />
                     <Route path="/payment-status" element={<PaymentStatus />} />
                     <Route path="/booking-history" element={<History />} />
+                    <Route path="/raise-concern" element={<RaiseConcern />} />
+
                     {/* Temporary : Need to remove */}
                     <Route path="/admin" element={<AdminLoginPage />} />
-                    <Route path="/admin/dashboard" element={
-                      <AdminProtectedRoute>
-                        <AdminDashboard />
-                      </AdminProtectedRoute>
-                    } />
-                    <Route path="/admin/add-verifiers" element={
-                      <AdminProtectedRoute>
-                        <AddVerifiersPage />
-                      </AdminProtectedRoute>
-                    } />
-                    <Route path="/admin/view-messages" element={
-                      <AdminProtectedRoute>
-                        <ViewMessagesPage />
-                      </AdminProtectedRoute>
-                    } />
-                    <Route path="/admin/view-concerns" element={
-                      <AdminProtectedRoute>
-                        <ViewConcernsPage />
-                      </AdminProtectedRoute>
-                    } />
+                    <Route
+                      path="/admin/dashboard"
+                      element={
+                        <AdminProtectedRoute>
+                          <AdminDashboard />
+                        </AdminProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/add-verifiers"
+                      element={
+                        <AdminProtectedRoute>
+                          <AddVerifiersPage />
+                        </AdminProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/view-messages"
+                      element={
+                        <AdminProtectedRoute>
+                          <ViewMessagesPage />
+                        </AdminProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/admin/view-concerns"
+                      element={
+                        <AdminProtectedRoute>
+                          <ViewConcernsPage />
+                        </AdminProtectedRoute>
+                      }
+                    />
                     <Route path="*" element={<Page404 />} />
                   </Routes>
                 </div>
