@@ -37,7 +37,6 @@ const getSubdomain = () => {
 
 function App() {
   const subdomain = getSubdomain();
-  const isAdminRoute = location.pathname.includes("admin"); //remove once subdomain added
 
   return (
     <BrowserRouter>
@@ -74,7 +73,7 @@ function App() {
               </AdminLayout>
             ) : (
               <>
-                {!isAdminRoute ? <Navbar /> : <AdminNavbar />}
+                <Navbar />
                 <div className="flex-grow">
                   <Routes>
                     <Route path="/" element={<HomePage />} />
@@ -92,32 +91,10 @@ function App() {
                     <Route path="/tickets" element={<MyTickets />} />
                     <Route path="/payment-status" element={<PaymentStatus />} />
                     <Route path="/booking-history" element={<History />} />
-                    {/* Temporary : Need to remove */}
-                    <Route path="/admin" element={<AdminLoginPage />} />
-                    <Route path="/admin/dashboard" element={
-                      <AdminProtectedRoute>
-                        <AdminDashboard />
-                      </AdminProtectedRoute>
-                    } />
-                    <Route path="/admin/add-verifiers" element={
-                      <AdminProtectedRoute>
-                        <AddVerifiersPage />
-                      </AdminProtectedRoute>
-                    } />
-                    <Route path="/admin/view-messages" element={
-                      <AdminProtectedRoute>
-                        <ViewMessagesPage />
-                      </AdminProtectedRoute>
-                    } />
-                    <Route path="/admin/view-concerns" element={
-                      <AdminProtectedRoute>
-                        <ViewConcernsPage />
-                      </AdminProtectedRoute>
-                    } />
                     <Route path="*" element={<Page404 />} />
                   </Routes>
                 </div>
-                {!isAdminRoute && <Footer />}
+                <Footer />
               </>
             )}
           </div>
