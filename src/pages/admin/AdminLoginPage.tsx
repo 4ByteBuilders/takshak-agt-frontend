@@ -19,14 +19,14 @@ const AdminLoginPage = () => {
                     axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
                     const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                     if (res.status === 200 && res.data.isAdmin) {
-                        window.location.href = "/dashboard"; // Redirect to the correct subdomain
+                        window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}/dashboard`; // Redirect to the correct subdomain
                     } else {
                         toast.error("You are not authorized to access this page.");
-                        window.location.href = "/"; // Redirect to home or another non-admin route
+                        window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}`; // Redirect to home or another non-admin route
                     }
                 } catch {
                     toast.error("An error occurred. Please try again later.");
-                    window.location.href = "/"; // Redirect to home
+                    window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}`; // Redirect to home
                 }
             }
             setLoading(false);
@@ -38,7 +38,7 @@ const AdminLoginPage = () => {
         const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: window.location.origin + "/dashboard"
+                redirectTo: `${import.meta.env.VITE_FRONTEND_ADMIN_URL}/dashboard`
             }
         });
         if (error) {
@@ -50,10 +50,10 @@ const AdminLoginPage = () => {
             if (user) {
                 const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/check-admin`, { user });
                 if (res.data.isAdmin) {
-                    window.location.href = "/dashboard";
+                    window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}/dashboard`;
                 } else {
                     toast.error("You are not authorized to access this page.");
-                    window.location.href = "/"; // Redirect to home or another non-admin route
+                    window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}`; // Redirect to home or another non-admin route
                 }
             }
         }

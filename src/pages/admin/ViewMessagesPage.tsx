@@ -17,6 +17,7 @@ interface Message {
 export default function ViewMessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [filter, setFilter] = useState<"UNREAD" | "READ">("UNREAD");
+  const adminUrl = import.meta.env.VITE_FRONTEND_ADMIN_URL;
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -27,11 +28,11 @@ export default function ViewMessagesPage() {
         setMessages(response.data);
       } catch {
         toast.error("An error occurred while fetching messages. Redirecting to dashboard...");
-        window.location.href = "/dashboard";
+        window.location.href = `${adminUrl}/dashboard`;
       }
     };
     fetchMessages();
-  }, []);
+  }, [adminUrl]);
 
   const handleToggleReadStatus = async (id: string, currentStatus: "UNREAD" | "READ") => {
     const newStatus = currentStatus === "UNREAD" ? "READ" : "UNREAD";
