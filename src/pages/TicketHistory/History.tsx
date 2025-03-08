@@ -43,7 +43,6 @@ const CombinedBookings = () => {
   const cashfree = useRef<Cashfree | null>(null);
   const dateNow = new Date();
 
-  // Initialize Cashfree SDK
   useEffect(() => {
     const initializeSDK = async () => {
       cashfree.current = await load({ mode: "sandbox" });
@@ -130,7 +129,7 @@ const CombinedBookings = () => {
     const TTL = 10 * 60 * 1000; // 10 minutes expiry
     setWithExpiry("booking_id", order_id, TTL);
     console.log("set successfully!!");
-    window.location.href = "/raise-concern"; // Redirect to the page
+    window.location.href = "raise-concern"; // Redirect to the page
   };
 
   return (
