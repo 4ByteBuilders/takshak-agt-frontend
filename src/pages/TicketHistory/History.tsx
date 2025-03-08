@@ -24,12 +24,20 @@ import Lottie from "lottie-react";
 import noTickets from "@/assets/no_tickets.json";
 import { formatDate, formatTime } from "@/utils/dateFormatter";
 import { load, Cashfree } from "@cashfreepayments/cashfree-js";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const CombinedBookings = () => {
   const navigate = useNavigate();
   const [pendingBookings, setPendingBookings] = useState<Booking[]>([]);
   const [historyBookings, setHistoryBookings] = useState<ExtendedBooking[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const cashfree = useRef<Cashfree | null>(null);
   const dateNow = new Date();
 
@@ -83,20 +91,26 @@ const CombinedBookings = () => {
       cashfree.current.checkout({ paymentSessionId, redirectTarget: "_self" });
     }
   };
+
+  // Modified refreshBookingStatus function as per the pending page
   const refreshBookingStatus = async (order_id: string) => {
     try {
       setLoading(true);
       const auth = (await supabase.auth.getSession()).data.session
         ?.access_token;
       axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
+      console.log("fetching!!!");
+
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + "/booking/payment-status",
-        {
-          params: { order_id },
-        }
+        { params: { order_id } }
       );
-      console.log(response);
-      navigate(`/payment-status?order_id=${order_id}`);
+
+      if (response.data.payment_status === "SUCCESS") {
+        navigate(`/payment-status?order_id=${order_id}`);
+      } else {
+        setIsDialogOpen(true); // Open the dialog if status is not "SUCCESS"
+      }
     } catch (error) {
       console.error("Error refreshing booking status:", error);
     } finally {
@@ -364,6 +378,35 @@ const CombinedBookings = () => {
           </div>
         </>
       )}
+
+      {/* Payment Status Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Payment Status Unconfirmed</DialogTitle>
+          </DialogHeader>
+          <p>
+            It seems like we are unable to confirm your payment status right
+            now. If any amount has been deducted, please raise a concern.
+          </p>
+          <DialogFooter>
+            <div className="flex justify-end gap-2">
+              <Button
+                className="bg-orange-500 text-white hover:bg-orange-700 "
+                onClick={() => {
+                  setIsDialogOpen(false);
+                  navigate("/raise-concern");
+                }}
+              >
+                Raise Concern
+              </Button>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                OK
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
