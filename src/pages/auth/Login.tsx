@@ -74,7 +74,7 @@ const Login = () => {
         }}
       >
         <p className="text-4xl md:text-6xl font-black my-5">স্বাগতম!</p>
-        <p className="text-2xl md:text-4xl font-bold my-5 drop-shadow-lg text-left">
+        <p className="text-2xl md:text-4xl font-bold my-5 drop-shadow-lg text-center">
           We are <span className="text-amber-400">Takshak</span> Events
         </p>
 
