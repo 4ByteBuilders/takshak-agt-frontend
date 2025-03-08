@@ -28,6 +28,7 @@ import ViewMessagesPage from "./pages/admin/ViewMessagesPage";
 import ViewConcernsPage from "./pages/admin/ViewConcernsPage";
 import AdminNavbar from "./pages/admin/AdminNavbar";
 import AdminProtectedRoute from "./components/Wrapper/AdminProtectedRoute";
+import RaiseConcern from "./pages/RaiseConcern/RaiseConcern";
 
 const getSubdomain = () => {
   const host = window.location.hostname;
@@ -111,6 +112,8 @@ function App() {
                     <Route path="/pending-booking" element={<Pending />} />
                     <Route path="/tickets" element={<MyTickets />} />
                     <Route path="/payment-status" element={<PaymentStatus />} />
+                    <Route path="/raise-concern" element={<RaiseConcern />} />
+
                     <Route path="/booking-history" element={<History />} />
                     <Route path="*" element={<Page404 />} />
                   </Routes>
