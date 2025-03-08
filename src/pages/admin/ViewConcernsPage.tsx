@@ -24,6 +24,7 @@ export default function ViewConcernsPage() {
         const token = await supabase.auth.getSession().then(({ data }) => data.session?.access_token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/booking/get-concerns`);
+        console.log(response.data);
         setConcerns(response.data);
       } catch {
         toast.error("An error occurred while fetching concerns. Redirecting to dashboard...");
