@@ -52,7 +52,7 @@ export default function ViewConcernsPage() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 mt-12">
       <h1 className="text-3xl font-bold mb-6">View Concerns</h1>
       <div className="mb-4">
         <button

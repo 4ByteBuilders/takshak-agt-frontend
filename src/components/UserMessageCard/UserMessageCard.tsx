@@ -49,7 +49,7 @@ export default function UserMessageCard({ name, email, message, onMarkAsRead, st
           onClick={openGmailCompose}
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg ml-2"
         >
-          Open in Gmail
+          Reply via Gmail
         </button>
       </div>
 

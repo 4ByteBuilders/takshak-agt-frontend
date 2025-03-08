@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import Loader from "@/components/Loader/Loader";
 
 const AdminLoginPage = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const checkUser = async () => {
@@ -21,17 +23,16 @@ const AdminLoginPage = () => {
                     if (res.status === 200 && res.data.isAdmin) {
                         // Redirect to admin dashboard or any other admin route
                         navigate("/admin/dashboard");
-                    }
-                    else {
+                    } else {
                         toast.error("You are not authorized to access this page.");
-                        navigate("/admin/login"); // Redirect to home or any other non-admin route
+                        navigate("/admin"); // Redirect to home or any other non-admin route
                     }
-                }
-                catch {
+                } catch {
                     toast.error("An error occurred. Please try again later.");
-                    navigate("/admin/login"); // Redirect to home or any other non-admin route
+                    navigate("/admin"); // Redirect to home or any other non-admin route
                 }
             }
+            setLoading(false);
         };
         checkUser();
     }, [navigate]);
@@ -60,6 +61,12 @@ const AdminLoginPage = () => {
             }
         }
     };
+
+    if (loading) {
+        return (
+            <Loader/>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center justify-center h-screen p-3">
