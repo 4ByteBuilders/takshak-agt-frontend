@@ -77,6 +77,8 @@ const DjLineup = () => {
             <div className="relative flex flex-col md:flex md:flex-row md:gap-4 md:items-center md:justify-center">
                 <Lottie animationData={SpinningDisk}
                     className="z-0 hidden md:block absolute inset-0 mx-auto transform -translate-x-1/4 translate-y-4" />
+                <Lottie animationData={SpinningDisk}
+                    className="z-0 md:hidden absolute inset-0 mx-auto transform -translate-x-1/4 translate-y-4" />
                 <img src="/camilla.png" alt="djlineup" className="object-cover z-10 md:w-1/2" />
                 <CommentsSection />
             </div>

@@ -45,7 +45,7 @@ const Pending = () => {
   };
   useEffect(() => {
     const initializeSDK = async () => {
-      cashfree.current = await load({ mode: "sandbox" });
+      cashfree.current = await load({ mode: "production" });
     };
     initializeSDK();
 
