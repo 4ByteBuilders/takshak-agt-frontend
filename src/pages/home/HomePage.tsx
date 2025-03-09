@@ -117,13 +117,27 @@ export default function HomePage() {
                   transition={{ duration: 1, delay: 0.3 }}
                   className="w-1/2 mx-auto my-5"
                 ></motion.img>
-                <div className="flex items-center justify-center mt-4">
-                  <LucideMapPin name="map-pin" className="w-5 h-5 mr-2 text-yellow-300" />
-                  <p className="font-light text-md text-yellow-300 px-2">Pragati Playground, Krishnanagar | </p>
-                  <LucideCalendar name="calendar" className="w-5 h-5 mr-2 text-yellow-300" />
-                  <p className="font-light text-md text-yellow-300">15 March, 2025 | 10 AM Onwards</p>
+                <div className="flex flex-col md:flex-row items-center justify-center mt-4">
+                  <div className="flex">
+                    <LucideMapPin
+                      name="map-pin"
+                      className="w-5 h-5 mr-2 text-white"
+                    />
+                    <p className="font-semibold text-md text-white px-2">
+                      Pragati Playground, Krishnanagar{" "}
+                      <span className="hidden md:inline"> | </span>{" "}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <LucideCalendar
+                      name="calendar"
+                      className="w-5 h-5 mr-2 text-white"
+                    />
+                    <p className="font-semibold text-md text-white">
+                      15 March, 2025 | 10 AM Onwards
+                    </p>
+                  </div>
                 </div>
-                  
               </div>
             )}
 

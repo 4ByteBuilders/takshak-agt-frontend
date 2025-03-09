@@ -15,7 +15,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { formatDate } from "@/utils/dateFormatter";
+import { formatDate, formatTime } from "@/utils/dateFormatter";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
 import Lottie from "lottie-react";
@@ -90,8 +90,7 @@ export default function EventView() {
   }, []);
 
   useEffect(() => {
-    if (event)
-      updateAvailableTicketCount();
+    if (event) updateAvailableTicketCount();
   }, [event]);
 
   const calculateAndSetGrandTotal = () => {
@@ -301,8 +300,9 @@ export default function EventView() {
             <h1 className="text-7xl font-bold transition-transform duration-300">
               {event.title}
             </h1>
-            <p className="text-lg md:text-xl text-pretty font-sans text-stone- transition-transform duration-300">
-              {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
+            <p className="text-lg md:text-xl text-pretty font-medium text-stone-100 transition-transform duration-300">
+              {formatDate(event.dateTime, "DD MMMM YYYY")} |{" "}
+              {formatTime(event.dateTime, "hh:mm A")} | {event.venue}
             </p>
           </div>
           <div className={scrollY > 0 ? "hidden p-10" : "flex items-end p-10"}>
