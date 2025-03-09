@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const token = (await supabase.auth.getSession()).data.session?.access_token;
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/create`, {
-          id: user!.id
+          id: session!.user!.id
         });
       }
       if (session?.user)
