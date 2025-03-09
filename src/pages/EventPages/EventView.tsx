@@ -90,7 +90,7 @@ export default function EventView() {
   }, []);
 
   useEffect(() => {
-    if(event)
+    if (event)
       updateAvailableTicketCount();
   }, [event]);
 
@@ -170,6 +170,8 @@ export default function EventView() {
           priceOfferings: selectedTickets,
         }
       );
+      console.log("Booking response:");
+      console.log(response);
       if (response.status === 200) {
         removeLocalData("selectedTickets");
         setBookingTime(response.data.data.created_at);
@@ -286,7 +288,7 @@ export default function EventView() {
         <div
           className="w-full h-screen bg-cover bg-no-repeat"
           style={{
-            backgroundImage: "url(/public/rangbarse.png)",
+            backgroundImage: "url(/rangbarse.png)",
             backgroundPosition: "bottom",
             backgroundAttachment: "fixed",
           }}
