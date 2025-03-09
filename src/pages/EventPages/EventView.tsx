@@ -298,7 +298,7 @@ export default function EventView() {
             <h1 className="text-7xl font-bold transition-transform duration-300">
               {event.title}
             </h1>
-            <p className="text-lg md:text-xl text-pretty font-sans text-muted-foreground transition-transform duration-300">
+            <p className="text-lg md:text-xl text-pretty font-sans text-stone- transition-transform duration-300">
               {formatDate(event.dateTime, "DD MMMM YYYY")} | {event.venue}
             </p>
           </div>
@@ -317,14 +317,14 @@ export default function EventView() {
         transition={{ duration: 1, delay: 0.3 }}
         className="rounded-lg shadow-lg text-center"
       >
-        <p className="text-lg md:text-xl px-4">{event.description}</p>
+        <p className="text-lg md:text-xl p-4">{event.description}</p>
         <div className="flex items-center justify-center">
-          <p className="text-lg md:text-xl text-amber-300">
+          <p className="text-lg md:text-xl text-amber-300 font-semibold">
             {availableTickets} passes left
           </p>
           <Button
             variant={"link"}
-            className="text-amber-300 font-bold"
+            className="text-amber-300 font-extrabold"
             onClick={async () => {
               setShowLockLoader(true);
               await updateAvailableTicketCount();

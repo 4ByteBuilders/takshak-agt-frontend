@@ -162,13 +162,13 @@ export default function HomePage() {
               </>
             )}
           </motion.div>
-          <div className={scrollY > 0 ? "w-0 p-10" : "flex items-end p-10"}>
+          <div className={scrollY > 0 ? "w-0 p-10" : "flex items-end"}>
             <Lottie
               animationData={scrolldown}
               style={
-                scrollY == 0
-                  ? { width: 50, height: 50 }
-                  : { width: 0, height: 50 }
+                scrollY > 0
+                  ? { width: 0, height: 50 }
+                  : { width: 50, height: 50 }
               }
             />
           </div>
