@@ -91,7 +91,7 @@ export interface PaymentResponse {
     payment_message: string;
     payment_method: PaymentMethod;
     payment_offers: string | null;
-    payment_status: "SUCCESS" | "FAILED" | "USER_DROPPED" | "ERROR" | "UNKNOWN";
+    payment_status: "SUCCESS" | "FAILED" | "USER_DROPPED" | "ERROR" | "UNKNOWN" | "PENDING" | "CANCELLED" | "VOID" | "NOT_ATTEMPTED";
     payment_time: string;
 }
 

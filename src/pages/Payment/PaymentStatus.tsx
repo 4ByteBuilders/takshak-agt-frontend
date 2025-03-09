@@ -6,6 +6,7 @@ import sucessAnimation from "@/assets/payment/success.json";
 import failedAnimation from "@/assets/payment/failed.json";
 import droppedAnimation from "@/assets/payment/dropped.json";
 import errorAnimation from "@/assets/payment/error.json";
+import pendingAnimation from "@/assets/payment/pending.json";
 import axios from "axios";
 import { supabase } from "@/supabaseClient";
 import { Button } from "@/components/ui/button";
@@ -95,24 +96,37 @@ export default function PaymentStatus() {
                 </p>
               </div>
             )}
-
-            {status === "USER_DROPPED" && (
-              <div>
-                <Lottie
-                  animationData={droppedAnimation}
-                  className="h-24 mx-auto"
-                />
-                <h2 className="text-yellow-600 dark:text-yellow-400 text-2xl font-bold mt-4">
-                  Payment Incomplete
-                </h2>
-                <p className="text-gray-600 dark:text-gray-300 mt-2">
-                  You abandoned the payment. Try again.
-                </p>
-                <button className="mt-4 bg-yellow-500 dark:bg-yellow-400 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 dark:hover:bg-yellow-500 transition">
-                  Resume Payment
-                </button>
-              </div>
-            )}
+            {
+              (status === "PENDING" || status === "NOT_ATTEMPTED") && (
+                <div>
+                  <Lottie
+                    animationData={pendingAnimation}
+                    className="h-24 mx-auto"
+                  />
+                  <h2 className="text-amber-600 dark:text-amber-400 text-2xl font-bold mt-4">
+                    Payment Pending or Not Attempted
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    Your payment is pending. Please wait for a few minutes.
+                  </p>
+                </div>
+              )
+            }
+            {(status === "USER_DROPPED" || status === "CANCELLED"
+              || status === "VOID") && (
+                <div>
+                  <Lottie
+                    animationData={droppedAnimation}
+                    className="h-24 mx-auto"
+                  />
+                  <h2 className="text-yellow-600 dark:text-yellow-400 text-2xl font-bold mt-4">
+                    Payment Incomplete
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    You abandoned the payment. Try again.
+                  </p>
+                </div>
+              )}
             {(status === "ERROR" || status === "UNKNOWN") && (
               <div>
                 <Lottie
