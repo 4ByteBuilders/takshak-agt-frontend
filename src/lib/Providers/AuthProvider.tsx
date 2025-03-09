@@ -22,6 +22,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     getUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log("Auth event:", event);
+      console.log("Session:", session);
       setUser(session?.user || null);
       const createUser = async () => {
         const token = (await supabase.auth.getSession()).data.session?.access_token;
