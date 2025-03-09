@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "@/supabaseClient";
 import { ReactNode } from "react";
+import axios from "axios";
 
 interface AuthContextType {
   user: User | null;
@@ -22,6 +23,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
+      const createUser = async () => {
+        const token = (await supabase.auth.getSession()).data.session?.access_token;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/create`, {
+          id: user!.id
+        });
+      }
+      if (session?.user)
+        createUser();
     });
 
     return () => authListener.subscription.unsubscribe();

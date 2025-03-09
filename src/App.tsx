@@ -3,7 +3,6 @@ import Navbar from "./components/Navbar/Navbar";
 import Login from "./pages/auth/Login";
 import { Toaster } from "@/components/ui/sonner";
 import Page404 from "./pages/404/404";
-import EventPage from "./pages/EventPages/EventPage";
 import { AuthProvider } from "./lib/Providers/AuthProvider";
 import Footer from "./components/Footer/Footer";
 import Contact from "./pages/Policy/Contact";
@@ -94,7 +93,7 @@ function App() {
                   <Routes>
                     <Route path="/" element={<HomePage />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/events" element={<EventPage />} />
+
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/view-event" element={<EventView />} />
                     <Route path="/verify" element={<Verify />} />

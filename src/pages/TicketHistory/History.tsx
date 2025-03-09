@@ -45,7 +45,8 @@ const CombinedBookings = () => {
 
   useEffect(() => {
     const initializeSDK = async () => {
-      cashfree.current = await load({ mode: "production" });
+      const mode = "production";
+      cashfree.current = await load({ mode });
     };
     initializeSDK();
   }, []);
@@ -270,8 +271,8 @@ const CombinedBookings = () => {
                   <div className="relative">
                     <div
                       className={`absolute top-2 right-2 z-20 ${booking.paymentStatus === "PAID"
-                          ? "bg-green-700 backdrop-blur-md border border-green-400/50 rounded-xl px-2 py-1 text-sm font-semibold text-white"
-                          : "bg-red-700 backdrop-blur-md border border-red-400/50 rounded-xl px-2 py-1 text-sm font-semibold"
+                        ? "bg-green-700 backdrop-blur-md border border-green-400/50 rounded-xl px-2 py-1 text-sm font-semibold text-white"
+                        : "bg-red-700 backdrop-blur-md border border-red-400/50 rounded-xl px-2 py-1 text-sm font-semibold"
                         }`}
                     >
                       {booking.paymentStatus === "PAID" &&
