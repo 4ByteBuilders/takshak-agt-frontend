@@ -9,6 +9,7 @@ import Services from "./Services";
 import ServicesSmall from "./ServicesSmall";
 import Lottie from "lottie-react";
 import scrolldown from "@/assets/scroll_down.json";
+import { LucideCalendar, LucideMapPin } from "lucide-react";
 export default function HomePage() {
   const navigate = useNavigate();
   const { event } = useEvent(); // Get event data from the provider
@@ -108,13 +109,36 @@ export default function HomePage() {
             {loading ? (
               <Skeleton className="w-48 h-6 mt-4 mx-auto" />
             ) : (
-              <motion.img
-                src="/rangbarselogo2.png"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.3 }}
-                className="w-1/2 mx-auto my-5"
-              ></motion.img>
+              <div>
+                <motion.img
+                  src="/rangbarselogo2.png"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1, delay: 0.3 }}
+                  className="w-1/2 mx-auto my-5"
+                ></motion.img>
+                <div className="flex flex-col md:flex-row items-center justify-center mt-4">
+                  <div className="flex">
+                    <LucideMapPin
+                      name="map-pin"
+                      className="w-5 h-5 mr-2 text-white"
+                    />
+                    <p className="font-semibold text-md text-white px-2">
+                      Pragati Playground, Krishnanagar{" "}
+                      <span className="hidden md:inline"> | </span>{" "}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <LucideCalendar
+                      name="calendar"
+                      className="w-5 h-5 mr-2 text-white"
+                    />
+                    <p className="font-semibold text-md text-white">
+                      15 March, 2025 | 10 AM Onwards
+                    </p>
+                  </div>
+                </div>
+              </div>
             )}
 
             {/* Countdown Timer */}
@@ -131,7 +155,7 @@ export default function HomePage() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-8 flex justify-center gap-2 sm:gap-3 bg-white/20 px-3 py-2 sm:px-4 sm:py-3 rounded-lg shadow-lg backdrop-blur-md"
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mt-4 flex justify-center gap-2 sm:gap-3 bg-white/20 px-3 py-2 sm:px-4 sm:py-3 rounded-lg shadow-lg backdrop-blur-md"
                 >
                   <span className="text-amber-400">{timeLeft.days}</span>d :
                   <span className="text-green-400">{timeLeft.hours}</span>h :
@@ -162,13 +186,13 @@ export default function HomePage() {
               </>
             )}
           </motion.div>
-          <div className={scrollY > 0 ? "w-0 p-10" : "flex items-end p-10"}>
+          <div className={scrollY > 0 ? "w-0 p-10" : "flex items-end"}>
             <Lottie
               animationData={scrolldown}
               style={
-                scrollY == 0
-                  ? { width: 50, height: 50 }
-                  : { width: 0, height: 50 }
+                scrollY > 0
+                  ? { width: 0, height: 50 }
+                  : { width: 50, height: 50 }
               }
             />
           </div>
