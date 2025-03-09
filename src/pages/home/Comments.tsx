@@ -57,6 +57,13 @@ const comments: Comment[] = [
     rating: 5,
   },
   { id: 12, name: "juliablissmusicacademy", comment: "Exquisite", rating: 5 },
+  {
+    id: 13,
+    name: "bookmyshow",
+    comment:
+      "Her acclaimed album The Rhythm All You Need showcases her unique blend of electronic, techno, and melodic house.",
+    rating: 5,
+  },
 ];
 
 import { Star } from "lucide-react"; // Using Lucide icons for consistent design
