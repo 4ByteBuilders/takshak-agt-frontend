@@ -161,7 +161,7 @@ const Pending = () => {
             </p>
 
             <DialogFooter>
-              <Button onClick={() => setIsIOS(true)}>OK</Button>
+              <Button onClick={() => setIsIOS(false)}>OK</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
