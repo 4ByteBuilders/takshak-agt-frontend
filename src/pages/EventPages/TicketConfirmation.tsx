@@ -51,7 +51,7 @@ export default function TicketConfirmation({
           <tbody>
             {ticketRows.map((row) => (
               <tr key={row.id} className="border-b border-gray-600">
-                <td className="py-2 flex justify-between gap-8">
+                <td className="py-2 flex justify-between">
                   <span>
                     {row.name} x {row.count}
                   </span>
@@ -61,7 +61,7 @@ export default function TicketConfirmation({
             ))}
             {/* Platform fees row */}
             <tr className="border-b border-gray-600">
-              <td className="py-2 flex justify-between font-medium">
+              <td className="py-2 flex justify-between gap-8 font-medium">
                 <span>Platform Fees (2%)</span>
                 <span className="text-right">₹{platformFee.toFixed(2)}</span>
               </td>
