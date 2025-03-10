@@ -156,8 +156,8 @@ const CombinedBookings = () => {
                     <div>
                       <div className="flex items-center mt-2">
                         <MapPin
-                          strokeWidth="1px"
-                          size="16px"
+                          strokeWidth={"1px"}
+                          size={"16px"}
                           className="mr-2"
                         />
                         <CardDescription className="inline-block">
@@ -166,8 +166,8 @@ const CombinedBookings = () => {
                       </div>
                       <div className="flex items-center mt-2">
                         <Calendar
-                          strokeWidth="1px"
-                          size="16px"
+                          strokeWidth={"1px"}
+                          size={"16px"}
                           className="mr-2"
                         />
                         <CardDescription className="inline-block">
@@ -175,38 +175,26 @@ const CombinedBookings = () => {
                         </CardDescription>
                       </div>
                       <div className="flex items-center mt-2">
-                        <Watch strokeWidth="1px" size="16px" className="mr-2" />
+                        <Watch
+                          strokeWidth={"1px"}
+                          size={"16px"}
+                          className="mr-2"
+                        />
                         <CardDescription className="inline-block">
                           {formatTime(event?.dateTime, "hh:mm A")}
                         </CardDescription>
                       </div>
                     </div>
-                    <div className="flex flex-col md:flex-row items-end gap-2">
-                      {event?.priceOfferings.map((offering, idx) => (
-                        <div
-                          key={idx}
-                          className="w-fit flex flex-row items-center justify-end gap-2 bg-green-500/20 backdrop-blur-md border border-green-400/50 shadow-xl rounded-xl px-2 py-1 text-xs font-semibold text-white drop-shadow-[0_0_10px_rgba(34,197,94,0.8)]"
-                        >
-                          <span>
-                            {offering.name} x {offering.capacity}
-                          </span>
-                          <span>₹{offering.price * offering.capacity}</span>
-                        </div>
-                      ))}
-                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex justify-between md:mt-4 sm:mt-1 gap-2">
-                    <div
-                      className="flex items-center rounded-lg px-1  border-2 hover:border-orange-400
-                    "
-                    >
+                  <div className="flex flex-col md:flex-row justify-between md:mt-4 sm:mt-1 gap-2">
+                    <div className="flex flex-row justify-center items-center rounded-lg px-1 border-2 hover:border-orange-400">
                       <RefreshCwIcon className="text-orange-400" />
                       <Button
                         onClick={() => refreshBookingStatus(order_id)}
                         variant="ghost"
-                        className="text-orange-400 px-1 hover:bg-inherit hover:text-orange-400 "
+                        className="text-orange-400  px-1 hover:bg-inherit hover:text-orange-400 "
                       >
                         Refresh Status
                       </Button>
@@ -215,7 +203,7 @@ const CombinedBookings = () => {
                       onClick={() => doPayment(paymentSessionId!)}
                       className="bg-amber-500 text-white hover:bg-amber-600"
                     >
-                      Checkout and pay ₹{amountPaid} →
+                      Checkout and pay ₹{amountPaid.toFixed(2)} →
                     </Button>
                   </div>
                 </CardContent>
@@ -266,10 +254,11 @@ const CombinedBookings = () => {
                 >
                   <div className="relative">
                     <div
-                      className={`absolute top-2 right-2 z-20 ${booking.paymentStatus === "PAID"
-                        ? "bg-green-700 backdrop-blur-md border border-green-400/50 rounded-xl px-2 py-1 text-sm font-semibold text-white"
-                        : "bg-red-700 backdrop-blur-md border border-red-400/50 rounded-xl px-2 py-1 text-sm font-semibold"
-                        }`}
+                      className={`absolute top-2 right-2 z-20 ${
+                        booking.paymentStatus === "PAID"
+                          ? "bg-green-700 backdrop-blur-md border border-green-400/50 rounded-xl px-2 py-1 text-sm font-semibold text-white"
+                          : "bg-red-700 backdrop-blur-md border border-red-400/50 rounded-xl px-2 py-1 text-sm font-semibold"
+                      }`}
                     >
                       {booking.paymentStatus === "PAID" &&
                         (dateNow > new Date(booking.event.dateTime) ? (
@@ -329,9 +318,9 @@ const CombinedBookings = () => {
                         <CardDescription className="text-md">
                           {booking.paymentStatus === "PAID"
                             ? "Booked on: " +
-                            formatDate(booking.createdAt, "DD MMMM YYYY")
+                              formatDate(booking.createdAt, "DD MMMM YYYY")
                             : "Booking tried on " +
-                            formatDate(booking.createdAt, "DD MMMM YYYY")}
+                              formatDate(booking.createdAt, "DD MMMM YYYY")}
                         </CardDescription>
                       </div>
                       {booking.paymentStatus !== "PAID" ? (
