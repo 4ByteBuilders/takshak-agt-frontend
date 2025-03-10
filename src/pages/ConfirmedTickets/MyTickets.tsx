@@ -12,20 +12,12 @@ import axios from "axios";
 import { supabase } from "@/supabaseClient";
 import { toast } from "sonner";
 import Loader from "@/components/Loader/Loader";
-import { Booking } from "@/utils/interfaces";
+import { ExtendedBooking } from "@/utils/interfaces";
 import { Button } from "@/components/ui/button";
 import Lottie from "lottie-react";
 import noTickets from "@/assets/no_tickets.json";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "@/utils/dateFormatter";
-
-interface ExtendedBooking extends Booking {
-  priceDetails: {
-    name: string;
-    price: number;
-    quantity: number;
-  }[];
-}
 
 const MyTickets = () => {
   const navigate = useNavigate();
@@ -43,11 +35,9 @@ const MyTickets = () => {
         const response = await axios.get(
           import.meta.env.VITE_BACKEND_URL + "/booking/get-bookings"
         );
-        console.log(response.data);
         setBookings(response.data);
-      } catch (err) {
-        console.error(err);
-        toast.error("Failed to fetch tickets. Please try again later.");
+      } catch {
+        toast.error("Failed to fetch passes. Please try again later.");
       }
       setLoading(false);
     };
@@ -107,22 +97,24 @@ const MyTickets = () => {
           }
         `}
       </style>
-      <div className="mt-20 mx-12">
-        <h1 className="font-bold text-2xl">Confirmed tickets:</h1>
+      <div className="pt-20 h-full">
+        <h1 className="text-center font-bold text-2xl">
+          Scan the Pass at the Venue
+        </h1>
         {bookings.map((booking) => {
           const event = booking.event;
           const totalTickets = booking.tickets.length;
 
           return (
             <div
-              className="min-h-full my-5 flex flex-col md:flex-row items-center justify-center md:mx-8 lg:mx-12 ticket-container"
+              className="my-5 flex flex-col md:flex-row items-center justify-center md:mx-8 lg:mx-12 ticket-container"
               key={booking.id}
             >
               {/* QR Code Card */}
-              <Card className="w-80 h-full bg-zinc-800 rounded-xl border-0 border-r-4 p-6 pb-2 md:my-5 sm:my-0 ticket-card">
+              <Card className="h-full bg-zinc-800 rounded-xl border-0 border-r-4 p-6 pb-2 md:my-5 sm:my-0 ticket-card">
                 <div>
                   <QRCode
-                    className="bg-white border-4 border-white rounded-lg m-auto"
+                    className="w-auto h-auto bg-white border-4 border-white rounded-lg m-auto"
                     value={booking.qrCode}
                   />
                 </div>
@@ -133,7 +125,10 @@ const MyTickets = () => {
               </Card>
 
               {/* Event Details Card for Large Screens */}
-              <Card className="flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 w-5/12 my-5 event-details-card">
+              <Card
+                className="flex flex-col h-80
+               rounded-xl bg-zinc-800 border-0 border-l-2 border-dashed border-stone-300 w-5/12 my-5 event-details-card"
+              >
                 <div className="flex flex-row justify-start">
                   <div className="flex justify-center items-center ml-3 mt-3 max-w-52">
                     <img
@@ -209,7 +204,7 @@ const MyTickets = () => {
               </Card>
 
               {/* Event Details Card for Small Screens */}
-              <Card className="w-80 flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-t-2 border-dashed border-stone-300 mb-5 event-details-card-mobile">
+              <Card className="max-w-[320px] flex flex-col h-full rounded-xl bg-zinc-800 border-0 border-t-2 border-dashed border-stone-300 mb-5 event-details-card-mobile">
                 <div className="flex justify-center items-center mt-3">
                   <img
                     src={booking.event.photoUrls.eventPageUrl}

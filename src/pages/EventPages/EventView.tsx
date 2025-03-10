@@ -199,10 +199,10 @@ export default function EventView() {
         toast.error("Failed to retrieve pending booking.");
       }
     };
-    if (event) {
+    if (event && user) {
       getBooking();
     }
-  }, [event]);
+  }, [event, user]);
 
   // Calculate grand total when selections change
   useEffect(() => {
