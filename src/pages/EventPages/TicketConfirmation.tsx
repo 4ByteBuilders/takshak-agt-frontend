@@ -51,7 +51,7 @@ export default function TicketConfirmation({
           <tbody>
             {ticketRows.map((row) => (
               <tr key={row.id} className="border-b border-gray-600">
-                <td className="py-2 flex justify-between">
+                <td className="py-2 flex justify-between gap-8">
                   <span>
                     {row.name} x {row.count}
                   </span>
