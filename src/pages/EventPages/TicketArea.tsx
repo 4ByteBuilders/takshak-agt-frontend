@@ -72,10 +72,10 @@ export default function TicketArea({
           disabled={isButtonDisabled}
         >
           {isButtonDisabled ? (
-            <>
+            <div className="flex items-center justify-center">
               <Loader2 className="animate-spin" />
               Please wait
-            </>
+            </div>
           ) : (
             <>Confirm Passes</>
           )}
