@@ -46,7 +46,7 @@ const Login = () => {
     <div
       className="relative grid md:grid-cols-2 sm:grid-cols-1 items-center text-center min-h-screen p-3 pt-20"
       style={{
-        backgroundImage: "url('/Loginbgimg.jpg')",
+        backgroundImage: "url('/Loginbgimg.avif')",
         backgroundSize: "cover",
         backgroundPosition: "bottom",
       }}

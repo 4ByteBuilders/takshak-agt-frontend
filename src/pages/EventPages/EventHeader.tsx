@@ -24,7 +24,7 @@ export default function EventHeader({ event, scrollY }: EventHeaderProps) {
       <div
         className="w-full h-screen bg-cover bg-no-repeat"
         style={{
-          backgroundImage: "url(/rangbarse.png)",
+          backgroundImage: "url(/rangbarse.avif)",
           backgroundPosition: "bottom",
           backgroundAttachment: "fixed",
         }}

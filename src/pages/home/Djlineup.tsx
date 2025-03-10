@@ -93,7 +93,7 @@ const DjLineup = () => {
           className="z-0 md:hidden absolute inset-0 mx-auto transform -translate-y-[30%]"
         />
         <img
-          src="/camilla.png"
+          src="/camilla.avif"
           alt="djlineup"
           className="object-cover z-10 md:w-1/2"
         />

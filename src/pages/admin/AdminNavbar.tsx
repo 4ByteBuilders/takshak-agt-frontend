@@ -49,7 +49,7 @@ function AdminNavbar() {
           onClick={() => navigate("/")}
         >
           <img
-            src="/takshak-logo.png"
+            src="/takshak-logo.avif"
             className="max-h-10"
             alt="Takshak logo"
           />

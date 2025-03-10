@@ -57,7 +57,7 @@ export default function HomePage() {
       <div
         className="relative min-h-screen w-full flex flex-col items-center justify-center bg-cover bg-center bg-fixed pt-0 md:pt-14"
         style={{
-          backgroundImage: 'url("/bgl.jpg")',
+          backgroundImage: 'url("/bgl.avif")',
         }}
       >
         <div className="h-screen w-full flex flex-col items-center justify-center">
@@ -88,7 +88,7 @@ export default function HomePage() {
             ) : (
               <div>
                 <motion.img
-                  src="/rangbarselogo2.png"
+                  src="/rangbarselogo2.avif"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1, delay: 0.3 }}

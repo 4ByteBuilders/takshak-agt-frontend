@@ -84,10 +84,10 @@ const cardVariants: Variants = {
 const hue = (h: number) => `hsl(${h}, 100%, 50%)`;
 
 const food: [string, string, number, number, string][] = [
-    ["Free Colors", "/holi-color.png", 340, 10, "Splash into vibrant hues and paint the town with joy!"],
-    ["DJ & EDM", "/dj-edm.png", 20, 40, "Get ready to groove with electrifying beats all day long."],
-    ["Free Welcome Soft Drinks", "/soft-drink.png", 60, 90, "Quench your thirst with refreshing welcome drinks."],
-    ["Dynamic Rain Dance", "/rain-dance.png", 80, 120, "Dance under a thrilling rain setup with exciting music."],
-    ["Bhangra", "/bhangra.jpg", 260, 290, "Enjoy energetic Punjabi beats with lively Bhangra moves."],
-    ["Food & Beverages", "/food.png", 290, 320, "Delight in a variety of delicious treats and beverages."]
+    ["Free Colors", "/holi-color.avif", 340, 10, "Splash into vibrant hues and paint the town with joy!"],
+    ["DJ & EDM", "/dj-edm.avif", 20, 40, "Get ready to groove with electrifying beats all day long."],
+    ["Free Welcome Soft Drinks", "/soft-drink.avif", 60, 90, "Quench your thirst with refreshing welcome drinks."],
+    ["Dynamic Rain Dance", "/rain-dance.avif", 80, 120, "Dance under a thrilling rain setup with exciting music."],
+    ["Bhangra", "/bhangra.avif", 260, 290, "Enjoy energetic Punjabi beats with lively Bhangra moves."],
+    ["Food & Beverages", "/food.avif", 290, 320, "Delight in a variety of delicious treats and beverages."]
 ];
