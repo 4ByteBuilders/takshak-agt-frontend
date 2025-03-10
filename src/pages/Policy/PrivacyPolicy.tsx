@@ -103,7 +103,7 @@ const sections = [
         title: 'Contact Us',
         content: [
             'If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:',
-            'Email: chiagartala@gmail.com',
+            'Email: takshak.events2024@gmail.com',
             'Phone: +91-7005483524',
             'Address: Dhaleswar Kalyani, Agartala, Tripura, India'
         ]

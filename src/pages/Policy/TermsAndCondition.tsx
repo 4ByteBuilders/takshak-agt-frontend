@@ -140,7 +140,7 @@ const sections = [
         title: '14. Contact Us',
         content: [
             'If you have any questions or concerns about the Terms and Conditions, please contact us at:',
-            'Email: chiagartala@gmail.com',
+            'Email: takshak.events2024@gmail.com',
             'Phone: +91-7005483524',
             'Address: Dhaleswar Kalyani, Agartala, Tripura, India'
         ]

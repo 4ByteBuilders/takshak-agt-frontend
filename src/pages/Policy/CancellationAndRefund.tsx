@@ -21,7 +21,7 @@ export default function CancellationAndRefund() {
             </p>
 
             <p className="mb-4">
-                📧 Email: chiagartala@gmail.com<br />
+                📧 Email: takshak.events2024@gmail.com<br />
                 📞 Phone: +91-7005483524<br />
                 🌐 Website: <a href="https://takshakagt.in" className="text-blue-500 underline">https://takshakagt.in</a>
             </p>

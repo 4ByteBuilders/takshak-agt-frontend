@@ -26,7 +26,7 @@ function Footer() {
       <div className="flex flex-col items-center md:items-start">
         <span className="font-semibold">Get in touch with us</span>
         <span>Phone: +91 7005483524</span>
-        <span>Email: chiagartala@gmail.com</span>
+        <span>Email: takshak.events2024@gmail.com</span>
         <span>Address: Dhaleswar Kalyani, Agartala</span>
       </div>
 
