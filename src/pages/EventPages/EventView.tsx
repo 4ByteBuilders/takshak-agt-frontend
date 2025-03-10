@@ -93,10 +93,9 @@ export default function EventView() {
   // Cancel locked tickets
   const cancelLockedTickets = async () => {
     try {
-      axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/booking/cancel-booking`,
-        { bookingId }
-      );
+      axios.post(`${import.meta.env.VITE_BACKEND_URL}/booking/cancel-booking`, {
+        bookingId,
+      });
       toast("Passes cancelled successfully.");
       setTicketsLocked(false);
       setSelectedTickets({});
@@ -127,12 +126,12 @@ export default function EventView() {
 
   // Lock tickets and create order
   const lockTickets = async () => {
+    setWithExpiry(
+      "selectedTickets",
+      JSON.stringify(selectedTickets),
+      16 * 60 * 1000
+    );
     if (!user) {
-      setWithExpiry(
-        "selectedTickets",
-        JSON.stringify(selectedTickets),
-        16 * 60 * 1000
-      );
       setShowLoginAlert(true);
       return;
     }
