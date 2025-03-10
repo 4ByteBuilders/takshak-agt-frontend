@@ -12,7 +12,6 @@ interface TicketConfirmationProps {
 
 export default function TicketConfirmation({
   timeLeft,
-  grandTotal,
   event,
   selectedTickets,
   cancelLockedTickets,
@@ -89,7 +88,7 @@ export default function TicketConfirmation({
         className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition-all mt-4 flex items-center justify-center gap-2"
         onClick={onProceed}
       >
-        <span>Proceed to Pay: ₹{grandTotal}</span>
+        <span>Proceed to Pay: ₹{finalGrandTotal.toFixed(2)} </span>
         <motion.svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
