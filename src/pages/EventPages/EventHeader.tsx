@@ -50,7 +50,7 @@ export default function EventHeader({ event, scrollY }: EventHeaderProps) {
             {formatTime(event.dateTime, "hh:mm A")} | {event.venue}
           </p>
         </div>
-        <div className="flex items-end">
+        <div className="flex items-end pb-16 md:pb-0">
           <Lottie
             animationData={scrolldown}
             style={
