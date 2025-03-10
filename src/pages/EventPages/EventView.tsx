@@ -6,7 +6,11 @@ import { useEvent } from "@/lib/Providers/EventProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { supabase } from "@/supabaseClient";
 import axios from "axios";
-import { getWithExpiry, removeLocalData, setWithExpiry } from "@/utils/fetchLocalStorage";
+import {
+  getWithExpiry,
+  removeLocalData,
+  setWithExpiry,
+} from "@/utils/fetchLocalStorage";
 
 import EventHeader from "./EventHeader";
 import EventDetails from "./EventDetails";
@@ -27,7 +31,8 @@ export default function EventView() {
   const [showLockLoader, setShowLockLoader] = useState<boolean>(false);
   const [selectedTickets, setSelectedTickets] = useState<SelectedTickets>({});
   const [ticketsLocked, setTicketsLocked] = useState<boolean>(false);
-  const [showNoSelectionDialog, setShowNoSelectionDialog] = useState<boolean>(false);
+  const [showNoSelectionDialog, setShowNoSelectionDialog] =
+    useState<boolean>(false);
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [bookingTime, setBookingTime] = useState<string | null>(null);
   const [bookingId, setBookingId] = useState<string | null>(null);
@@ -75,7 +80,8 @@ export default function EventView() {
     if (event) {
       for (const [key, value] of Object.entries(selectedTickets)) {
         const ticket = event.priceOfferings.find(
-          (priceOffering: { id: string; price: number }) => priceOffering.id === key
+          (priceOffering: { id: string; price: number }) =>
+            priceOffering.id === key
         );
         if (!ticket) continue;
         totalAmount += value * ticket.price;
@@ -122,7 +128,11 @@ export default function EventView() {
   // Lock tickets and create order
   const lockTickets = async () => {
     if (!user) {
-      setWithExpiry("selectedTickets", JSON.stringify(selectedTickets), 16 * 60 * 1000);
+      setWithExpiry(
+        "selectedTickets",
+        JSON.stringify(selectedTickets),
+        16 * 60 * 1000
+      );
       setShowLoginAlert(true);
       return;
     }
@@ -132,7 +142,9 @@ export default function EventView() {
     }
     const token = (await supabase.auth.getSession()).data.session?.access_token;
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/check-number`);
+    const res = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/user/check-number`
+    );
     if (!res.data) {
       setShowPhoneDialog(true);
       return;
@@ -179,7 +191,9 @@ export default function EventView() {
           setTicketsLocked(true);
           setBookingTime(response.data.createdAt);
           setBookingId(response.data.id);
-          const parsedPriceOfferings = JSON.parse(response.data.priceOfferingSelected);
+          const parsedPriceOfferings = JSON.parse(
+            response.data.priceOfferingSelected
+          );
           setSelectedTickets(parsedPriceOfferings);
         }
       } catch {
@@ -206,7 +220,9 @@ export default function EventView() {
         const now = new Date();
         const difference = expiryTime.getTime() - now.getTime();
         if (difference > 0) {
-          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const minutes = Math.floor(
+            (difference % (1000 * 60 * 60)) / (1000 * 60)
+          );
           const seconds = Math.floor((difference % (1000 * 60)) / 1000);
           setTimeLeft(`${minutes}m ${seconds}s`);
         } else {
@@ -268,8 +284,15 @@ export default function EventView() {
           onProceed={handleProceedToPay}
         />
       )}
-      <LoginAlertDialog open={showLoginAlert} onOpenChange={setShowLoginAlert} onGoogleLogin={handleGoogleLogin} />
-      <NoSelectionAlertDialog open={showNoSelectionDialog} onOpenChange={setShowNoSelectionDialog} />
+      <LoginAlertDialog
+        open={showLoginAlert}
+        onOpenChange={setShowLoginAlert}
+        onGoogleLogin={handleGoogleLogin}
+      />
+      <NoSelectionAlertDialog
+        open={showNoSelectionDialog}
+        onOpenChange={setShowNoSelectionDialog}
+      />
       <PhoneNumberDialog
         open={showPhoneDialog}
         onOpenChange={setShowPhoneDialog}

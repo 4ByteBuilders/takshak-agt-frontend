@@ -163,7 +163,7 @@ export default function HomePage() {
               </>
             )}
           </motion.div>
-          <div className={scrollY > 0 ? "w-0 p-10" : "flex items-end"}>
+          <div>
             <Lottie
               animationData={scrolldown}
               style={
