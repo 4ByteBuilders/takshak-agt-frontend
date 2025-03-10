@@ -126,12 +126,12 @@ export default function EventView() {
 
   // Lock tickets and create order
   const lockTickets = async () => {
-    setWithExpiry(
-      "selectedTickets",
-      JSON.stringify(selectedTickets),
-      16 * 60 * 1000
-    );
     if (!user) {
+      setWithExpiry(
+        "selectedTickets",
+        JSON.stringify(selectedTickets),
+        16 * 60 * 1000
+      );
       setShowLoginAlert(true);
       return;
     }

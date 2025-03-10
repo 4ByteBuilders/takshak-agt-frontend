@@ -42,7 +42,9 @@ export default function TicketArea({
       </h2>
       {ticketsLocked ? (
         <TicketConfirmation
+          event={event}
           timeLeft={timeLeft}
+          selectedTickets={selectedTickets}
           grandTotal={grandTotal}
           cancelLockedTickets={cancelLockedTickets}
           onProceed={onProceed}
