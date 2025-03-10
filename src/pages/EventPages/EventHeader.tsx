@@ -24,7 +24,7 @@ export default function EventHeader({ event, scrollY }: EventHeaderProps) {
       <div
         className="md:hidden w-full h-screen bg-cover bg-no-repeat"
         style={{
-          backgroundImage: "url(/mobile-eventView.svg)",
+          backgroundImage: "url(/mobile-eventView.avif)",
           backgroundPosition: "top",
           backgroundAttachment: "fixed",
         }}
@@ -32,7 +32,7 @@ export default function EventHeader({ event, scrollY }: EventHeaderProps) {
       <div
         className="hidden md:block w-full h-screen bg-cover bg-no-repeat"
         style={{
-          backgroundImage: "url(/laptop-eventView.svg)",
+          backgroundImage: "url(/laptop-eventView.avif)",
           backgroundPosition: "top",
           backgroundAttachment: "fixed",
         }}
