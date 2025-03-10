@@ -142,6 +142,7 @@ const Pending = () => {
       </div>
       {bookings.map((booking, index) => {
         const { event, amountPaid, paymentSessionId, id: order_id } = booking;
+        const totalAmount = amountPaid + amountPaid * 0.02; // Calculate total amount including platform fee
         return (
           <Card
             key={index}
@@ -198,7 +199,7 @@ const Pending = () => {
                   onClick={() => doPayment(paymentSessionId!)}
                   className="bg-amber-500 text-white hover:bg-amber-600"
                 >
-                  Checkout and pay ₹{amountPaid} →
+                  Checkout and pay ₹{totalAmount.toFixed(2)} →
                 </Button>
               </div>
             </CardContent>
