@@ -28,32 +28,33 @@ export default function TicketConfirmation({
       <p className="text-green-400 text-lg font-semibold">Passes Confirmed!</p>
       <p>Cancel to change selections</p>
 
-      {/* Display the list of booked passes */}
+      {/* Table display of ticket summary */}
       <div className="mt-4 p-4 bg-gray-800 rounded-lg">
-        <p className="text-lg font-semibold mb-2">Booked Passes:</p>
-        {event.priceOfferings.map(({ id, name, price, capacity }) => {
-          const count = selectedTickets[id] || 0;
-          if (count === 0) return null;
-          return (
-            <div
-              key={id}
-              className="flex justify-between items-center mb-2 px-2 py-1 bg-gray-700 rounded"
-            >
-              <div className="flex flex-row items-center gap-2">
-                <span className="text-white font-medium">{name}</span>
-                <span className="text-xs md:text-sm">₹{price}</span>
-                <span className="text-xs md:text-sm">
-                  {`(${capacity} ${capacity === 1 ? "person" : "people"})`}
-                </span>
-              </div>
-              <div>
-                <span className="px-3 py-1 bg-gray-800 text-white rounded">
-                  {count}
-                </span>
-              </div>
-            </div>
-          );
-        })}
+        <p className="text-lg font-semibold mb-2">Booking Summary:</p>
+        <table className="w-full text-left">
+          <thead>
+            <tr>
+              <th className="py-2">Ticket Type</th>
+              <th className="py-2">Quantity</th>
+              <th className="py-2">Total Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {event.priceOfferings.map(({ id, name, price, capacity }) => {
+              const count = selectedTickets[id] || 0;
+              if (count === 0) return null;
+              // Total is calculated as price * capacity * quantity
+              const totalAmount = price * capacity * count;
+              return (
+                <tr key={id}>
+                  <td className="py-2">{name}</td>
+                  <td className="py-2">{count}</td>
+                  <td className="py-2">₹{totalAmount}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
 
       <div className="mt-4 p-4 bg-gray-800 rounded-lg">
