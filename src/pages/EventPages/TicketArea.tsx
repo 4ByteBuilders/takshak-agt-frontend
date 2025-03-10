@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import TicketSelector from "./TicketSelector";
 import TicketConfirmation from "./TicketConfirmation";
 import { Event } from "@/utils/interfaces";
+import { Loader2 } from "lucide-react";
 
 interface SelectedTickets {
   [key: string]: number;
@@ -30,6 +32,13 @@ export default function TicketArea({
   timeLeft,
   onProceed,
 }: TicketAreaProps) {
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  const handleButtonClick = () => {
+    setIsButtonDisabled(true);
+    lockTickets();
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -58,10 +67,18 @@ export default function TicketArea({
       )}
       {!ticketsLocked && (
         <button
-          onClick={lockTickets}
+          onClick={handleButtonClick}
           className="w-full text-xs md:text-sm bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
+          disabled={isButtonDisabled}
         >
-          Confirm Passes
+          {isButtonDisabled ? (
+            <>
+              <Loader2 className="animate-spin" />
+              Please wait
+            </>
+          ) : (
+            <>Confirm Passes</>
+          )}
         </button>
       )}
     </motion.div>
