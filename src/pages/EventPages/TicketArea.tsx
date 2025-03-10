@@ -35,7 +35,7 @@ export default function TicketArea({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1, delay: 0.5 }}
-      className="max-w-3xl my-6 md:p-6 bg-gray-900 rounded-lg shadow-lg mx-auto"
+      className="my-6 md:p-6 bg-gray-900 rounded-lg shadow-lg mx-auto"
     >
       <h2 className="text-2xl font-semibold mb-4 text-center">
         {!ticketsLocked ? "Select Your Passes" : "You Have Selected"}
