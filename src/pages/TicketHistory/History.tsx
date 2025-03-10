@@ -215,7 +215,7 @@ const CombinedBookings = () => {
                       onClick={() => doPayment(paymentSessionId!)}
                       className="bg-amber-500 text-white hover:bg-amber-600"
                     >
-                      Checkout and pay ₹{amountPaid + 0.02 * amountPaid} →
+                      Checkout and pay ₹{amountPaid} →
                     </Button>
                   </div>
                 </CardContent>
@@ -266,11 +266,10 @@ const CombinedBookings = () => {
                 >
                   <div className="relative">
                     <div
-                      className={`absolute top-2 right-2 z-20 ${
-                        booking.paymentStatus === "PAID"
-                          ? "bg-green-700 backdrop-blur-md border border-green-400/50 rounded-xl px-2 py-1 text-sm font-semibold text-white"
-                          : "bg-red-700 backdrop-blur-md border border-red-400/50 rounded-xl px-2 py-1 text-sm font-semibold"
-                      }`}
+                      className={`absolute top-2 right-2 z-20 ${booking.paymentStatus === "PAID"
+                        ? "bg-green-700 backdrop-blur-md border border-green-400/50 rounded-xl px-2 py-1 text-sm font-semibold text-white"
+                        : "bg-red-700 backdrop-blur-md border border-red-400/50 rounded-xl px-2 py-1 text-sm font-semibold"
+                        }`}
                     >
                       {booking.paymentStatus === "PAID" &&
                         (dateNow > new Date(booking.event.dateTime) ? (
@@ -330,9 +329,9 @@ const CombinedBookings = () => {
                         <CardDescription className="text-md">
                           {booking.paymentStatus === "PAID"
                             ? "Booked on: " +
-                              formatDate(booking.createdAt, "DD MMMM YYYY")
+                            formatDate(booking.createdAt, "DD MMMM YYYY")
                             : "Booking tried on " +
-                              formatDate(booking.createdAt, "DD MMMM YYYY")}
+                            formatDate(booking.createdAt, "DD MMMM YYYY")}
                         </CardDescription>
                       </div>
                       {booking.paymentStatus !== "PAID" ? (
