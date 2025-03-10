@@ -18,6 +18,24 @@ export default function TicketConfirmation({
   cancelLockedTickets,
   onProceed,
 }: TicketConfirmationProps) {
+  // Build an array for each ticket row
+  const ticketRows = event.priceOfferings.reduce((acc, { id, name, price }) => {
+    const count = selectedTickets[id] || 0;
+    if (count > 0) {
+      const totalAmount = price * count;
+      acc.push({ id, name, count, totalAmount });
+    }
+    return acc;
+  }, [] as { id: string; name: string; count: number; totalAmount: number }[]);
+
+  // Calculate totals for all tickets
+  const totalTicketAmount = ticketRows.reduce(
+    (sum, row) => sum + row.totalAmount,
+    0
+  );
+  const platformFee = totalTicketAmount * 0.02;
+  const finalGrandTotal = totalTicketAmount + platformFee;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -28,31 +46,36 @@ export default function TicketConfirmation({
       <p className="text-green-400 text-lg font-semibold">Passes Confirmed!</p>
       <p>Cancel to change selections</p>
 
-      {/* Table display of ticket summary */}
+      {/* Modified table display of ticket summary */}
       <div className="mt-4 p-4 bg-gray-800 rounded-lg">
-        <p className="text-lg font-semibold mb-2">Booking Summary:</p>
-        <table className="w-full text-left">
-          <thead>
-            <tr>
-              <th className="py-2">Ticket Type</th>
-              <th className="py-2">Quantity</th>
-              <th className="py-2">Total Amount</th>
-            </tr>
-          </thead>
+        <table className="w-full">
           <tbody>
-            {event.priceOfferings.map(({ id, name, price, capacity }) => {
-              const count = selectedTickets[id] || 0;
-              if (count === 0) return null;
-              // Total is calculated as price * capacity * quantity
-              const totalAmount = price * capacity * count;
-              return (
-                <tr key={id}>
-                  <td className="py-2">{name}</td>
-                  <td className="py-2">{count}</td>
-                  <td className="py-2">₹{totalAmount}</td>
-                </tr>
-              );
-            })}
+            {ticketRows.map((row) => (
+              <tr key={row.id} className="border-b border-gray-600">
+                <td className="py-2 flex justify-between">
+                  <span>
+                    {row.name} x {row.count}
+                  </span>
+                  <span className="text-right">₹{row.totalAmount}</span>
+                </td>
+              </tr>
+            ))}
+            {/* Platform fees row */}
+            <tr className="border-b border-gray-600">
+              <td className="py-2 flex justify-between font-medium">
+                <span>Platform Fees (2%)</span>
+                <span className="text-right">₹{platformFee.toFixed(2)}</span>
+              </td>
+            </tr>
+            {/* Grand Total row */}
+            <tr>
+              <td className="py-2 flex justify-between font-bold">
+                <span>Grand Total</span>
+                <span className="text-right">
+                  ₹{finalGrandTotal.toFixed(2)}
+                </span>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
