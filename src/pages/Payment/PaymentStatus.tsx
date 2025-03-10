@@ -41,8 +41,7 @@ export default function PaymentStatus() {
         } else {
           setStatus("UNKNOWN");
         }
-      } catch (error) {
-        console.error("Error fetching payment status:", error);
+      } catch {
         setStatus("ERROR");
       } finally {
         setLoading(false);

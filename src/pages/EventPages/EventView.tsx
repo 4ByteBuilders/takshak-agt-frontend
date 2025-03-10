@@ -49,9 +49,8 @@ export default function EventView() {
       } else {
         toast("Failed to update number of passes available. Please try again.");
       }
-    } catch (err) {
-      console.error("Error updating tickets count:", err);
-      toast("Something went wrong.");
+    } catch {
+      toast("Error updating available tickets.");
     }
   };
 
@@ -88,21 +87,16 @@ export default function EventView() {
   // Cancel locked tickets
   const cancelLockedTickets = async () => {
     try {
-      const response = await axios.post(
+      axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/booking/cancel-booking`,
         { bookingId }
       );
-      if (response.status === 200) {
-        toast("Passes cancelled successfully.");
-        setTicketsLocked(false);
-        setSelectedTickets({});
-        setBookingTime(null);
-      } else {
-        toast("Failed to cancel passes. Please try again.");
-      }
-    } catch (err) {
-      console.error("Error cancelling passes:", err);
-      toast("Something went wrong.");
+      toast("Passes cancelled successfully.");
+      setTicketsLocked(false);
+      setSelectedTickets({});
+      setBookingTime(null);
+    } catch {
+      toast("Failed to cancel passes. Please try again.");
     }
   };
 
@@ -188,8 +182,8 @@ export default function EventView() {
           const parsedPriceOfferings = JSON.parse(response.data.priceOfferingSelected);
           setSelectedTickets(parsedPriceOfferings);
         }
-      } catch (err) {
-        console.error("Error fetching booking:", err);
+      } catch {
+        toast.error("Failed to retrieve pending booking.");
       }
     };
     if (event) {

@@ -35,10 +35,8 @@ const MyTickets = () => {
         const response = await axios.get(
           import.meta.env.VITE_BACKEND_URL + "/booking/get-bookings"
         );
-        console.log(response.data);
         setBookings(response.data);
-      } catch (err) {
-        console.error(err);
+      } catch {
         toast.error("Failed to fetch passes. Please try again later.");
       }
       setLoading(false);

@@ -47,7 +47,6 @@ export default function Verify() {
       // Set booking data but do not show success dialog
       setBooking(response.data);
     } catch (err) {
-      console.error(err);
       // Show error dialog only when an error occurs
       setShowDialog({
         status: true,
@@ -83,9 +82,8 @@ export default function Verify() {
       <motion.button
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className={`px-6 py-3 rounded-full ${
-          isScanning ? "bg-red-500" : "bg-green-500"
-        } text-white font-semibold shadow-lg`}
+        className={`px-6 py-3 rounded-full ${isScanning ? "bg-red-500" : "bg-green-500"
+          } text-white font-semibold shadow-lg`}
         onClick={handleButtonClick}
       >
         {isScanning ? "Stop Scanning" : "Start Scanning"}

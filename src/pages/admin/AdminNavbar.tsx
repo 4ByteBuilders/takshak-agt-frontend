@@ -26,6 +26,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
 
 function AdminNavbar() {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ function AdminNavbar() {
   const handleLogOut = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error("Error logging out:", error.message);
+      toast.error(error.message || "An error occurred while logging out.");
     }
     localStorage.clear();
     window.location.href = `${import.meta.env.VITE_FRONTEND_ADMIN_URL}`;

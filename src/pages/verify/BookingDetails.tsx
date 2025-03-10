@@ -39,8 +39,7 @@ export default function BookingDetails({
 
       // Update local state instead of reloading the page
       onCheckInSuccess(selectedNum); // Notify parent component to update state
-    } catch (err) {
-      console.error(err);
+    } catch {
       setError("An error occurred while checking in.");
     } finally {
       setLoading(false);
@@ -91,11 +90,10 @@ export default function BookingDetails({
             {Array.from({ length: peopleLeft }, (_, i) => i + 1).map((num) => (
               <button
                 key={num}
-                className={`px-4 py-2 rounded-lg ${
-                  selectedNum === num
+                className={`px-4 py-2 rounded-lg ${selectedNum === num
                     ? "bg-amber-600"
                     : "bg-amber-500 hover:bg-amber-600"
-                } text-white transition-colors`}
+                  } text-white transition-colors`}
                 onClick={() => {
                   setSelectedNum(num);
                   setShowConfirmation(true);

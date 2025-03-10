@@ -3,7 +3,6 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useEvent } from "../../lib/Providers/EventProvider";
 import { Skeleton } from "@/components/ui/skeleton";
-import { supabase } from "@/supabaseClient";
 import DjLineup from "./Djlineup";
 import Services from "./Services";
 import ServicesSmall from "./ServicesSmall";
@@ -50,28 +49,6 @@ export default function HomePage() {
       return () => clearInterval(timer);
     }
   }, [event]);
-
-  useEffect(() => {
-    const getTokenAndLog = async () => {
-      const {
-        data: { session },
-        error,
-      } = await supabase.auth.getSession();
-
-      if (error) {
-        console.error("Error fetching session:", error);
-        return;
-      }
-
-      if (session) {
-        console.log("User token:", session.access_token);
-      } else {
-        console.log("No active session found.");
-      }
-    };
-
-    getTokenAndLog();
-  }, []);
 
   const loading = !event;
 

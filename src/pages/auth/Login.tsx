@@ -19,8 +19,7 @@ const Login = () => {
         if (user) {
           navigate("/");
         }
-      } catch (error) {
-        console.error("Error checking user:", error);
+      } catch {
         toast.error("Failed to check user. Please try again later.");
       } finally {
         setLoading(false);

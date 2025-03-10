@@ -65,14 +65,8 @@ const RaiseConcern = () => {
       setErrors(newErrors);
       return;
     }
-
-    console.log("Booking ID:", bookingId);
-    console.log("Concern:", concern);
-    console.log("Email:", email);
-    console.log("Contact Number:", contactNumber);
-
     try {
-      const response = await axios.post(
+      await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/booking/create-concern",
         {
           bookingId,
@@ -81,10 +75,9 @@ const RaiseConcern = () => {
           email,
         }
       );
-      console.log("Response:", response.data);
+
       setIsDialogOpen(true);
-    } catch (error) {
-      console.error("Error submitting concern:", error);
+    } catch {
       toast.error("Some error occurred. Redirecting to home page.");
       navigate("/");
     }

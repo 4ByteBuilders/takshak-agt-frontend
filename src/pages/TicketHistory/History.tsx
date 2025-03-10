@@ -78,8 +78,7 @@ const CombinedBookings = () => {
         if (historyResponse.status === 200) {
           setHistoryBookings(historyResponse.data);
         }
-      } catch (err) {
-        console.error(err);
+      } catch {
         toast.error("Failed to fetch your bookings. Please try again later.");
       } finally {
         setLoading(false);
@@ -101,7 +100,6 @@ const CombinedBookings = () => {
       const auth = (await supabase.auth.getSession()).data.session
         ?.access_token;
       axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
-      console.log("fetching!!!");
 
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + "/booking/payment-status",
@@ -114,8 +112,8 @@ const CombinedBookings = () => {
         setCurrentOrderId(order_id); // Set the current order_id
         setIsDialogOpen(true); // Open the dialog if status is not "SUCCESS"
       }
-    } catch (error) {
-      console.error("Error refreshing booking status:", error);
+    } catch {
+      toast.error("Error refreshing booking status");
     } finally {
       setLoading(false);
     }
@@ -124,12 +122,10 @@ const CombinedBookings = () => {
   if (loading) {
     return <Loader />;
   }
-  console.log(pendingBookings);
-  console.log(historyBookings);
+
   const handleRaiseConcern = (order_id: string) => {
     const TTL = 10 * 60 * 1000; // 10 minutes expiry
     setWithExpiry("booking_id", order_id, TTL);
-    console.log("set successfully!!");
     window.location.href = "raise-concern"; // Redirect to the page
   };
 
@@ -345,8 +341,6 @@ const CombinedBookings = () => {
                               className="text-amber-300 p-0"
                               variant="link"
                               onClick={() => {
-                                console.log("click raise concern");
-                                console.log(booking.id);
                                 handleRaiseConcern(booking.id);
                               }}
                             >

@@ -25,6 +25,7 @@ import noPendingAnimation from "@/assets/no_payments.json";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "@/utils/dateFormatter";
 import { setWithExpiry } from "@/utils/fetchLocalStorage";
+import { toast } from "sonner";
 
 const Pending = () => {
   const navigate = useNavigate();
@@ -63,8 +64,8 @@ const Pending = () => {
         } else {
           setBookings([]);
         }
-      } catch (error) {
-        console.error("Error fetching pending bookings:", error);
+      } catch {
+        toast.error("Failed to fetch pending bookings.");
         setBookings([]);
       } finally {
         setLoading(false);
@@ -80,7 +81,6 @@ const Pending = () => {
       const auth = (await supabase.auth.getSession()).data.session
         ?.access_token;
       axios.defaults.headers.common["Authorization"] = `Bearer ${auth}`;
-      console.log("fetching!!!");
 
       const response = await axios.get(
         import.meta.env.VITE_BACKEND_URL + "/booking/payment-status",
@@ -93,8 +93,8 @@ const Pending = () => {
         setCurrentOrderId(order_id); // Set the current order_id
         setIsDialogOpen(true); // Open the dialog if status is not "SUCCESS"
       }
-    } catch (error) {
-      console.error("Error refreshing booking status:", error);
+    } catch {
+      toast.error("Error refreshing booking status");
     } finally {
       setLoading(false);
     }
