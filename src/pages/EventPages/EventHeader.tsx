@@ -11,7 +11,7 @@ interface EventHeaderProps {
 
 export default function EventHeader({ event, scrollY }: EventHeaderProps) {
   const backgroundStyle = {
-    backgroundColor: `rgba(3, 7, 18, ${Math.max(scrollY / 300, 0.5)})`,
+    backgroundColor: `rgba(3, 7, 18, ${Math.max(scrollY / 300, 0.3)})`,
   };
 
   return (
@@ -22,10 +22,18 @@ export default function EventHeader({ event, scrollY }: EventHeaderProps) {
       className="relative w-full"
     >
       <div
-        className="w-full h-screen bg-cover bg-no-repeat"
+        className="md:hidden w-full h-screen bg-cover bg-no-repeat"
         style={{
-          backgroundImage: "url(/rangbarse.avif)",
-          backgroundPosition: "bottom",
+          backgroundImage: "url(/mobile-eventView.svg)",
+          backgroundPosition: "top",
+          backgroundAttachment: "fixed",
+        }}
+      />
+      <div
+        className="hidden md:block w-full h-screen bg-cover bg-no-repeat"
+        style={{
+          backgroundImage: "url(/laptop-eventView.svg)",
+          backgroundPosition: "top",
           backgroundAttachment: "fixed",
         }}
       />
@@ -33,8 +41,8 @@ export default function EventHeader({ event, scrollY }: EventHeaderProps) {
         className="absolute inset-0 flex flex-row text-start"
         style={backgroundStyle}
       >
-        <div className="flex flex-col justify-end text-start p-10">
-          <h1 className="text-7xl font-bold transition-transform duration-300">
+        <div className="flex flex-col justify-end text-start p-2 md:p-10">
+          <h1 className="w-full text-7xl font-bold transition-transform duration-300">
             {event.title}
           </h1>
           <p className="text-lg md:text-xl text-pretty font-sans text-stone-300 font-semibold transition-transform duration-300">
@@ -42,10 +50,12 @@ export default function EventHeader({ event, scrollY }: EventHeaderProps) {
             {formatTime(event.dateTime, "hh:mm A")} | {event.venue}
           </p>
         </div>
-        <div className={scrollY > 0 ? "hidden p-10" : "flex items-end p-10"}>
+        <div className="flex items-end">
           <Lottie
             animationData={scrolldown}
-            style={{ width: 50, height: 50 }}
+            style={
+              scrollY > 0 ? { width: 50, height: 0 } : { width: 50, height: 50 }
+            }
           />
         </div>
       </div>

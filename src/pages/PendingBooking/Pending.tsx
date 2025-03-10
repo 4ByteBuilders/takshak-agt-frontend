@@ -28,6 +28,10 @@ import { setWithExpiry } from "@/utils/fetchLocalStorage";
 import { toast } from "sonner";
 
 const Pending = () => {
+  const [isIOS, setIsIOS] = useState(
+    typeof navigator !== "undefined" &&
+      /iPad|iPhone|iPod/.test(navigator.userAgent)
+  );
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
@@ -137,6 +141,31 @@ const Pending = () => {
 
   return (
     <div className="flex flex-col min-h-full bg-grey-950 pt-12">
+      {isIOS && (
+        <Dialog open={isIOS} onOpenChange={() => setIsIOS(true)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                Important: iOS - Enable Pop-ups for Payments
+              </DialogTitle>
+            </DialogHeader>
+            <p>
+              Since you're using an iOS device and Safari, pop-ups must be
+              enabled for payment. Follow these steps: <br />
+              1. Open <strong>Settings</strong> and tap <strong>Safari</strong>.
+              <br />
+              2. Scroll to <strong>Block Pop-ups</strong> under "General".{" "}
+              <br />
+              3. Toggle it <strong>OFF</strong>. <br />
+              4. Press OK and proceed with payment.
+            </p>
+
+            <DialogFooter>
+              <Button onClick={() => setIsIOS(true)}>OK</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
       <div className="font-bold text-2xl mt-10 mx-auto">
         <h1>Your pending payments</h1>
       </div>
