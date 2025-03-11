@@ -1,4 +1,4 @@
-import { MapPin, Calendar, Ticket, Watch } from "lucide-react";
+import { MapPin, Calendar, Ticket, Watch, Download } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -18,6 +18,7 @@ import Lottie from "lottie-react";
 import noTickets from "@/assets/no_tickets.json";
 import { useNavigate } from "react-router-dom";
 import { formatDate, formatTime } from "@/utils/dateFormatter";
+import { generateStyledTicketPDF } from "@/services/ticketPDFGeneration";
 
 const MyTickets = () => {
   const navigate = useNavigate();
@@ -138,7 +139,7 @@ const MyTickets = () => {
                     />
                   </div>
                   <CardHeader>
-                    <CardTitle className="text-xl font-bold">
+                    <CardTitle className="text-xl font-bold ">
                       {event.title}
                     </CardTitle>
                     <div className="flex-row sm:flex justify-between mt-2">
@@ -197,9 +198,14 @@ const MyTickets = () => {
 
                 {/* Total Amount */}
                 <CardContent>
-                  <div className="flex flex-row justify-end">
+                  <div className="flex flex-row justify-between items-center">
+                    <Button variant={'outline'} onClick={() => generateStyledTicketPDF(booking)}>
+                      <Download strokeWidth="1px" size="16px" className="mr-2" />
+                      Download PDF
+                    </Button>
                     <p>Grand Total ₹{booking.amountPaid}</p>
                   </div>
+
                 </CardContent>
               </Card>
 
