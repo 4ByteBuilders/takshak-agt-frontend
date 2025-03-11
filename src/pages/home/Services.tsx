@@ -3,7 +3,7 @@ import type { Variants } from "motion/react";
 
 export default function ScrollTriggered() {
   return (
-    <div className="w-full bg-gradient-to-b from-transparent to-purple-400 mt-5 hidden md:block">
+    <div className="w-full bg-gradient-to-b from-transparent to-pink-600 mt-5 hidden md:block">
       <motion.h1
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

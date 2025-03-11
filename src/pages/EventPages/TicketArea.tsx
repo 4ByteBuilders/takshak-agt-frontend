@@ -68,7 +68,7 @@ export default function TicketArea({
       {!ticketsLocked && (
         <button
           onClick={handleButtonClick}
-          className="w-full text-xs md:text-sm bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-lg transition-all mt-4"
+          className="w-full text-xs md:text-sm bg-amber-500 text-white font-bold py-3 rounded-lg transition-all mt-4"
           disabled={isButtonDisabled}
         >
           {isButtonDisabled ? (
