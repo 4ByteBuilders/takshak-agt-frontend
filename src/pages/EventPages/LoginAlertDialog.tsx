@@ -25,7 +25,7 @@ export default function LoginAlertDialog({ open, onOpenChange, onGoogleLogin }: 
                         You have to sign in with google to lock tickets.
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                        This action will redirect you to the login page.
+                        You're being redirected for Google login. The URL you will see (pmrtrqvcxmiohtugktgj.supabase.co) is an internal service we use for authentication. You can safely log in using your Google account.
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

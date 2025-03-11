@@ -15,7 +15,7 @@ export default function TicketConfirmation({
   event,
   selectedTickets,
   cancelLockedTickets,
-  onProceed,
+  onProceed
 }: TicketConfirmationProps) {
   // Build an array for each ticket row
   const ticketRows = event.priceOfferings.reduce((acc, { id, name, price }) => {

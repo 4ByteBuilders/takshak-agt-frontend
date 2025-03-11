@@ -17,14 +17,12 @@ interface PhoneNumberDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSuccess: () => void;
-    setIsButtonDisabled: (disabled: boolean) => void;
 }
 
 const PhoneNumberDialog: React.FC<PhoneNumberDialogProps> = ({
     open,
     onOpenChange,
     onSuccess,
-    setIsButtonDisabled,
 }) => {
     const [phone, setPhone] = useState("");
     const [error, setError] = useState("");
@@ -48,7 +46,6 @@ const PhoneNumberDialog: React.FC<PhoneNumberDialogProps> = ({
             onSuccess();
         }
         setLoading(false);
-        setIsButtonDisabled(false);
     };
 
     return (

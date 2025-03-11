@@ -103,7 +103,6 @@ export default function EventView() {
     } catch {
       toast("Failed to cancel passes. Please try again.");
     }
-    setIsButtonDisabled(false);
   };
 
   // Google login handler
@@ -134,10 +133,12 @@ export default function EventView() {
         16 * 60 * 1000
       );
       setShowLoginAlert(true);
+      setIsButtonDisabled(false);
       return;
     }
     if (Object.values(selectedTickets).every((qty) => qty === 0)) {
       setShowNoSelectionDialog(true);
+      setIsButtonDisabled(false);
       return;
     }
     const token = (await supabase.auth.getSession()).data.session?.access_token;
@@ -147,6 +148,7 @@ export default function EventView() {
     );
     if (!res.data) {
       setShowPhoneDialog(true);
+      setIsButtonDisabled(false);
       return;
     }
     setShowLockLoader(true);
@@ -173,6 +175,7 @@ export default function EventView() {
       setTicketsLocked(false);
     } finally {
       setShowLockLoader(false);
+      setIsButtonDisabled(false);
     }
   };
 
@@ -284,7 +287,6 @@ export default function EventView() {
           onProceed={handleProceedToPay}
           isButtonDisabled={isButtonDisabled}
           setIsButtonDisabled={setIsButtonDisabled}
-
         />
       )}
       <LoginAlertDialog
@@ -299,7 +301,6 @@ export default function EventView() {
       <PhoneNumberDialog
         open={showPhoneDialog}
         onOpenChange={setShowPhoneDialog}
-        setIsButtonDisabled={setIsButtonDisabled}
         onSuccess={() => {
           setShowPhoneDialog(false);
         }}
