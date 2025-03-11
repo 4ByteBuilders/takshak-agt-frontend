@@ -103,6 +103,7 @@ export default function EventView() {
     } catch {
       toast("Failed to cancel passes. Please try again.");
     }
+    setIsButtonDisabled(false);
   };
 
   // Google login handler
