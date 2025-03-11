@@ -49,7 +49,8 @@ const Pending = () => {
   };
   useEffect(() => {
     const initializeSDK = async () => {
-      cashfree.current = await load({ mode: "production" });
+      const mode = import.meta.env.MODE === "dev" ? "sandbox" : "production";
+      cashfree.current = await load({ mode });
     };
     initializeSDK();
 

@@ -269,7 +269,11 @@ const MyTickets = () => {
 
                 {/* Total Amount */}
                 <CardContent>
-                  <div className="flex flex-row justify-end">
+                  <div className="flex flex-row justify-between">
+                    <Button variant={'outline'} onClick={() => generateStyledTicketPDF(booking)}>
+                      <Download strokeWidth="1px" size="16px" className="mr-2" />
+                      PDF
+                    </Button>
                     <p>Grand Total ₹{booking.amountPaid}</p>
                   </div>
                 </CardContent>
