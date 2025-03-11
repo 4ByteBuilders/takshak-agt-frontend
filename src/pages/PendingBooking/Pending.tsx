@@ -30,7 +30,7 @@ import { toast } from "sonner";
 const Pending = () => {
   const [isIOS, setIsIOS] = useState(
     typeof navigator !== "undefined" &&
-      /iPad|iPhone|iPod/.test(navigator.userAgent)
+    /iPad|iPhone|iPod/.test(navigator.userAgent)
   );
   const navigate = useNavigate();
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -171,7 +171,7 @@ const Pending = () => {
       </div>
       {bookings.map((booking, index) => {
         const { event, amountPaid, paymentSessionId, id: order_id } = booking;
-        const totalAmount = amountPaid + amountPaid * 0.02; // Calculate total amount including platform fee
+        const totalAmount = amountPaid + amountPaid * 0.023; // Calculate total amount including platform fee
         return (
           <Card
             key={index}

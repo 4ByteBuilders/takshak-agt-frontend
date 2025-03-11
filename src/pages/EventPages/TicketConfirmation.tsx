@@ -32,7 +32,7 @@ export default function TicketConfirmation({
     (sum, row) => sum + row.totalAmount,
     0
   );
-  const platformFee = totalTicketAmount * 0.02;
+  const platformFee = totalTicketAmount * 0.023;
   const finalGrandTotal = totalTicketAmount + platformFee;
 
   return (
@@ -62,7 +62,7 @@ export default function TicketConfirmation({
             {/* Platform fees row */}
             <tr className="border-b border-gray-600">
               <td className="py-2 flex justify-between gap-8 font-medium">
-                <span>Platform Fees (2%)</span>
+                <span>Platform Fees (2.3%)</span>
                 <span className="text-right">₹{platformFee.toFixed(2)}</span>
               </td>
             </tr>
