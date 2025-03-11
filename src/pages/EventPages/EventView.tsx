@@ -41,7 +41,7 @@ export default function EventView() {
   const [grandTotal, setGrandTotal] = useState<number>(0);
   const [showLoginAlert, setShowLoginAlert] = useState<boolean>(false);
   const [showPhoneDialog, setShowPhoneDialog] = useState<boolean>(false);
-
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
   // Update available ticket count from backend
   const updateAvailableTicketCount = async () => {
     try {
@@ -281,6 +281,9 @@ export default function EventView() {
           cancelLockedTickets={cancelLockedTickets}
           timeLeft={timeLeft}
           onProceed={handleProceedToPay}
+          isButtonDisabled={isButtonDisabled}
+          setIsButtonDisabled={setIsButtonDisabled}
+
         />
       )}
       <LoginAlertDialog
@@ -295,6 +298,7 @@ export default function EventView() {
       <PhoneNumberDialog
         open={showPhoneDialog}
         onOpenChange={setShowPhoneDialog}
+        setIsButtonDisabled={setIsButtonDisabled}
         onSuccess={() => {
           setShowPhoneDialog(false);
         }}

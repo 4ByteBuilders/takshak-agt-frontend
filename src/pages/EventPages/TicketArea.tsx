@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import TicketSelector from "./TicketSelector";
 import TicketConfirmation from "./TicketConfirmation";
@@ -19,6 +18,8 @@ interface TicketAreaProps {
   cancelLockedTickets: () => void;
   timeLeft: string;
   onProceed: () => void;
+  isButtonDisabled: boolean;
+  setIsButtonDisabled: (disabled: boolean) => void;
 }
 
 export default function TicketArea({
@@ -31,8 +32,9 @@ export default function TicketArea({
   cancelLockedTickets,
   timeLeft,
   onProceed,
+  isButtonDisabled,
+  setIsButtonDisabled
 }: TicketAreaProps) {
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleButtonClick = () => {
     setIsButtonDisabled(true);
