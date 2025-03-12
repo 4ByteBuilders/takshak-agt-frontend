@@ -40,7 +40,7 @@ export async function generateStyledTicketPDF(booking: ExtendedBooking) {
             height: 150,
         });
 
-        page.drawText(booking.qrCode.slice(0, 8), {
+        page.drawText(booking.qrCode, {
             x: 85,
             y: height - 210,
             size: 10,
