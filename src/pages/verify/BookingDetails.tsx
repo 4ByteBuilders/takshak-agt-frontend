@@ -86,13 +86,13 @@ export default function BookingDetails({
           <p className="font-semibold mb-2">
             Select number of people to check in:
           </p>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {Array.from({ length: peopleLeft }, (_, i) => i + 1).map((num) => (
               <button
                 key={num}
                 className={`px-4 py-2 rounded-lg ${selectedNum === num
-                    ? "bg-amber-600"
-                    : "bg-amber-500 hover:bg-amber-600"
+                  ? "bg-amber-600"
+                  : "bg-amber-500 hover:bg-amber-600"
                   } text-white transition-colors`}
                 onClick={() => {
                   setSelectedNum(num);
